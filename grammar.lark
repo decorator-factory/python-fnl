@@ -1,0 +1,15 @@
+?start: expr
+?expr: string | raw_string | integer | sexpr | name
+integer: /[-+]?[0-9]+/
+string: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
+raw_string: /\"\"\"(\\.|[^"]|\n)*?\"\"\"/
+name: /(?![-+]?[0-9])[-_$+*\/a-zA-Z0-9]+/
+
+// This LEFT_BRACKET captures the position of the s-expression for debugging
+LEFT_PAREN: "("
+
+sexpr: LEFT_PAREN expr+ ")"
+COMMENT: /;.*\n/
+%import common.WS
+%ignore WS
+%ignore COMMENT
