@@ -18,7 +18,6 @@ def fn(target: Dict[str, e.Entity], name: str):
     return _add_fn
 
 
-
 @fn(BUILTINS, "bf")
 def boldface():
     def from_inline(*args):
@@ -156,13 +155,12 @@ def pre():
     yield ((), et.TStr(), et.TBlock(), from_inline)
 
 
-
 @fn(BUILTINS, "map")
 def map_function():
     INPUT_FN_INLINE = et.TFunction((et.IInl(),), None, et.TInline())
     # HACK... `(λ ...a . t)` fits everywhere `(λ a . t)` fits,
     # but my type system doesn't know that yet
-    INPUT_FN_INLINE2 = et.TFunction((), et.IInl(), et.TInline()) # HACK
+    INPUT_FN_INLINE2 = et.TFunction((), et.IInl(), et.TInline())  # HACK
     FN_TYPE_INLINE = et.TFunction((), et.IInl(), et.TInline())
 
     INPUT_FN_STR = et.TFunction((et.TStr(),), None, et.TInline())
@@ -174,13 +172,12 @@ def map_function():
             return e.InlineConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))
         return e.Function({FN_TYPE_INLINE: from_inl})
     yield ((INPUT_FN_INLINE,), None, FN_TYPE_INLINE, from_fn_inline)
-    yield ((INPUT_FN_INLINE2,), None, FN_TYPE_INLINE, from_fn_inline) # HACK
+    yield ((INPUT_FN_INLINE2,), None, FN_TYPE_INLINE, from_fn_inline)  # HACK
     yield ((INPUT_FN_STR,), None, FN_TYPE_STR, from_fn_inline)
     yield ((INPUT_FN_STR2,), None, FN_TYPE_STR, from_fn_inline)
 
-
     INPUT_FN_BLOCK = et.TFunction((et.IRen(),), None, et.TBlock())
-    INPUT_FN_BLOCK2 = et.TFunction((), et.IRen(), et.TBlock()) # HACK
+    INPUT_FN_BLOCK2 = et.TFunction((), et.IRen(), et.TBlock())  # HACK
     FN_TYPE_BLOCK = et.TFunction((), et.IRen(), et.TBlock())
 
     def from_fn_block(fn):
@@ -188,7 +185,7 @@ def map_function():
             return e.BlockConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))
         return e.Function({FN_TYPE_BLOCK: from_ren})
     yield ((INPUT_FN_BLOCK,), None, FN_TYPE_BLOCK, from_fn_block)
-    yield ((INPUT_FN_BLOCK2,), None, FN_TYPE_BLOCK, from_fn_block) # HACK
+    yield ((INPUT_FN_BLOCK2,), None, FN_TYPE_BLOCK, from_fn_block)  # HACK
 
 
 @fn(BUILTINS, "sepmap")

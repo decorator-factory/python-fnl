@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Dict, Tuple
+from typing import Dict, Tuple
 import fnl
 from pathlib import Path
 import string
@@ -19,14 +19,18 @@ class Template(fnl.e.Entity):
         return fnl.e.RawHtml(template.substitute(rendered_parts))
 
 
-
 extensions: Dict[str, fnl.e.Entity] = {}
 store: Dict[str, Tuple[str, str]] = {}  # filename -> (title, source)
 
 
 @fnl.definitions.fn(extensions, "$docs")
 def make_docs():
-    def _make_docs(filename: fnl.e.String, source: fnl.e.String, title: fnl.e.String, *elements: fnl.e.Entity):
+    def _make_docs(
+        filename: fnl.e.String,
+        source: fnl.e.String,
+        title: fnl.e.String,
+        *elements: fnl.e.Entity
+    ):
         store[filename.value] = (title.value, source.value)
         return Template(
             template_html,
@@ -35,7 +39,7 @@ def make_docs():
                 "mount": fnl.e.BlockConcat(elements),
             }
         )
-    yield ((fnl.et.TStr(), fnl.et.TStr()), fnl.et.IRen(), fnl.et.IBlk(), _make_docs)
+    yield ((fnl.et.TStr(), fnl.et.TStr(), fnl.et.TStr()), fnl.et.IRen(), fnl.et.IBlk(), _make_docs)
 
 
 @fnl.definitions.fn(extensions, "$link-to")

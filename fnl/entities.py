@@ -65,9 +65,9 @@ class HtmlTag(HtmlRender):
     def as_text(self) -> str:
         options = "" if self.options == "" else " " + self.options
         return (
-             f"<{self.tag}{options}>"
+            f"<{self.tag}{options}>"
             + "".join(r.as_text() for r in self.content)
-            +f"</{self.tag}>"
+            + f"</{self.tag}>"
         )
 
     def fmap(self, fn: Callable[[str], str]):
@@ -76,6 +76,7 @@ class HtmlTag(HtmlRender):
             self.options,
             [r.fmap(fn) for r in self.content]
         )
+
 
 @dataclass
 class Concat(HtmlRender):
@@ -111,9 +112,9 @@ class Entity:
         """Render the entity as an HTML tree"""
         e = self.evaluate(runtime)
         if hasattr(e, "render_inline"):
-            return e.render_inline(runtime) # type: ignore
+            return e.render_inline(runtime)  # type: ignore
         if hasattr(e, "render_block"):
-            return e.render_block(runtime) # type: ignore
+            return e.render_block(runtime)  # type: ignore
         raise TypeError(f"Cannot render {e}")
 
     def evaluate(self, runtime) -> Entity:
@@ -156,7 +157,7 @@ class Sexpr(Entity):
     fn: Entity
     args: Tuple[Entity, ...]
 
-    _position: Optional[Tuple[int, int]] = None # (line, column)
+    _position: Optional[Tuple[int, int]] = None  # (line, column)
     _cached: Optional[Entity] = None
 
     def __eq__(self, other):
@@ -192,7 +193,7 @@ class Sexpr(Entity):
 
         error = None
         try:
-            self._cached = self.fn.call(*self.args).evaluate(runtime) # type: ignore
+            self._cached = self.fn.call(*self.args).evaluate(runtime)  # type: ignore
         except TypeError as e:
             error = "".join(e.args) + " (line {line}, column {column})"
         # raise the exception without the long traceback:
@@ -348,7 +349,6 @@ class Function(Entity):
                     return f(*positional_args, *rest_args)
         arg_types_repr = "(" + ", ".join(e.ty.signature() for e in args) + ")"
         raise TypeError(f"Cannot call {self.ty.signature()} with {arg_types_repr}")
-
 
     def return_type_when_called_with(self, *, args, rest):
         # TODO: implement these cases:

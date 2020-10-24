@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="fnl",
-    version="0.0.1", # don't change version for now, early development
+    version="0.0.1",  # don't change version for now, early development
     author="decorator-factory",
     author_email="appendix.y.z@gmail.com",
     description="Terse and extensible markup language",

@@ -1,5 +1,4 @@
 import fnl
-import fnl.entity_types as et
 import fnl.entities as e
 
 

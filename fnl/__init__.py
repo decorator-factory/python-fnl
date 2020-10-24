@@ -1,7 +1,7 @@
 import re
-import json # json is needed to decode a string
+import json  # json is needed to decode a string
 from textwrap import dedent
-from typing import Iterable, Tuple, Mapping, Union, overload
+from typing import Iterable, Tuple, Mapping, Union
 from lark import Lark, Transformer, v_args
 from . import entities as e
 from . import entity_types as et
@@ -51,8 +51,10 @@ class FnlTypeError(TypeError):
     pass
 
 
-
-def html(source: str, extensions: Union[Iterable[Tuple[str, e.Entity]], Mapping[str,e.Entity]] = ()) -> str:
+def html(
+        source: str,
+        extensions: Union[Iterable[Tuple[str, e.Entity]], Mapping[str, e.Entity]] = ()
+) -> str:
     runtime = {**definitions.BUILTINS}
     runtime.update(extensions)  # type: ignore -- bug in Pyright # NOTE
 
@@ -62,7 +64,6 @@ def html(source: str, extensions: Union[Iterable[Tuple[str, e.Entity]], Mapping[
         return expr.render(runtime).as_text()
     except e.CallError as call_error:
         error = call_error.msg
-    except:
-        raise
+
     # raise the exception without the internal traceback:
     raise FnlTypeError(error)
