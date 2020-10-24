@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using FNL</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <main>
+        <div class="-title">
+            <h1>Using FNL</h1>
+            <a href="index.html">Go to the index</a>
+        </div>
+        <div class="-mount">
+            <h2>Basic usage</h2><p>Using FNL is pretty straight-forward. You give it source code, and it gives you HTML.</p><pre>
+import fnl
+
+source_code = &quot;&quot;&quot;
+  ($
+    ((h 1)
+      &quot;Hello, world!&quot;)
+    (p &quot;Lorem ipsum dolor sit amet&quot;))
+&quot;&quot;&quot;
+
+html: str = fnl.html()
+
+</pre><h2>Extending FNL</h2><p>To extend FNL, you&#x27;ll need to learn a bit about its internals. The two most important modules are <tt>fnl.entities</tt> and <tt>fnl.entity_types</tt>.</p><p><tt>fnl.entity_types</tt> defines the <tt>EntityType</tt> class and all of its subclasses; they represent the types that are defined &#x27;in the language spec&#x27;, if I may say so. You&#x27;ll need them to define the signatures of your own functions.</p><p><tt>fnl.entities</tt> defines the <tt>Entity</tt> class and all of its subclasses; they represent the expressions and values that appear in the program. Here are some of them:</p><ul><li><tt>Name </tt>&mdash; represents an expression that accesses a global value, like <tt>bf</tt> or <tt>$</tt>.</li><li><tt>Integer </tt>&mdash; represents... well, an integer</li><li><tt>String </tt>&mdash; as you might expect, it&#x27;s a string</li><li><tt>InlineTag </tt>&mdash; inline HTML tag, such as &lt;b&gt;</li><li><tt>BlockTag </tt>&mdash; block HTML tag, such as &lt;p&gt;</li><li><tt>InlineConcat </tt>&mdash; concatenation of inline elements</li><li><tt>BlockConcat </tt>&mdash; concatenation of mixed elements; the result is a block element. The name might be confusing, but the relevant part here is that this value cannot be used as an inline element, but can be used as a block element.</li></ul><h2>Providing custom symbols</h2><p>If you take a look at the signature of <tt>fnl.html</tt>, you can see that it accepts an optional <tt>extensions</tt> argument. It&#x27;s a mapping from strings (names) to <tt>Entity</tt> objects. For example, you can define some constants like that:</p><pre>
+import fnl
+import fnl.entities as e
+
+source = &quot;&quot;&quot;
+  (p
+    &quot;From basic mathematics we know that &quot; (e &quot;pi&quot;) &quot; = &quot; PI &quot; and e = &quot; E &quot;.&quot;)
+&quot;&quot;&quot;
+
+print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
+
+</pre><p>You should get: <tt>&lt;p&gt;From&nbsp;basic&nbsp;mathematics&nbsp;we&nbsp;know&nbsp;that&nbsp;&amp;pi;&nbsp;=&nbsp;3&nbsp;and&nbsp;e&nbsp;=&nbsp;3.&lt;/p&gt;</tt></p><p>In that mapping, you can provide any expression you want.</p><pre>
+print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Name(&#x27;PI&#x27;)}))
+
+</pre><h2>Creating functions</h2><p>Let&#x27;s create a very simple function: it should take a string as an argument and return it unchanged. First, let&#x27;s import all the necessary modules.</p><pre>
+&gt;&gt;&gt; import fnl
+&gt;&gt;&gt; import fnl.entities as e
+&gt;&gt;&gt; import fnl.entity_types as et
+
+</pre><p>Then we&#x27;ll need to create a <b>signature</b> for our function so that the type system knows what the function accepts and returns. As you may remember, a function can take a few required arguments and (possibly) varargs of one type, like <tt>(λ&nbsp;a&nbsp;b&nbsp;...c&nbsp;.&nbsp;d)</tt>.</p><pre>
+&gt;&gt;&gt; function_type = et.TFunction(
+...    arg_types = ( et.TStr(), )
+...    rest = None,
+...    return_type =  et.TStr()
+... )
+...
+&gt;&gt;&gt; function_type.signature()
+&#x27;(λ str . str)&#x27;
+
+</pre><p>Now we have to create a callable (basically, a Python function) that takes a <tt>e.String()</tt> and returns a <tt>e.String()</tt>.</p><pre>
+&gt;&gt;&gt; def identity(s: e.String) -&gt; e.String:
+...     return s
+...
+&gt;&gt;&gt;
+
+</pre><p>The type annotations are completely optional, they only serve as documentation.</p><p>Now we can combine the two to create a FNL function:</p><pre>
+&gt;&gt;&gt; function = e.Function({function_type: identity})
+&gt;&gt;&gt;
+
+</pre><p><tt>e.Function</tt> is a subclass of <tt>e.Entity&nbsp;</tt>&mdash;it&#x27;s the type that all the built-in functions in FNL have. Let&#x27;s test our function.</p><pre>
+&gt;&gt;&gt; fnl.html(&#x27;(id &quot;hello&quot;)&#x27;, {&#x27;id&#x27;: function})
+&#x27;hello&#x27;
+&gt;&gt;&gt; fnl.html(&#x27;(p (id &quot;hello, &quot;) (id &quot;world!&quot;))&#x27;, {&#x27;id&#x27;: function})
+&#x27;&lt;p&gt;hello, world!&lt;/p&gt;&#x27;
+
+</pre><p>Congratulations, it works! Now let&#x27;s try to break our function.</p><pre>
+&gt;&gt;&gt; fnl.html(&#x27;(id 42)&#x27;, {&#x27;id&#x27;: function})
+FnlTypeError: Cannot call (λ str . str) with (int) (line 1, column 1)
+
+</pre><h2>Examples and more advanced features</h2><p>Let&#x27;s create a <tt>dup</tt> function that repeats a string twice using the same steps.</p><pre>
+def _dup(s: e.String) -&gt; e.String:
+    return e.String(s.value + s.value)
+
+dup = e.Function({
+   et.TFunction((et.TStr(),), None, et.TStr()): _dup
+})
+
+fnl.html(&#x27;(dup &quot;py&quot;)&#x27;, {&#x27;dup&#x27;: dup})
+#=&gt; &#x27;pypy&#x27;
+
+</pre><p>Let&#x27;s create a function <tt>-</tt> that accepts any number of strings and puts hyphens between them.</p><pre>
+def _hyphenate(*strings: e.String) -&gt; e.String:
+    return e.String(&quot;-&quot;.join(s.value for s in strings))
+hyphenate = e.Function({
+    et.TFunction((), et.TStr(), et.TStr()): _hyphenate
+})
+
+fnl.html(&#x27;(- &quot;lorem&quot; &quot;ipsum&quot; &quot;dolor&quot; &quot;sit&quot; &quot;amet&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+#=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
+
+fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
+#=&gt; &#x27;(λ  ...str . str)&#x27;
+
+</pre><p>Remember that a function can have multiple overloads. Let&#x27;s modify our function so that it accepts integers as well.</p><pre>
+def _hyphenate_str(*strings: e.String) -&gt; e.String:
+    return e.String(&quot;-&quot;.join(s.value for s in strings))
+
+def _hyphenate_int(*ints: e.Integer) -&gt; e.String:
+    return e.String(&quot;-&quot;.join(str(n.value) for n in ints))
+
+hyphenate = e.Function({
+    et.TFunction((), et.TStr(), et.TStr()): _hyphenate_str,
+    et.TFunction((), et.TInt(), et.TStr()): _hyphenate_int,
+})
+
+fnl.html(&#x27;(- &quot;lorem&quot; &quot;ipsum&quot; &quot;dolor&quot; &quot;sit&quot; &quot;amet&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+#=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
+
+fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, {&#x27;-&#x27;: hyphenate})
+#=&gt; &#x27;1-2-3-4-5&#x27;
+
+fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
+#=&gt; &#x27;(λ  ...str . str)|(λ  ...int . str)&#x27;
+
+</pre><h2>Using the <tt>fnl.definitions.fn</tt> shortcut</h2><p>If you look at the source code of <tt>fnl/definitions.py</tt>, you&#x27;ll see misterious declarations like this:</p><pre>
+@fn(BUILTINS, &quot;$&quot;)
+def concat():
+    def from_inline(*args):
+        return e.InlineConcat(args)
+    yield ((), et.IInl(), et.TInline(), from_inline)
+
+    def from_mixed(*args):
+        return e.BlockConcat(args)
+    yield ((), et.IRen(), et.IRen(), from_mixed)
+
+</pre><p><tt>fn</tt>is a helper decorator for creating FNL function. It accepts a dictionary and the function name as argument, and it can be applied to a generator function that yields tuples:</p><pre>
+(  required args,  vararg type,  return type,  function  )
+
+</pre><p>For example, our <tt>-</tt> function could&#x27;ve been written as this:</p><pre>
+extensions = {}
+
+@fn(extensions, &quot;-&quot;)
+def hyphenate():
+    def from_strings(*strings):
+        return e.String(&quot;-&quot;.join(s.value for s in strings))
+    yield ((), et.TStr(), et.TStr(), from_strings)
+
+    def from_ints(*ints):
+        return e.String(&quot;-&quot;.join(str(n.value) for n in ints))
+    yield ((), et.TInt(), et.TStr(), from_ints)
+
+fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
+#=&gt; &#x27;1-2-3-4-5&#x27;
+
+</pre><hr/><h2>Source:</h2><pre>($docs $filename $source &quot;Using FNL&quot;
+  ((h 2)
+    &quot;Basic usage&quot;)
+  (p
+    &quot;Using FNL is pretty straight-forward. You give it source code, and it
+    gives you HTML.&quot;)
+
+  (pre &quot;&quot;&quot;
+  import fnl
+
+  source_code = \&quot;\&quot;\&quot;
+    ($
+      ((h 1)
+        \&quot;Hello, world!\&quot;)
+      (p \&quot;Lorem ipsum dolor sit amet\&quot;))
+  \&quot;\&quot;\&quot;
+
+  html: str = fnl.html()
+  &quot;&quot;&quot;)
+
+
+  ((h 2)
+    &quot;Extending FNL&quot;)
+
+  (p
+    &quot;To extend FNL, you&#x27;ll need to learn a bit about its internals.
+    The two most important modules are &quot; (tt &quot;fnl.entities&quot;) &quot; and &quot;
+    (tt &quot;fnl.entity_types&quot;) &quot;.&quot;)
+
+  (p
+    (tt &quot;fnl.entity_types&quot;) &quot; defines the &quot; (tt &quot;EntityType&quot;) &quot; class and all
+    of its subclasses; they represent the types that are defined &#x27;in the
+    language spec&#x27;, if I may say so. You&#x27;ll need them to define the signatures
+    of your own functions.&quot;)
+
+  (p
+    (tt &quot;fnl.entities&quot;) &quot; defines the &quot; (tt &quot;Entity&quot;) &quot; class and all
+    of its subclasses; they represent the expressions and values that appear
+    in the program. Here are some of them:&quot;)
+
+  (list-unordered
+    ($ (tt &quot;Name &quot;) (--) &quot; represents an expression that accesses a global
+      value, like &quot; (tt &quot;bf&quot;) &quot; or &quot; (tt &quot;$&quot;) &quot;.&quot;)
+
+    ($ (tt &quot;Integer &quot;) (--) &quot; represents... well, an integer&quot;)
+
+    ($ (tt &quot;String &quot;) (--) &quot; as you might expect, it&#x27;s a string&quot;)
+
+    ($ (tt &quot;InlineTag &quot;) (--) &quot; inline HTML tag, such as &lt;b&gt;&quot;)
+
+    ($ (tt &quot;BlockTag &quot;) (--) &quot; block HTML tag, such as &lt;p&gt;&quot;)
+
+    ($ (tt &quot;InlineConcat &quot;) (--) &quot; concatenation of inline elements&quot;)
+
+    ($ (tt &quot;BlockConcat &quot;) (--) &quot; concatenation of mixed elements; the
+      result is a block element. The name might be confusing, but
+      the relevant part here is that this value cannot be used as an inline
+      element, but can be used as a block element.&quot;)
+  )
+
+
+  ((h 2)
+    &quot;Providing custom symbols&quot;)
+  (p
+    &quot;If you take a look at the signature of &quot; (tt &quot;fnl.html&quot;) &quot;, you can see
+    that it accepts an optional &quot; (tt &quot;extensions&quot;) &quot; argument. It&#x27;s a mapping
+    from strings (names) to &quot; (tt &quot;Entity&quot;) &quot; objects. For example, you can
+    define some constants like that:&quot;)
+
+  (pre &quot;&quot;&quot;
+  import fnl
+  import fnl.entities as e
+
+  source = \&quot;\&quot;\&quot;
+    (p
+      \&quot;From basic mathematics we know that \&quot; (e \&quot;pi\&quot;) \&quot; = \&quot; PI \&quot; and e = \&quot; E \&quot;.\&quot;)
+  \&quot;\&quot;\&quot;
+
+  print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;You should get: &quot; (mono &quot;&lt;p&gt;From basic mathematics we know that &amp;pi; = 3 and e = 3.&lt;/p&gt;&quot;))
+
+  (p
+    &quot;In that mapping, you can provide any expression you want.&quot;)
+
+  (pre &quot;&quot;&quot;
+  print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Name(&#x27;PI&#x27;)}))
+  &quot;&quot;&quot;)
+
+
+  ((h 2)
+    &quot;Creating functions&quot;)
+
+  (p
+    &quot;Let&#x27;s create a very simple function: it should take a string as an argument
+    and return it unchanged. First, let&#x27;s import all the necessary modules.&quot;)
+
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; import fnl
+    &gt;&gt;&gt; import fnl.entities as e
+    &gt;&gt;&gt; import fnl.entity_types as et
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Then we&#x27;ll need to create a &quot; (bf &quot;signature&quot;) &quot; for our function so that
+    the type system knows what the function accepts and returns. As you may
+    remember, a function can take a few required arguments and (possibly)
+    varargs of one type, like &quot; (mono &quot;(λ a b ...c . d)&quot;) &quot;.&quot;)
+
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; function_type = et.TFunction(
+    ...    arg_types = ( et.TStr(), )
+    ...    rest = None,
+    ...    return_type =  et.TStr()
+    ... )
+    ...
+    &gt;&gt;&gt; function_type.signature()
+    &#x27;(λ str . str)&#x27;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Now we have to create a callable (basically, a Python function) that takes
+    a &quot; (mono &quot;e.String()&quot;) &quot; and returns a &quot; (mono &quot;e.String()&quot;) &quot;.&quot;)
+
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; def identity(s: e.String) -&gt; e.String:
+    ...     return s
+    ...
+    &gt;&gt;&gt;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;The type annotations are completely optional, they only serve as documentation.&quot;)
+
+  (p
+    &quot;Now we can combine the two to create a FNL function:&quot;)
+
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; function = e.Function({function_type: identity})
+    &gt;&gt;&gt;
+  &quot;&quot;&quot;)
+
+  (p
+    (mono &quot;e.Function&quot;) &quot; is a subclass of &quot; (mono &quot;e.Entity &quot;) (--)
+    &quot;it&#x27;s the type that all the built-in functions in FNL have. Let&#x27;s test our function.&quot;)
+
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; fnl.html(&#x27;(id \&quot;hello\&quot;)&#x27;, {&#x27;id&#x27;: function})
+    &#x27;hello&#x27;
+    &gt;&gt;&gt; fnl.html(&#x27;(p (id \&quot;hello, \&quot;) (id \&quot;world!\&quot;))&#x27;, {&#x27;id&#x27;: function})
+    &#x27;&lt;p&gt;hello, world!&lt;/p&gt;&#x27;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Congratulations, it works! Now let&#x27;s try to break our function.&quot;)
+  (pre &quot;&quot;&quot;
+    &gt;&gt;&gt; fnl.html(&#x27;(id 42)&#x27;, {&#x27;id&#x27;: function})
+    FnlTypeError: Cannot call (λ str . str) with (int) (line 1, column 1)
+  &quot;&quot;&quot;)
+
+
+  ((h 2)
+    &quot;Examples and more advanced features&quot;)
+
+  (p
+    &quot;Let&#x27;s create a &quot; (tt &quot;dup&quot;) &quot; function that repeats a string twice using
+    the same steps.&quot;)
+
+  (pre &quot;&quot;&quot;
+    def _dup(s: e.String) -&gt; e.String:
+        return e.String(s.value + s.value)
+
+    dup = e.Function({
+       et.TFunction((et.TStr(),), None, et.TStr()): _dup
+    })
+
+    fnl.html(&#x27;(dup \&quot;py\&quot;)&#x27;, {&#x27;dup&#x27;: dup})
+    #=&gt; &#x27;pypy&#x27;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Let&#x27;s create a function &quot; (tt &quot;-&quot;) &quot; that accepts any number of strings
+    and puts hyphens between them.&quot;)
+
+  (pre &quot;&quot;&quot;
+    def _hyphenate(*strings: e.String) -&gt; e.String:
+        return e.String(\&quot;-\&quot;.join(s.value for s in strings))
+    hyphenate = e.Function({
+        et.TFunction((), et.TStr(), et.TStr()): _hyphenate
+    })
+
+    fnl.html(&#x27;(- \&quot;lorem\&quot; \&quot;ipsum\&quot; \&quot;dolor\&quot; \&quot;sit\&quot; \&quot;amet\&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+    #=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
+
+    fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
+    #=&gt; &#x27;(λ  ...str . str)&#x27;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Remember that a function can have multiple overloads. Let&#x27;s modify our
+    function so that it accepts integers as well.&quot;)
+
+  (pre &quot;&quot;&quot;
+    def _hyphenate_str(*strings: e.String) -&gt; e.String:
+        return e.String(\&quot;-\&quot;.join(s.value for s in strings))
+
+    def _hyphenate_int(*ints: e.Integer) -&gt; e.String:
+        return e.String(\&quot;-\&quot;.join(str(n.value) for n in ints))
+
+    hyphenate = e.Function({
+        et.TFunction((), et.TStr(), et.TStr()): _hyphenate_str,
+        et.TFunction((), et.TInt(), et.TStr()): _hyphenate_int,
+    })
+
+    fnl.html(&#x27;(- \&quot;lorem\&quot; \&quot;ipsum\&quot; \&quot;dolor\&quot; \&quot;sit\&quot; \&quot;amet\&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+    #=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
+
+    fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, {&#x27;-&#x27;: hyphenate})
+    #=&gt; &#x27;1-2-3-4-5&#x27;
+
+    fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
+    #=&gt; &#x27;(λ  ...str . str)|(λ  ...int . str)&#x27;
+  &quot;&quot;&quot;)
+
+
+  ((h 2)
+    &quot;Using the &quot; (mono &quot;fnl.definitions.fn&quot;) &quot; shortcut&quot;)
+  (p
+    &quot;If you look at the source code of &quot; (mono &quot;fnl/definitions.py&quot;)
+    &quot;, you&#x27;ll see misterious declarations like this:&quot;)
+
+  (pre &quot;&quot;&quot;
+    @fn(BUILTINS, \&quot;$\&quot;)
+    def concat():
+        def from_inline(*args):
+            return e.InlineConcat(args)
+        yield ((), et.IInl(), et.TInline(), from_inline)
+
+        def from_mixed(*args):
+            return e.BlockConcat(args)
+        yield ((), et.IRen(), et.IRen(), from_mixed)
+  &quot;&quot;&quot;)
+
+  (p
+    (mono &quot;fn&quot;) &quot;is a helper decorator for creating FNL function. It accepts
+    a dictionary and the function name as argument, and it can be applied to a
+    generator function that yields tuples:&quot;)
+
+  (pre &quot;&quot;&quot;
+    (  required args,  vararg type,  return type,  function  )
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;For example, our &quot; (tt &quot;-&quot;) &quot; function could&#x27;ve been written as this:&quot;)
+
+  (pre &quot;&quot;&quot;
+    extensions = {}
+
+    @fn(extensions, \&quot;-\&quot;)
+    def hyphenate():
+        def from_strings(*strings):
+            return e.String(\&quot;-\&quot;.join(s.value for s in strings))
+        yield ((), et.TStr(), et.TStr(), from_strings)
+
+        def from_ints(*ints):
+            return e.String(\&quot;-\&quot;.join(str(n.value) for n in ints))
+        yield ((), et.TInt(), et.TStr(), from_ints)
+
+    fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
+    #=&gt; &#x27;1-2-3-4-5&#x27;
+  &quot;&quot;&quot;)
+
+  (horizontal-rule)
+  ((h 2) &quot;Source:&quot;)
+  (pre $source)
+)
+</pre>
+        </div>
+    </main>
+</body>
+</html>
