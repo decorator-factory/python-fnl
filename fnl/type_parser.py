@@ -1,4 +1,3 @@
-from typing import Tuple
 from . import entity_types as et
 from lark import Lark, v_args, Transformer
 
@@ -43,9 +42,3 @@ parser = Lark.open(
 
 def parse(source: str) -> et.EntityType:
     return parser.parse(source)  # type: ignore
-
-
-def f(xs: Tuple[str, ...]):
-    return xs
-
-f(tuple(["a", "b"]))
