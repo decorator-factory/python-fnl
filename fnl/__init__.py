@@ -1,7 +1,7 @@
 import re
 import json # json is needed to decode a string
 from textwrap import dedent
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, Mapping, Union, overload
 from lark import Lark, Transformer, v_args
 from . import entities as e
 from . import entity_types as et
@@ -51,9 +51,10 @@ class FnlTypeError(TypeError):
     pass
 
 
-def html(source: str, extensions: Iterable[Tuple[str, e.Entity]] = ()) -> str:
+
+def html(source: str, extensions: Union[Iterable[Tuple[str, e.Entity]], Mapping[str,e.Entity]] = ()) -> str:
     runtime = {**definitions.BUILTINS}
-    runtime.update(extensions)
+    runtime.update(extensions)  # type: ignore -- bug in Pyright # NOTE
 
     error = None
     try:
