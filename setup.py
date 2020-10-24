@@ -23,6 +23,6 @@ setuptools.setup(
     ],
     python_requires='>=3.7',
     package_data={
-        "": ["*.md", "*.lark", "*.html"]
+        "": ["*.md", "*.lark", "*.html", "*.css", "*.fnl"]
     }
 )
