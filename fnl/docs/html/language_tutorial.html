@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language tutorial</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <main>
+        <div class="-title">
+            <h1>Language tutorial</h1>
+            <a href="index.html">Go to the index</a>
+        </div>
+        <div class="-mount">
+            <p>Inspired by X-expressions, I decided to take a stab at markup language design. It&#x27;s not meant to be a replacement for HTML, it&#x27;s just a tool for rendering HTML to style a blog post. There&#x27;s still a lot of work to do, but it&#x27;s already pretty useful, at least in my view.</p><hr/><p>The syntax of the language is based on S-expressions in lisp: to call a function <tt>f</tt> with arguments <tt>x</tt>, <tt>y</tt>, <tt>z</tt>, you write <tt>(f&nbsp;x&nbsp;y&nbsp;z)</tt>. For example, <tt>2&nbsp;+&nbsp;(3&nbsp;*&nbsp;5)</tt> would be written as <tt>(+&nbsp;2&nbsp;(*&nbsp;3&nbsp;5))</tt>. Apart from that, you have names (like <tt>p</tt>or<tt>list-unordered</tt>), strings ( like <tt>&quot;hello&quot;</tt>) and integers (like <tt>42</tt>).</p><p>The entire document is just one big expression.</p><p>Some examples of markup, just to give you an idea:</p><hr/><h3>A string is a valid document:</h3><p><tt>&quot;Hello,&nbsp;world&quot;</tt></p><div class="fnl--box">Hello, world</div><hr/><h3>You can concatenate things with the <tt>$</tt> function:</h3><p><tt>($&nbsp;&quot;Hello,&nbsp;&quot;&nbsp;&quot;world!&quot;)</tt></p><div class="fnl--box">Hello, world!</div><hr/><h3>Some functions represent HTML tags:</h3><pre>
+(p              ; paragraph
+  (bf &quot;Hello&quot;)  ; boldface
+  (it &quot;World&quot;)  ; italics
+  (tt &quot;Aaaaa&quot;)  ; monospaces text
+
+  ; heading:
+  ((h 3) &quot;To do:&quot;)
+  (list-unordered
+    &quot;Buy milk&quot;
+    &quot;Submit a pull request&quot;
+    &quot;Solve fizzbuzz&quot;))
+
+</pre><div class="fnl--box"><p><b>Hello</b><i>World</i><tt>Aaaaa</tt><h3>To do:</h3><ul><li>Buy milk</li><li>Submit a pull request</li><li>Solve fizzbuzz</li></ul></p></div><hr/><h3>Strong typing</h3><p>Some languages are powerful not because of something you can do with them, but rather because of something you <i>can&#x27;t</i>. Strict languages like Haskell or Rust are a good example of that.</p><p><pre>
+(b (p &quot;text&quot;))
+
+</pre></p><p>This results in an error: <b><tt>Cannot call (λ ...Inl . inline) with (block) (line 71, column 3)</tt></b></p><p>Why can&#x27;t you do that? It seems perfectly fine, but it isn&#x27;t: <tt>p</tt> is a &#x27;block&#x27; element, while <tt>b</tt> is an &#x27;inline&#x27; element, and you can&#x27;t put a &#x27;block&#x27; element inside an &#x27;inline&#x27; element. You can go to <a href="https://validator.w3.org/">the W3C validator</a> and see for yourself that <tt>&lt;b&gt;&lt;p&gt;text&lt;/p&gt;&lt;/b&gt;</tt> is a no-no.</p><hr/><h3>Inspecting types</h3><p>You can inspect the type of an object by using the <tt>type</tt> function:</p><pre>
+(list-unordered
+  (tt &quot;\&quot;hello\&quot;: &quot; (type &quot;hello&quot;))
+  (tt &quot;5: &quot; (type 5))
+  (tt &quot;p: &quot; (type p))
+  (tt &quot;$: &quot; (type $))
+  (tt &quot;h: &quot; (type h))
+  (tt &quot;nobr: &quot; (type nobr))
+  (tt &quot;horizontal-rule: &quot; (type nobr))
+)
+
+</pre><div class="fnl--box"><ul><li><tt>&quot;hello&quot;: str</tt></li><li><tt>5: int</tt></li><li><tt>p: (λ  ...Ren . block)</tt></li><li><tt>$: (λ  ...Inl . inline)|(λ  ...Ren . Ren)</tt></li><li><tt>h: (λ int . (λ  ...Inl . block))</tt></li><li><tt>nobr: (λ Inl . inline)|(λ Blk . block)</tt></li><li><tt>horizontal-rule: (λ  . block)</tt></li></ul></div><p>Let&#x27;s break down the function types:<ul><li>The lambda (λ) just means that it&#x27;s a function</li><li><tt>(λ a . b)</tt> is a function from type &#x27;a&#x27; to type &#x27;b&#x27;</li><li><tt>(λ ...a . b)</tt> is a function that accepts any number of &#x27;a&#x27;s an returns a &#x27;b&#x27;</li><li><tt>a | b</tt> means &quot;either an &#x27;a&#x27; or a &#x27;b&#x27;&quot;</li><li><tt>Inl</tt> is something which can be rendered as an inline element, like a string, a number or simply an inline HTML element (which is represented by the <tt>inline</tt> type).</li><li><tt>Blk</tt> is something which can be rendered as an block element. Currently only the <tt>block</tt> type is a Blk.</li><li><tt>Ren</tt> is something which can be rendered as HTML, whatever it is. As of writing this post, <tt>Ren = Blk | Inl</tt>.</li></ul></p><hr/><h3>Higher-order functions</h3><p>There&#x27;s a type that seems strange: <tt>h:&nbsp;(λ&nbsp;int&nbsp;.&nbsp;(λ&nbsp;...Inl&nbsp;.&nbsp;block))</tt></p><p>Just like in Python or in many other computer languages, functions are first-class values: they can be created, returned, and passed as arguments to other functions. So <tt>h</tt> is a function that takes an integer and returns a new function, which in turn accepts any number of inline-ish elements and returns a block HTML element.</p><p><tt>map</tt> is another example of a higher-order function. its type is <tt>(λ&nbsp;(λ&nbsp;Inl&nbsp;.&nbsp;inline)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...Inl&nbsp;.&nbsp;inline))|(λ&nbsp;(λ&nbsp;&nbsp;...Inl&nbsp;.&nbsp;inline)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...Inl&nbsp;.&nbsp;inline))|(λ&nbsp;(λ&nbsp;str&nbsp;.&nbsp;inline)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...str&nbsp;.&nbsp;inline))|(λ&nbsp;(λ&nbsp;&nbsp;...str&nbsp;.&nbsp;inline)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...str&nbsp;.&nbsp;inline))|(λ&nbsp;(λ&nbsp;Ren&nbsp;.&nbsp;block)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...Ren&nbsp;.&nbsp;block))|(λ&nbsp;(λ&nbsp;&nbsp;...Ren&nbsp;.&nbsp;block)&nbsp;.&nbsp;(λ&nbsp;&nbsp;...Ren&nbsp;.&nbsp;block))</tt>. That&#x27;s a very long type, but basically, <tt>map</tt> allows you to apply a function to a list of values.</p><pre>
+((map p) &quot;First paragraph&quot; &quot;Second paragraph&quot; &quot;Third paragraph&quot;)
+
+</pre><p>First paragraph</p><p>Second paragraph</p><p>Third paragraph</p><p><tt>sep</tt> allows you to separate a list of values with a separator you give it.</p><pre>
+(p
+  ((sep &quot;, &quot;) &quot;int&quot; &quot;str&quot; &quot;list&quot;))
+
+</pre><div class="fnl--box"><p>int, str, list</p></div><p>Ah, but what if you need to <tt>sep</tt><i> and </i><tt>map</tt>? In that case you can use <tt>sepmap</tt>!</p><pre>
+(p
+  ((sepmap &quot;, &quot; tt) &quot;int&quot; &quot;str&quot; &quot;list&quot;))
+
+</pre><div class="fnl--box"><p><tt>int</tt>, <tt>str</tt>, <tt>list</tt></p></div><hr/><h2>Source:</h2><pre>($docs $filename $source &quot;Language tutorial&quot;
+  (p
+    &quot;Inspired by X-expressions, I decided to take a stab at
+    markup language design. It&#x27;s not meant to be a replacement for HTML,
+    it&#x27;s just a tool for rendering HTML to style a blog post. There&#x27;s still a
+    lot of work to do, but it&#x27;s already pretty useful, at least in my view.&quot;)
+
+  (horizontal-rule)
+
+  (p
+    &quot;The syntax of the language is based on S-expressions in lisp: to call
+    a function &quot; (mono &quot;f&quot;) &quot; with arguments &quot; ((sepmap &quot;, &quot; mono) &quot;x&quot; &quot;y&quot; &quot;z&quot;)
+    &quot;, you write &quot; (mono &quot;(f x y z)&quot;) &quot;. For example, &quot; (mono &quot;2 + (3 * 5)&quot;)
+    &quot; would be written as &quot; (mono &quot;(+ 2 (* 3 5))&quot;) &quot;. Apart from that, you have
+    names (like &quot; (mono &quot;p&quot;) &quot;or&quot; (mono &quot;list-unordered&quot;) &quot;), strings ( like &quot;
+    (mono &quot;\&quot;hello\&quot;&quot;) &quot;) and integers (like &quot; (mono &quot;42&quot;) &quot;).&quot;)
+
+  (p
+    &quot;The entire document is just one big expression.&quot;)
+
+  (p
+    &quot;Some examples of markup, just to give you an idea:&quot;)
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;A string is a valid document:&quot;)
+  (p (mono &quot;\&quot;Hello, world\&quot;&quot;))
+  ($box
+    &quot;Hello, world&quot;)
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;You can concatenate things with the &quot; (mono &quot;$&quot;) &quot; function:&quot;)
+  (p (mono &quot;($ \&quot;Hello, \&quot; \&quot;world!\&quot;)&quot;))
+  ($box
+    ($ &quot;Hello, &quot; &quot;world!&quot;))
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;Some functions represent HTML tags:&quot;)
+  (pre &quot;&quot;&quot;
+    (p              ; paragraph
+      (bf \&quot;Hello\&quot;)  ; boldface
+      (it \&quot;World\&quot;)  ; italics
+      (tt \&quot;Aaaaa\&quot;)  ; monospaces text
+
+      ; heading:
+      ((h 3) \&quot;To do:\&quot;)
+      (list-unordered
+        \&quot;Buy milk\&quot;
+        \&quot;Submit a pull request\&quot;
+        \&quot;Solve fizzbuzz\&quot;))
+  &quot;&quot;&quot;)
+  ($box
+    (p
+        (bf &quot;Hello&quot;)
+        (it &quot;World&quot;)
+        (tt &quot;Aaaaa&quot;)
+
+        ((h 3) &quot;To do:&quot;)
+        (list-unordered
+          &quot;Buy milk&quot;
+          &quot;Submit a pull request&quot;
+          &quot;Solve fizzbuzz&quot;)))
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;Strong typing&quot;)
+  (p
+    &quot;Some languages are powerful not because of something you can do with them,
+    but rather because of something you &quot; (it &quot;can&#x27;t&quot;) &quot;. Strict languages like
+    Haskell or Rust are a good example of that.&quot;)
+  (p (pre &quot;&quot;&quot;
+    (b (p \&quot;text\&quot;))
+  &quot;&quot;&quot;))
+  (p
+    &quot;This results in an error: &quot;
+    (bf (mono &quot;Cannot call (λ  ...Inl . inline) with (block) (line 71, column 3)&quot;)))
+  (p
+    &quot;Why can&#x27;t you do that? It seems perfectly fine, but it isn&#x27;t: &quot;
+    (tt &quot;p&quot;) &quot; is a &#x27;block&#x27; element, while &quot; (tt &quot;b&quot;) &quot; is an &#x27;inline&#x27; element,
+    and you can&#x27;t put a &#x27;block&#x27; element inside an &#x27;inline&#x27; element.
+    You can go to &quot; (a &quot;https://validator.w3.org/&quot; &quot;the W3C validator&quot;)
+    &quot; and see for yourself that &quot; (mono &quot;&lt;b&gt;&lt;p&gt;text&lt;/p&gt;&lt;/b&gt;&quot;) &quot; is a no-no.&quot;)
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;Inspecting types&quot;)
+  (p
+    &quot;You can inspect the type of an object by using the &quot; (tt &quot;type&quot;)
+    &quot; function:&quot;)
+  (pre
+  &quot;&quot;&quot;
+  (list-unordered
+    (tt \&quot;\\\&quot;hello\\\&quot;: \&quot; (type \&quot;hello\&quot;))
+    (tt \&quot;5: \&quot; (type 5))
+    (tt \&quot;p: \&quot; (type p))
+    (tt \&quot;$: \&quot; (type $))
+    (tt \&quot;h: \&quot; (type h))
+    (tt \&quot;nobr: \&quot; (type nobr))
+    (tt \&quot;horizontal-rule: \&quot; (type nobr))
+  )
+  &quot;&quot;&quot;
+  )
+  ($box
+    (list-unordered
+      (tt &quot;\&quot;hello\&quot;: &quot; (type &quot;hello&quot;))
+      (tt &quot;5: &quot; (type 5))
+      (tt &quot;p: &quot; (type p))
+      (tt &quot;$: &quot; (type $))
+      (tt &quot;h: &quot; (type h))
+      (tt &quot;nobr: &quot; (type nobr))
+      (tt &quot;horizontal-rule: &quot; (type horizontal-rule))))
+
+  (p
+    &quot;Let&#x27;s break down the function types:&quot;
+    (list-unordered
+      &quot;The lambda (λ) just means that it&#x27;s a function&quot;
+      ($ (tt &quot;(λ a . b)&quot;) &quot; is a function from type &#x27;a&#x27; to type &#x27;b&#x27;&quot;)
+      ($ (tt &quot;(λ ...a . b)&quot;) &quot; is a function that accepts any number of &#x27;a&#x27;s an returns a &#x27;b&#x27;&quot;)
+      ($ (tt &quot;a | b&quot;) &quot; means \&quot;either an &#x27;a&#x27; or a &#x27;b&#x27;\&quot;&quot;)
+      ($ (tt &quot;Inl&quot;) &quot; is something which can be rendered as an inline element, like
+        a string, a number or simply an inline HTML element (which is represented
+        by the &quot; (tt &quot;inline&quot;) &quot; type).&quot;)
+      ($ (tt &quot;Blk&quot;) &quot; is something which can be rendered as an block element.
+        Currently only the &quot; (mono &quot;block&quot;) &quot; type is a Blk.&quot;)
+      ($ (tt &quot;Ren&quot;) &quot; is something which can be rendered as HTML, whatever
+        it is. As of writing this post, &quot; (mono &quot;Ren = Blk | Inl&quot;) &quot;.&quot;)
+    )
+  )
+
+  (horizontal-rule)
+  ((h 3)
+    &quot;Higher-order functions&quot;)
+
+  (p
+    &quot;There&#x27;s a type that seems strange: &quot; (mono &quot;h: (λ int . (λ ...Inl . block))&quot;))
+  (p
+    &quot;Just like in Python or in many other computer languages, functions are
+    first-class values: they can be created, returned, and passed as arguments
+    to other functions. So &quot; (tt &quot;h&quot;) &quot; is a function that takes an integer
+    and returns a new function, which in turn accepts any number of inline-ish
+    elements and returns a block HTML element.&quot;)
+
+  (p
+    (tt &quot;map&quot;) &quot; is another example of a higher-order function. its type
+    is &quot; (mono (type map)) &quot;. That&#x27;s a very long type, but basically, &quot;
+    (tt &quot;map&quot;) &quot; allows you to apply a function to a list of values.&quot;)
+  (pre &quot;&quot;&quot;
+    ((map p) \&quot;First paragraph\&quot; \&quot;Second paragraph\&quot; \&quot;Third paragraph\&quot;)
+  &quot;&quot;&quot;)
+  ((map p) &quot;First paragraph&quot; &quot;Second paragraph&quot; &quot;Third paragraph&quot;)
+
+  (p
+    (tt &quot;sep&quot;) &quot; allows you to separate a list of values with a separator
+    you give it.&quot;)
+  (pre &quot;&quot;&quot;
+    (p
+      ((sep \&quot;, \&quot;) \&quot;int\&quot; \&quot;str\&quot; \&quot;list\&quot;))
+  &quot;&quot;&quot;)
+  ($box
+    (p
+      ((sep &quot;, &quot;) &quot;int&quot; &quot;str&quot; &quot;list&quot;)))
+
+  (p
+    &quot;Ah, but what if you need to &quot; (mono &quot;sep&quot;) (it &quot; and &quot;) (mono &quot;map&quot;) &quot;?
+    In that case you can use &quot; (mono &quot;sepmap&quot;) &quot;!&quot;)
+  (pre &quot;&quot;&quot;
+    (p
+      ((sepmap \&quot;, \&quot; tt) \&quot;int\&quot; \&quot;str\&quot; \&quot;list\&quot;))
+  &quot;&quot;&quot;)
+  ($box
+    (p
+      ((sepmap &quot;, &quot; tt) &quot;int&quot; &quot;str&quot; &quot;list&quot;)))
+
+  (horizontal-rule)
+  ((h 2) &quot;Source:&quot;)
+  (pre $source)
+)
+</pre>
+        </div>
+    </main>
+</body>
+</html>
