@@ -6,6 +6,7 @@ from lark import Lark, Transformer, v_args
 from . import entities as e
 from . import entity_types as et
 from . import definitions
+from . import type_parser
 
 
 @v_args(inline=True)
@@ -35,7 +36,7 @@ class LanguageTransformer(Transformer):
 
 
 parser = Lark.open(
-    "grammar.lark",
+    "fnl.lark",
     rel_to=__file__,
     parser="lalr",
     transformer=LanguageTransformer(),

@@ -1,0 +1,21 @@
+?start: type
+
+?type: prefix_type | union_type
+?prefix_type: function_type | primitive_type
+
+_LAMBDA : "λ" | "^"
+function_type: "(" _LAMBDA type* ["..." type] "." type ")"
+PRIMITIVE_TYPE: "any"
+              | "never"
+              | "int"
+              | "str"
+              | "inline"
+              | "block"
+              | "Inl"
+              | "Blk"
+              | "Ren"
+primitive_type: PRIMITIVE_TYPE
+union_type: prefix_type ("|" prefix_type)+
+
+%import common.WS
+%ignore WS
