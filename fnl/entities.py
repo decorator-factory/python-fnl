@@ -123,6 +123,14 @@ class Entity:
 
 
 @dataclass(eq=True)
+class Quoted(Entity):
+    subexpression: Entity
+
+    def force(self, runtime) -> Quoted:
+        return Quoted(self.subexpression.evaluate(runtime))
+
+
+@dataclass(eq=True)
 class Name(Entity):
     """Represents getting a global variable by its name"""
     name: str

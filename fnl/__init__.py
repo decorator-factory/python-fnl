@@ -34,6 +34,10 @@ class LanguageTransformer(Transformer):
     def sexpr(left_paren, fn, *args):
         return e.Sexpr(fn, args, _position=(left_paren.line, left_paren.column))
 
+    @staticmethod
+    def quoted(expr):
+        return e.Quoted(expr)
+
 
 parser = Lark.open(
     "fnl.lark",

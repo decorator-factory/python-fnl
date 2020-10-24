@@ -3,7 +3,9 @@
 integer: /[-+]?[0-9]+/
 string: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
 raw_string: /\"\"\"(\\.|[^"]|\n)*?\"\"\"/
-name: /(?![-+]?[0-9])[-_$+*\/a-zA-Z0-9]+/
+name: /(?![-+]?[0-9])[-_$+*\/a-zA-Z0-9.]+/
+
+quoted: "&" expr
 
 // This LEFT_BRACKET captures the position of the s-expression for debugging
 LEFT_PAREN: "("
