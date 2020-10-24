@@ -162,6 +162,24 @@
 
 
   ((h 2)
+    "Using string-based function annotations")
+
+  (p
+    "Creating a function type is so verbose, why can't I just write (λ str . str)?
+    Actually, you can! " (mono "fnl.type_parser.parse_fn") " converts a function
+    type as a string into a " (tt "TFunction") ".")
+
+  (pre """
+    from fnl.type_parser import parse_fn
+
+    def identity(s):
+        return s
+
+    function = e.Function({parse_fn('(λ str . str)'): identity})
+  """)
+
+
+  ((h 2)
     "Examples and more advanced features")
 
   (p
@@ -172,11 +190,7 @@
     def _dup(s: e.String) -> e.String:
         return e.String(s.value + s.value)
 
-    dup = e.Function({
-       et.TFunction((et.TStr(),), None, et.TStr()): _dup
-    })
-
-    fnl.html('(dup \"py\")', {'dup': dup})
+    fnl.html('(dup \"py\")', {parse_fn('(λ str . str)'): dup})
     #=> 'pypy'
   """)
 
@@ -187,9 +201,7 @@
   (pre """
     def _hyphenate(*strings: e.String) -> e.String:
         return e.String(\"-\".join(s.value for s in strings))
-    hyphenate = e.Function({
-        et.TFunction((), et.TStr(), et.TStr()): _hyphenate
-    })
+    hyphenate = e.Function({parse_fn('(λ ...str . str)'): _hyphenate})
 
     fnl.html('(- \"lorem\" \"ipsum\" \"dolor\" \"sit\" \"amet\")', {'-': hyphenate})
     #=> 'lorem-ipsum-dolor-sit-amet'
@@ -210,8 +222,8 @@
         return e.String(\"-\".join(str(n.value) for n in ints))
 
     hyphenate = e.Function({
-        et.TFunction((), et.TStr(), et.TStr()): _hyphenate_str,
-        et.TFunction((), et.TInt(), et.TStr()): _hyphenate_int,
+        parse_fn('(λ ...str . str)'): _hyphenate_str,
+        parse_fn('(λ ...int . str)'): _hyphenate_int,
     })
 
     fnl.html('(- \"lorem\" \"ipsum\" \"dolor\" \"sit\" \"amet\")', {'-': hyphenate})
@@ -229,28 +241,25 @@
     "Using the " (mono "fnl.definitions.fn") " shortcut")
   (p
     "If you look at the source code of " (mono "fnl/definitions.py")
-    ", you'll see misterious declarations like this:")
+    ", you'll see declarations like this:")
 
   (pre """
     @fn(BUILTINS, \"$\")
     def concat():
         def from_inline(*args):
             return e.InlineConcat(args)
-        yield ((), et.IInl(), et.TInline(), from_inline)
+        yield (\"(λ  ...Inl . inline)\", from_inline)
 
         def from_mixed(*args):
             return e.BlockConcat(args)
-        yield ((), et.IRen(), et.IRen(), from_mixed)
+        yield (\"(λ  ...Ren . Ren)\", from_mixed)
   """)
 
   (p
     (mono "fn") "is a helper decorator for creating FNL function. It accepts
     a dictionary and the function name as argument, and it can be applied to a
-    generator function that yields tuples:")
+    generator function that yields " (mono "(signature, function)") " tuples:")
 
-  (pre """
-    (  required args,  vararg type,  return type,  function  )
-  """)
 
   (p
     "For example, our " (tt "-") " function could've been written as this:")
@@ -262,11 +271,11 @@
     def hyphenate():
         def from_strings(*strings):
             return e.String(\"-\".join(s.value for s in strings))
-        yield ((), et.TStr(), et.TStr(), from_strings)
+        yield (\"(λ ...str . str)\", from_strings)
 
         def from_ints(*ints):
             return e.String(\"-\".join(str(n.value) for n in ints))
-        yield ((), et.TInt(), et.TStr(), from_ints)
+        yield (\"(λ ...int . str)\", from_ints)
 
     fnl.html('(- 1 2 3 4 5)', extensions  )
     #=> '1-2-3-4-5'

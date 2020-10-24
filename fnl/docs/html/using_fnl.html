@@ -74,6 +74,14 @@ print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Name(&#x2
 &gt;&gt;&gt; fnl.html(&#x27;(id 42)&#x27;, {&#x27;id&#x27;: function})
 FnlTypeError: Cannot call (λ str . str) with (int) (line 1, column 1)
 
+</pre><h2>Using string-based function annotations</h2><p>Creating a function type is so verbose, why can&#x27;t I just write (λ str . str)? Actually, you can! <tt>fnl.type_parser.parse_fn</tt> converts a function type as a string into a <tt>TFunction</tt>.</p><pre>
+from fnl.type_parser import parse_fn
+
+def identity(s):
+    return s
+
+function = e.Function({parse_fn(&#x27;(λ str . str)&#x27;): identity})
+
 </pre><h2>Examples and more advanced features</h2><p>Let&#x27;s create a <tt>dup</tt> function that repeats a string twice using the same steps.</p><pre>
 def _dup(s: e.String) -&gt; e.String:
     return e.String(s.value + s.value)
@@ -309,6 +317,24 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
   (pre &quot;&quot;&quot;
     &gt;&gt;&gt; fnl.html(&#x27;(id 42)&#x27;, {&#x27;id&#x27;: function})
     FnlTypeError: Cannot call (λ str . str) with (int) (line 1, column 1)
+  &quot;&quot;&quot;)
+
+
+  ((h 2)
+    &quot;Using string-based function annotations&quot;)
+
+  (p
+    &quot;Creating a function type is so verbose, why can&#x27;t I just write (λ str . str)?
+    Actually, you can! &quot; (mono &quot;fnl.type_parser.parse_fn&quot;) &quot; converts a function
+    type as a string into a &quot; (tt &quot;TFunction&quot;) &quot;.&quot;)
+
+  (pre &quot;&quot;&quot;
+    from fnl.type_parser import parse_fn
+
+    def identity(s):
+        return s
+
+    function = e.Function({parse_fn(&#x27;(λ str . str)&#x27;): identity})
   &quot;&quot;&quot;)
 
 
