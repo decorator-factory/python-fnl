@@ -41,7 +41,7 @@ def box():
     def _box(*elements: fnl.e.Entity):
         # &lt;div class=&quot;box&quot;&gt;...&lt;/div&gt;
         return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=&quot;box&quot;&#x27;, elements)
-    yield ((), fnl.et.IRen(), fnl.et.IBlk(), _box)
+    yield (&quot;(λ ...Ren . block)&quot;, _box)
 
 html = fnl.html(
     &#x27;(box &quot;This is how this box was made!&quot;)&#x27;,
@@ -124,7 +124,7 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
           def _box(*elements: fnl.e.Entity):
               # &lt;div class=\&quot;box\&quot;&gt;...&lt;/div&gt;
               return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=\&quot;box\&quot;&#x27;, elements)
-          yield ((), fnl.et.IRen(), fnl.et.IBlk(), _box)
+          yield (\&quot;(λ ...Ren . block)\&quot;, _box)
 
       html = fnl.html(
           &#x27;(box \&quot;This is how this box was made!\&quot;)&#x27;,

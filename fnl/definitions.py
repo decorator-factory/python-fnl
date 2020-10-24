@@ -1,7 +1,8 @@
 import json
 from typing import Dict
-import fnl.entity_types as et
-import fnl.entities as e
+from . import entity_types as et
+from . import entities as e
+from . import type_parser
 
 
 BUILTINS: Dict[str, e.Entity] = {}
@@ -9,10 +10,19 @@ BUILTINS: Dict[str, e.Entity] = {}
 
 def fn(target: Dict[str, e.Entity], name: str):
     def _add_fn(f):
-        overloads = {
-            et.TFunction(arg_types, rest_types, return_type): fn
-            for arg_types, rest_types, return_type, fn in f()
-        }
+        overloads = {}
+        for declaration in f():
+            if len(declaration) == 2:
+                # ("(λ int ...str . str)", fn)
+                (type_string, fn) = declaration
+                function_type = type_parser.parse_fn(type_string)
+            elif len(declaration) == 4:
+                # ((TInt(),), TStr(), TStr(), fn)
+                arg_types, rest_types, return_type, fn = declaration
+                function_type = et.TFunction(arg_types, rest_types, return_type)
+            else:
+                raise ValueError(declaration)
+            overloads[function_type] = fn
         target[name] = e.Function(overloads)
         return target[name]
     return _add_fn
@@ -22,21 +32,21 @@ def fn(target: Dict[str, e.Entity], name: str):
 def boldface():
     def from_inline(*args):
         return e.InlineTag("b", "", args)
-    yield ((), et.IInl(), et.TInline(), from_inline)
+    yield ("(λ ...Inl . inline)", from_inline)
 
 
 @fn(BUILTINS, "it")
 def italics():
     def from_inline(*args):
         return e.InlineTag("i", "", args)
-    yield ((), et.IInl(), et.TInline(), from_inline)
+    yield ("(λ ...Inl . inline)", from_inline)
 
 
 @fn(BUILTINS, "tt")
 def tt():
     def from_inline(*args):
         return e.InlineTag("tt", "", args)
-    yield ((), et.IInl(), et.TInline(), from_inline)
+    yield ("(λ ...Inl . inline)", from_inline)
 
 
 @fn(BUILTINS, "mono")
@@ -44,47 +54,47 @@ def monospace():
     def from_inline(*args):
         # (mono ...args) = (nobr (tt ...args))
         return e.Sexpr(nobr, (e.Sexpr(tt, args),))
-    yield ((), et.IInl(), et.TInline(), from_inline)
+    yield ("(λ ...Inl . inline)", from_inline)
 
 
 @fn(BUILTINS, "e")
 def entity():
     def from_str(s):
         return e.InlineRaw(f"&{s.value};")
-    yield ((et.TStr(),), None, et.TInline(), from_str)
+    yield ("(λ str . inline)", from_str)
 
 
 @fn(BUILTINS, "$")
 def concat():
     def from_inline(*args):
         return e.InlineConcat(args)
-    yield ((), et.IInl(), et.TInline(), from_inline)
+    yield ("(λ ...Inl . inline)", from_inline)
 
     def from_mixed(*args):
         return e.BlockConcat(args)
-    yield ((), et.IRen(), et.IRen(), from_mixed)
+    yield ("(λ ...Ren . Ren)", from_mixed)
 
 
 @fn(BUILTINS, "h")
 def heading():
-    FN_TYPE = et.TFunction((), et.IInl(), et.TBlock())
+    FN_TYPE = type_parser.parse_fn("(λ ...Inl . block)")
 
     def from_int(n: e.Integer):
         def from_inline(*args):
             return e.BlockTag(f"h{n.value}", "", args)
         return e.Function({FN_TYPE: from_inline})
-    yield ((et.TInt(),), None, FN_TYPE, from_int)
+    yield ("(λ int . (λ ...Inl . block))", from_int)
 
 
 @fn(BUILTINS, "style")
 def style_inline():
-    FN_TYPE = et.TFunction((), et.IInl(), et.TInline())
+    FN_TYPE = type_parser.parse_fn("(λ ...Inl . inline)")
 
     def from_str(s: e.String):
         def from_inline(*args):
             return e.InlineTag("span", "style=" + json.dumps(s.value), args)
         return e.Function({FN_TYPE: from_inline})
-    yield ((), et.TStr(), FN_TYPE, from_str)
+    yield ("(λ str . (λ ...Inl . inline))", from_str)
 
 
 @fn(BUILTINS, "list-unordered")
@@ -93,9 +103,9 @@ def list_unordered():
         return e.BlockTag(
             "ul",
             "",
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
         )
-    yield ((), et.IInl(), et.TBlock(), from_inline)
+    yield ("(λ ...Inl . block)", from_inline)
 
 
 @fn(BUILTINS, "list-ordered")
@@ -104,44 +114,44 @@ def list_ordered():
         return e.BlockTag(
             "ol",
             "",
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
         )
-    yield ((), et.IInl(), et.TBlock(), from_inline)
+    yield ("(λ ...Inl . block)", from_inline)
 
 
 @fn(BUILTINS, "p")
 def paragraph():
     def from_inline(*args):
         return e.BlockTag("p", "", args)
-    yield ((), et.IRen(), et.TBlock(), from_inline)
+    yield ("(λ ...Ren . block)", from_inline)
 
 
 @fn(BUILTINS, "a")
 def link():
     def from_str_inline(adr, text):
         return e.InlineTag("a", f"href={json.dumps(adr.value)}", (text,))
-    yield ((et.TStr(), et.IInl()), None, et.TInline(), from_str_inline)
+    yield ("(λ str Inl . inline)", from_str_inline)
 
 
 @fn(BUILTINS, "horizontal-rule")
 def horizontal_rule():
     def from_void():
         return e.BlockRaw("<hr/>")
-    yield ((), None, et.TBlock(), from_void)
+    yield ("(λ . block)", from_void)
 
 
 @fn(BUILTINS, "--")
 def emdash():
     def from_void():
         return e.InlineRaw("&mdash;")
-    yield ((), None, et.TInline(), from_void)
+    yield ("(λ . inline)", from_void)
 
 
 @fn(BUILTINS, "nl")
 def newline():
     def from_void():
         return e.InlineRaw("\n")
-    yield ((), None, et.TInline(), from_void)
+    yield ("(λ . inline)", from_void)
 
 
 @fn(BUILTINS, "pre")
@@ -151,8 +161,8 @@ def pre():
         for arg in args:
             elements.append(arg)
             elements.append(e.InlineRaw("\n"))
-        return e.BlockTag("pre", "", tuple(elements))
-    yield ((), et.TStr(), et.TBlock(), from_inline)
+        return e.BlockTag("pre", "", tuple(elements))  # type: ignore # NOTE Pyright bug
+    yield ("(λ ...str . block)", from_inline)
 
 
 @fn(BUILTINS, "map")
@@ -169,7 +179,8 @@ def map_function():
 
     def from_fn_inline(fn):
         def from_inl(*args):
-            return e.InlineConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))
+            # NOTE Pyright bug
+            return e.InlineConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))  # type: ignore
         return e.Function({FN_TYPE_INLINE: from_inl})
     yield ((INPUT_FN_INLINE,), None, FN_TYPE_INLINE, from_fn_inline)
     yield ((INPUT_FN_INLINE2,), None, FN_TYPE_INLINE, from_fn_inline)  # HACK
@@ -182,7 +193,8 @@ def map_function():
 
     def from_fn_block(fn):
         def from_ren(*args):
-            return e.BlockConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))
+            # NOTE Pyright bug
+            return e.BlockConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))  # type: ignore
         return e.Function({FN_TYPE_BLOCK: from_ren})
     yield ((INPUT_FN_BLOCK,), None, FN_TYPE_BLOCK, from_fn_block)
     yield ((INPUT_FN_BLOCK2,), None, FN_TYPE_BLOCK, from_fn_block)  # HACK
@@ -204,7 +216,7 @@ def sepmap():
             # == ((sep ", ") (e "sub") (e "sup") (e "sube"))
             return e.Sexpr(
                 e.Sexpr(separated, (sep,)),
-                tuple(e.Sexpr(fn, (arg,)) for arg in args)
+                tuple(e.Sexpr(fn, (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
             )
         return e.Function({FN_TYPE_INL: from_inl, FN_TYPE_STR: from_inl})
     yield ((et.IInl(), INPUT_FN_INLINE), None, FN_TYPE_INL, from_inl_fn)
@@ -215,7 +227,7 @@ def sepmap():
 
 @fn(BUILTINS, "sep")
 def separated():
-    FN_TYPE = et.TFunction((), et.IInl(), et.TInline())
+    FN_TYPE = type_parser.parse_fn("(λ ...Inl . inline)")
 
     def from_str(separator):
         def from_inline(*args):
@@ -225,7 +237,7 @@ def separated():
                 elements.append(separator)
             if elements != []:
                 elements.pop()
-            return e.InlineConcat(tuple(elements))
+            return e.InlineConcat(tuple(elements))  # type: ignore # NOTE Pyright bug
         return e.Function({FN_TYPE: from_inline})
     yield ((et.IInl(),), None, FN_TYPE, from_str)
 
@@ -234,12 +246,12 @@ def separated():
 def nobr():
     def from_ren(ren: e.Entity):
         return e.AfterRender(ren, lambda s: s.replace(" ", "&nbsp;"))
-    yield ((et.IInl(),), None, et.TInline(), from_ren)
-    yield ((et.IBlk(),), None, et.TBlock(), from_ren)
+    yield ("(λ Inl . inline)", from_ren)
+    yield ("(λ Blk . block)", from_ren)
 
 
 @fn(BUILTINS, "type")
 def debug_type():
     def from_any(obj: e.Entity):
         return e.String(obj.ty.signature())
-    yield((et.TAny(),), None, et.TInline(), from_any)
+    yield("(λ any . inline)", from_any)

@@ -65,7 +65,7 @@
           def _box(*elements: fnl.e.Entity):
               # <div class=\"box\">...</div>
               return fnl.e.BlockTag('div', 'class=\"box\"', elements)
-          yield ((), fnl.et.IRen(), fnl.et.IBlk(), _box)
+          yield (\"(λ ...Ren . block)\", _box)
 
       html = fnl.html(
           '(box \"This is how this box was made!\")',

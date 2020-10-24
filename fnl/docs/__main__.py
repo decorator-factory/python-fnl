@@ -39,7 +39,7 @@ def make_docs():
                 "mount": fnl.e.BlockConcat(elements),
             }
         )
-    yield ((fnl.et.TStr(), fnl.et.TStr(), fnl.et.TStr()), fnl.et.IRen(), fnl.et.IBlk(), _make_docs)
+    yield ("(λ str str str ...Ren . block)", _make_docs)
 
 
 @fnl.definitions.fn(extensions, "$link-to")
@@ -47,7 +47,7 @@ def link_to():
     def _link_to(filename: fnl.e.String):
         (title, _source) = store.get(filename.value, ("title?", "source?"))
         return fnl.e.InlineTag("a", f'href="{filename.value}"', (fnl.e.String(title),))
-    yield ((fnl.et.TStr(),), None, fnl.et.IInl(), _link_to)
+    yield ("(λ str . inline)", _link_to)
 
 
 @fnl.definitions.fn(extensions, "$source-of")
@@ -55,14 +55,14 @@ def source_of():
     def _source_of(filename: fnl.e.String):
         (_title, source) = store.get(filename.value, ("title?", "source?"))
         return fnl.e.String(source)
-    yield ((fnl.et.TStr(),), None, fnl.et.TStr(), _source_of)
+    yield ("(λ str . str)", _source_of)
 
 
 @fnl.definitions.fn(extensions, "$box")
 def box():
     def _box(*elements: fnl.e.Entity):
         return fnl.e.BlockTag("div", 'class="fnl--box"', elements)
-    yield ((), fnl.et.IRen(), fnl.et.IBlk(), _box)
+    yield ("(λ Ren . block)", _box)
 
 
 template_html = (Path(__file__).parent / "template.html").read_text()

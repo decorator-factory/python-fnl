@@ -42,3 +42,11 @@ parser = Lark.open(
 
 def parse(source: str) -> et.EntityType:
     return parser.parse(source)  # type: ignore
+
+
+def parse_fn(source: str) -> et.TFunction:
+    """Utility function for cases where a function type is expected"""
+    parsed = parse(source)
+    if not isinstance(parsed, et.TFunction):
+        raise ValueError(f"{source} should've been a function")
+    return parsed
