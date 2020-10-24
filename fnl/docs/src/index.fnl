@@ -89,9 +89,9 @@
 
 
   (horizontal-rule)
-  ((h 3) "...))))))))))))))))))))")
+  ((h 3) "Convinced?")
   (pre """
-      ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($ ($))))))))))))))))))))
+    $ pip install git+https://github.com/decorator-factory/python-fnl
   """)
 
 
