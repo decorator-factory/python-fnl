@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quoted expressions</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <main>
+        <div class="-title">
+            <h1>Quoted expressions</h1>
+            <a href="index.html">Go to the index</a>
+        </div>
+        <div class="-mount">
+            <h2>Strict evaluation</h2><p>Suppose that you want to render some content conditionally. For example, you might want to add notes that are only visible to the editors; or you might want to temporarily disable some part of the tree. It&#x27;s not very hard to implement, right?</p><pre>
+extensions = {}
+
+is_debug = True
+
+@fn(extensions, &#x27;if-debug&#x27;)
+def if_debug():
+    def _if_debug(subtree):
+        if is_debug:
+            return subtree
+        else:
+            return e.BlockConcat(())
+    yield (&#x27;(λ inline|block . block)&#x27;, _if_debug)
+
+</pre><p>Let&#x27;s see if it works.</p><pre>
+&gt;&gt;&gt; is_debug = True
+&gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
+&#x27;&lt;b&gt;hi&lt;/b&gt;&#x27;
+&gt;&gt;&gt; is_debug = False
+&gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
+&#x27;&#x27;
+
+</pre><p>It works, but there are some issues. The subtree is evaluated even if it doesn&#x27;t get rendered. It might waste some resources if it&#x27;s a really large tree (or if it requies reading from a file, which is probably not a good idea, but you might want to read a config, for instance). More importantly, under certain conditions, it might throw an error because something about this tree requires <tt>is_debug</tt> to be true.</p><p>FNL is a <i>strict</i> language. It means that function arguments are fully evaluated first, and only then are passed to the function. So, alas, we&#x27;re out of luck.</p><h2>Quoted expression to the rescue</h2><p>...unless we use quoted expressions! A quoted expression represents an expression that doesn&#x27;t get immediately evaluated. You can create a quoted expression by prefixing it with <tt>&amp;</tt>, for example, <tt>&amp;1024</tt> is a deferred integer, and <tt>&amp;(hello&nbsp;&quot;world&quot;)</tt> is a deferred call.</p><pre>
+extensions = {}
+
+is_debug = True
+
+@fn(extensions, &#x27;if-debug&#x27;)
+def if_debug():
+    def _if_debug(quoted):
+        if is_debug:
+            return quoted.subexpression
+        else:
+            return e.BlockConcat(())
+    yield (&#x27;(λ &amp;[any] . block)&#x27;, _if_debug)
+
+</pre><p><tt>&amp;[any]</tt> is a type of a quoted expession. The type of an expesssion isn&#x27;t known until it&#x27;s fully evaluated, so we will use <tt>any</tt>as the type parameter. Other examples of quoted types: <ul><li><tt>&amp;[str] </tt>&mdash; quoted string (like <tt>&amp;&quot;hi&quot;</tt>)</li><li><tt>&amp;[int] </tt>&mdash; quoted integer (like <tt>&amp;10</tt>)</li><li><tt>&amp;[name] </tt>&mdash; quoted name (like <tt>&amp;a-name</tt>)</li><li><tt>&amp;[name[a|b]] </tt>&mdash; bounded quoted name (only <tt>&amp;a</tt> or <tt>&amp;b</tt> )</li><li><tt>&amp;[(name int)] </tt>&mdash; s-expression (like <tt>&amp;(version 7)</tt>)</li></ul></p><h2>Examples of using quoted expressions in <tt>fnl.x</tt></h2><p><tt>fnl.x</tt> is a standard extension that helps you construct arbitrary HTML.</p><pre>
+import fnl
+
+source = ...
+
+print(fnl.html(source, fnl.x))
+# or:
+print(fnl.html(source, {**your, **extensions, **fnl.x}))
+# or, in 3.9+:
+print(fnl.html(source, your | extensions | fnl.x))
+
+</pre><p><tt>fnl.x</tt> exports three function: <tt>b</tt>, <tt>i</tt>, <tt>+</tt>. <tt>b</tt> creates a block element, <tt>i</tt> creates an inline element, and <tt>+</tt> is a shortcut for the <tt>div</tt> element.</p><pre>
+($
+  (b&quot;!DOCTYPE&quot; &amp;html &amp;.)
+  (b&amp;html &amp;(lang &quot;en&quot;)
+    (b&amp;head
+      (b&amp;meta &amp;(charset &quot;UTF-8&quot;) &amp;.)
+      (b&amp;meta &amp;(name &quot;viewport&quot;) &amp;(content &quot;width=device-width, initial-scale=1.0&quot;) &amp;.)
+      (b&amp;title &quot;My blog&quot;)
+      (b&amp;link &amp;(rel &quot;stylesheet&quot;) &amp;(href &quot;style.css&quot;) &amp;/))
+    (b&amp;body
+      (b&amp;main &amp;#app
+        (+ &amp;.greeting
+          ((h 1) &quot;Hello, world!&quot;)
+        (+ &amp;.content
+          (i&amp;a &amp;(href &quot;pay.html&quot;) &quot;Give me your money&quot;)))))))
+
+</pre><p>This is going to render the following HTML code:</p><pre>
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;My blog&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot; /&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;main id=&quot;app&quot;&gt;
+      &lt;div class=&quot;greeting&quot;&gt;
+        &lt;h1&gt;Hello, world!&lt;/h1&gt;
+        &lt;div class=&quot;content&quot;&gt;
+          &lt;a href=&quot;pay.html&quot;&gt;Give me your money&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>&amp;#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p>
+        </div>
+    </main>
+</body>
+</html>
