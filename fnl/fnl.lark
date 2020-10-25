@@ -1,5 +1,5 @@
 ?start: expr
-?expr: string | raw_string | integer | sexpr | name
+?expr: string | raw_string | integer | sexpr | name | quoted
 integer: /[-+]?[0-9]+/
 string: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
 raw_string: /\"\"\"(\\.|[^"]|\n)*?\"\"\"/
