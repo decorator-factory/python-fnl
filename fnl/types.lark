@@ -1,7 +1,9 @@
 ?start: type
 
 ?type: prefix_type | union_type
-?prefix_type: function_type | primitive_type | quoted_type | sexpr_type
+?prefix_type: function_type | primitive_type | quoted_type | sexpr_type | name_type
+
+IDENTIFIER: /(?![-+]?[0-9])[-_$+*\/a-zA-Z0-9.#]+/
 
 _LAMBDA : "λ" | "^"
 function_type: "(" _LAMBDA type* ["..." type] "." type ")"
@@ -11,6 +13,7 @@ function_type: "(" _LAMBDA type* ["..." type] "." type ")"
                | "str"
                | "inline"
                | "block"
+name_type: "name" ("[" (IDENTIFIER "|")* IDENTIFIER "]")?
 union_type: (prefix_type "|")+ prefix_type
 quoted_type: "&" "[" type "]"
 sexpr_type: "(" type+ ")"

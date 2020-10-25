@@ -20,6 +20,18 @@ def test_sexpr_type():
     )
 
 
+def test_unbounded_name_type():
+    assert fnl.type_parser.parse("name") == fnl.et.TName()
+
+
+def test_bounded_name_type():
+    t = fnl.type_parser.parse("name[foo|bar]")
+    assert isinstance(t, fnl.et.TName)
+    assert t.match(fnl.e.Name("foo"))
+    assert t.match(fnl.e.Name("bar"))
+    assert not t.match(fnl.e.Name("baz"))
+
+
 def test_union_type():
     assert (
         fnl.type_parser.parse("int | str")

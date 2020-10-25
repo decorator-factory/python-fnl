@@ -16,6 +16,14 @@ class TypeTransformer(Transformer):
         }[str(token)]()
 
     @staticmethod
+    def name_type(*allowed_names):
+        if allowed_names == ():
+            return et.TName()
+        else:
+            _names = frozenset(allowed_names)
+            return et.TName(_names.__contains__)
+
+    @staticmethod
     def union_type(*types):
         return et.TUnion(types)
 

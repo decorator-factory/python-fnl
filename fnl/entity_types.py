@@ -1,8 +1,7 @@
 from dataclasses import dataclass
-from typing import Optional, Tuple, TYPE_CHECKING
+from typing import Callable, Optional, Tuple
 
-if TYPE_CHECKING:
-    from . import entities as e
+from . import entities as e
 
 
 class EntityType:
@@ -45,8 +44,6 @@ class TSexpr(EntityType):
     arg_types: Tuple[EntityType, ...]
 
     def match(self, value: "e.Entity") -> bool:
-        if super().match(value):
-            return True
         return (
             isinstance(value, e.Sexpr)
             and self.function_type.match(value.fn)
@@ -55,6 +52,22 @@ class TSexpr(EntityType):
                 t.match(arg) for (t, arg) in zip(self.arg_types, value.args)
             )
         )
+
+
+@dataclass(frozen=True, eq=True)
+class TName(EntityType):
+    """
+    The `name` type. Makes sense only inside TQuoted.
+
+    The optional `pattern` attribute may be used to only match a particular name.
+    """
+    pattern: Optional[Callable[[str], bool]] = None
+
+    def match(self, value: "e.Entity") -> bool:
+        if not isinstance(value, e.Name):
+            return False
+
+        return self.pattern is None or self.pattern(value.name)
 
 
 @dataclass(frozen=True, eq=True)
