@@ -260,7 +260,6 @@
     a dictionary and the function name as argument, and it can be applied to a
     generator function that yields " (mono "(signature, function)") " tuples:")
 
-
   (p
     "For example, our " (tt "-") " function could've been written as this:")
 

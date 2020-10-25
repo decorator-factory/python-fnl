@@ -44,11 +44,6 @@ x("""
 
 """)
 
-$0:Quoted(Name($name))
-$1:Quoted(Sexpr(Name($name), String($value)))
-$2:Quoted($other)
-$3:$unquoted
-
 '''
 
 import json
@@ -128,7 +123,7 @@ def div():
         info = parse_html_options(args)
         return e.BlockTag("div", info.as_option_string, tuple(info.body))  # type: ignore
 
-    yield ("(λ ...any . block)", _div)
+    yield ("(λ ...&[name]|&[(name str)]|inline|block . block)", _div)
 
 
 @fn(exports, "b")
@@ -149,7 +144,7 @@ def block_tag():
         else:
             return e.BlockTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
-    yield ("(λ ...any . block)", _block_tag)
+    yield ("(λ ...&[name]|&[(name str)]|inline|block . block)", _block_tag)
 
 
 @fn(exports, "i")
@@ -171,4 +166,4 @@ def inline_tag():
         else:
             return e.InlineTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
-    yield ("(λ ...any . inline)", _inline_tag)
+    yield ("(λ ...&[name]|&[(name str)]|inline . inline)", _inline_tag)
