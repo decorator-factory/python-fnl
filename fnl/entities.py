@@ -143,6 +143,10 @@ class Entity:
 class Quoted(Entity):
     subexpression: Entity
 
+    @property
+    def ty(self):
+        return et.TQuoted(self.subexpression.ty)
+
     def force(self, runtime) -> Quoted:
         return Quoted(self.subexpression.evaluate(runtime))
 
@@ -157,7 +161,7 @@ class Name(Entity):
     @property
     def ty(self):
         if self._cached is None:
-            return et.TAny()
+            return et.TName()
         else:
             return self._cached.ty
 
@@ -194,7 +198,7 @@ class Sexpr(Entity):
     @property
     def ty(self):
         if self._cached is None:
-            return et.TAny()
+            return et.TSexpr(self.fn.ty, tuple(e.ty for e in self.args))
         return self._cached.ty
 
     def _type_mismatch(self, msg: str):

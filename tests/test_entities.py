@@ -64,8 +64,6 @@ def test_sexpr():
         (e.Integer(5), e.Integer(4))
     )
 
-    # before evaluation, Sexpr doesn't have a definite type
-    assert sexpr.ty == et.TAny()
     assert sexpr.evaluate(runtime) == e.Integer(9)
     # .evaluate mutates a Sexpr and assigns a type to it
     assert sexpr.ty == et.TInt()

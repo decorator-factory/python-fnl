@@ -53,6 +53,13 @@ class TSexpr(EntityType):
             )
         )
 
+    def signature(self):
+        if self.arg_types == ():
+            arg_string = ""
+        else:
+            arg_string = " ".join(t.signature() for t in self.arg_types)
+        return f"({self.function_type.signature()}{arg_string})"
+
 
 @dataclass(frozen=True, eq=True)
 class TName(EntityType):
@@ -68,6 +75,12 @@ class TName(EntityType):
             return False
 
         return self.pattern is None or self.pattern(value.name)
+
+    def signature(self):
+        if self.pattern is None:
+            return "name"
+        else:
+            return "name[...]"
 
 
 @dataclass(frozen=True, eq=True)
