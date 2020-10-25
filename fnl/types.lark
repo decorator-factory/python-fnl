@@ -14,7 +14,7 @@ function_type: "(" _LAMBDA type* ["..." type] "." type ")"
                | "Inl"
                | "Blk"
                | "Ren"
-union_type: prefix_type ("|" prefix_type)+
+union_type: (prefix_type "|")+ prefix_type
 
 %import common.WS
 %ignore WS
