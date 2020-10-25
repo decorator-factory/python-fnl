@@ -62,3 +62,10 @@ def test_inline_element_with_parameters():
         fnl.html('(i&span &.box &#mybox &defer "a paragraph")', fnl.x)
         == '<span class="box" id="mybox" defer>a paragraph</span>'
     )
+
+
+def test_named_attributes():
+    assert (
+        fnl.html('(i&span &(hello "world") "a paragraph")', fnl.x)
+        == '<span hello="world">a paragraph</span>'
+    )

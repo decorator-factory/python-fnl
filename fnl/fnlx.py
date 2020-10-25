@@ -51,6 +51,7 @@ $3:$unquoted
 
 '''
 
+import json
 import fnl
 from . import entities as e
 from . import entity_types as et
@@ -104,15 +105,15 @@ def parse_html_options(args: Iterable[e.Entity]):
                 if not isinstance(arg.subexpression.fn, e.Name):
                     raise TypeError(f"Expected name, got {arg.subexpression.fn}")
 
-                if len(arg.subexpression.args) != 2:
+                if len(arg.subexpression.args) != 1:
                     raise ValueError("Expected 2 values in quoted S-expression")
 
-                if not isinstance(arg.subexpression.args[1], e.String):
-                    raise TypeError(f"Expected string, got {arg.subexpression.args[1]}")
+                if not isinstance(arg.subexpression.args[0], e.String):
+                    raise TypeError(f"Expected string, got {arg.subexpression.args[0]}")
 
                 name = arg.subexpression.fn.name
-                value: str = arg.subexpression.args[1].value  # type: ignore
-                options.append(f"{name}={value}")
+                value: str = arg.subexpression.args[0].value  # type: ignore
+                options.append(f"{name}={json.dumps(value)}")
 
             else:
                 raise TypeError(f"Expected name or call, got {arg.subexpression}")
