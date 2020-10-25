@@ -69,3 +69,12 @@ def test_named_attributes():
         fnl.html('(i&span &(hello "world") "a paragraph")', fnl.x)
         == '<span hello="world">a paragraph</span>'
     )
+
+
+def test_closed_tag():
+    assert fnl.html('(b&hr &/)', fnl.x) == "<hr />"
+
+
+def test_stringly_tag_name():
+    assert fnl.html('(b"!DOCTYPE" &html &/)', fnl.x) == "<!DOCTYPE html />"
+    assert fnl.html('(i"!DOCTYPE" &html &/)', fnl.x) == "<!DOCTYPE html />"
