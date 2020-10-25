@@ -126,11 +126,11 @@ fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
 def concat():
     def from_inline(*args):
         return e.InlineConcat(args)
-    yield (&quot;(λ  ...Inl . inline)&quot;, from_inline)
+    yield (&quot;(λ  ...inline . inline)&quot;, from_inline)
 
     def from_mixed(*args):
         return e.BlockConcat(args)
-    yield (&quot;(λ  ...Ren . Ren)&quot;, from_mixed)
+    yield (&quot;(λ  ...inline|block . inline|block)&quot;, from_mixed)
 
 </pre><p><tt>fn</tt>is a helper decorator for creating FNL function. It accepts a dictionary and the function name as argument, and it can be applied to a generator function that yields <tt>(signature,&nbsp;function)</tt> tuples:</p><p>For example, our <tt>-</tt> function could&#x27;ve been written as this:</p><pre>
 extensions = {}
@@ -398,11 +398,11 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     def concat():
         def from_inline(*args):
             return e.InlineConcat(args)
-        yield (\&quot;(λ  ...Inl . inline)\&quot;, from_inline)
+        yield (\&quot;(λ  ...inline . inline)\&quot;, from_inline)
 
         def from_mixed(*args):
             return e.BlockConcat(args)
-        yield (\&quot;(λ  ...Ren . Ren)\&quot;, from_mixed)
+        yield (\&quot;(λ  ...inline|block . inline|block)\&quot;, from_mixed)
   &quot;&quot;&quot;)
 
   (p

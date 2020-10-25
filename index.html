@@ -41,7 +41,7 @@ def box():
     def _box(*elements: fnl.e.Entity):
         # &lt;div class=&quot;box&quot;&gt;...&lt;/div&gt;
         return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=&quot;box&quot;&#x27;, elements)
-    yield (&quot;(λ ...Ren . block)&quot;, _box)
+    yield (&quot;(λ ...inline|block . block)&quot;, _box)
 
 html = fnl.html(
     &#x27;(box &quot;This is how this box was made!&quot;)&#x27;,
@@ -52,7 +52,7 @@ html = fnl.html(
 (bf (p &quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;))
 
 </pre><pre>
-fnl.FnlTypeError: Cannot call (λ  ...Inl . inline) with (block) (line 1, column 1)
+fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
 
 </pre><hr/><h3>Convinced?</h3><pre>
 $ pip install git+https://github.com/decorator-factory/python-fnl
@@ -124,7 +124,7 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
           def _box(*elements: fnl.e.Entity):
               # &lt;div class=\&quot;box\&quot;&gt;...&lt;/div&gt;
               return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=\&quot;box\&quot;&#x27;, elements)
-          yield (\&quot;(λ ...Ren . block)\&quot;, _box)
+          yield (\&quot;(λ ...inline|block . block)\&quot;, _box)
 
       html = fnl.html(
           &#x27;(box \&quot;This is how this box was made!\&quot;)&#x27;,
@@ -143,7 +143,7 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
       (bf (p \&quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.\&quot;))
   &quot;&quot;&quot;)
   (pre &quot;&quot;&quot;
-    fnl.FnlTypeError: Cannot call (λ  ...Inl . inline) with (block) (line 1, column 1)
+    fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
   &quot;&quot;&quot;)
 
 
