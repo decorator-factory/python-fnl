@@ -79,6 +79,23 @@ class HtmlTag(HtmlRender):
 
 
 @dataclass
+class ClosedHtmlTag(HtmlRender):
+    """Same as HtmlTag, but without a closing tag"""
+    tag: str
+    options: str
+    include_slash: bool
+
+    def as_text(self) -> str:
+        options = "" if self.options == "" else " " + self.options
+        return (
+            f"<{self.tag}{options}{' /' if self.include_slash else ''}>"
+        )
+
+    def fmap(self, fn: Callable[[str], str]):
+        return self
+
+
+@dataclass
 class Concat(HtmlRender):
     """
     Renders multiple elements in order.
@@ -264,6 +281,32 @@ class BlockTag(Entity):
             self.options,
             [c.render(runtime) for c in self.children]  # type: ignore
         )
+
+
+@dataclass(frozen=True, eq=True)
+class ClosedInlineTag(Entity):
+    """Represents a closed inline HTML tag"""
+    tag: str
+    options: str
+    include_slash: bool
+
+    ty = et.TInline()
+
+    def render_inline(self, runtime):
+        return ClosedHtmlTag(self.tag, self.options, self.include_slash)
+
+
+@dataclass(frozen=True, eq=True)
+class ClosedBlockTag(Entity):
+    """Represents a closed block HTML tag"""
+    tag: str
+    options: str
+    include_slash: bool
+
+    ty = et.TBlock()
+
+    def render_block(self, runtime):
+        return ClosedHtmlTag(self.tag, self.options, self.include_slash)
 
 
 @dataclass(frozen=True, eq=True)
