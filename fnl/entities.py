@@ -283,7 +283,7 @@ class BlockTag(Entity):
         return HtmlTag(
             self.tag,
             self.options,
-            [c.render(runtime) for c in self.children]  # type: ignore
+            [c.render(runtime) for c in self.children]
         )
 
 
@@ -343,7 +343,7 @@ class InlineConcat(Entity):
     ty = et.TInline()
 
     def render_inline(self, runtime):
-        return Concat([e.render_inline(runtime) for e in self.children])  # type: ignore
+        return Concat([e.render_inline(runtime) for e in self.children])
 
 
 @dataclass(frozen=True, eq=True)
@@ -354,7 +354,7 @@ class BlockConcat(Entity):
     ty = et.TBlock()
 
     def render_block(self, runtime):
-        return Concat([e.render(runtime) for e in self.children])  # type: ignore
+        return Concat([e.render(runtime) for e in self.children])
 
 
 @dataclass(frozen=True, eq=True)
