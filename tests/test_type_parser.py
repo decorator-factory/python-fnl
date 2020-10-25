@@ -6,9 +6,7 @@ def test_primitive_types():
     assert fnl.type_parser.parse("str") == fnl.et.TStr()
     assert fnl.type_parser.parse("inline") == fnl.et.TInline()
     assert fnl.type_parser.parse("block") == fnl.et.TBlock()
-    assert fnl.type_parser.parse("Inl") == fnl.et.IInl()
-    assert fnl.type_parser.parse("Blk") == fnl.et.IBlk()
-    assert fnl.type_parser.parse("Ren") == fnl.et.IRen()
+    assert fnl.type_parser.parse("any") == fnl.et.TAny()
 
 
 def test_union_type():
@@ -32,9 +30,9 @@ def test_function_type_with_no_args():
 
 def test_function_type_with_required_args():
     assert (
-        fnl.type_parser.parse("(λ str Blk . int)")
-        == fnl.type_parser.parse("(^ str Blk . int)")
-        == fnl.et.TFunction((fnl.et.TStr(), fnl.et.IBlk()), None, fnl.et.TInt())
+        fnl.type_parser.parse("(λ str block . int)")
+        == fnl.type_parser.parse("(^ str block . int)")
+        == fnl.et.TFunction((fnl.et.TStr(), fnl.et.TBlock()), None, fnl.et.TInt())
     )
 
 
@@ -48,7 +46,7 @@ def test_function_type_with_rest():
 
 def test_function_type_full():
     assert (
-        fnl.type_parser.parse("(λ int Blk ...str . int)")
-        == fnl.type_parser.parse("(^ int Blk ...str . int)")
-        == fnl.et.TFunction((fnl.et.TInt(), fnl.et.IBlk()), fnl.et.TStr(), fnl.et.TInt())
+        fnl.type_parser.parse("(λ int block ...str . int)")
+        == fnl.type_parser.parse("(^ int block ...str . int)")
+        == fnl.et.TFunction((fnl.et.TInt(), fnl.et.TBlock()), fnl.et.TStr(), fnl.et.TInt())
     )

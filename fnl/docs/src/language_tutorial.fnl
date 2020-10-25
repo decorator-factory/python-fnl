@@ -75,7 +75,7 @@
   """))
   (p
     "This results in an error: "
-    (bf (mono "Cannot call (λ  ...Inl . inline) with (block) (line 71, column 3)")))
+    (bf (mono "Cannot call (λ  ...inline . inline) with (block) (line 71, column 3)")))
   (p
     "Why can't you do that? It seems perfectly fine, but it isn't: "
     (tt "p") " is a 'block' element, while " (tt "b") " is an 'inline' element,
@@ -119,13 +119,8 @@
       ($ (tt "(λ a . b)") " is a function from type 'a' to type 'b'")
       ($ (tt "(λ ...a . b)") " is a function that accepts any number of 'a's an returns a 'b'")
       ($ (tt "a | b") " means \"either an 'a' or a 'b'\"")
-      ($ (tt "Inl") " is something which can be rendered as an inline element, like
-        a string, a number or simply an inline HTML element (which is represented
-        by the " (tt "inline") " type).")
-      ($ (tt "Blk") " is something which can be rendered as an block element.
-        Currently only the " (mono "block") " type is a Blk.")
-      ($ (tt "Ren") " is something which can be rendered as HTML, whatever
-        it is. As of writing this post, " (mono "Ren = Blk | Inl") ".")
+      ($ (tt "inline") " is an inline HTML element, which also includes strings and ints.")
+      ($ (tt "block") " is a block HTML element")
     )
   )
 

@@ -39,7 +39,7 @@ def make_docs():
                 "mount": fnl.e.BlockConcat(elements),
             }
         )
-    yield ("(λ str str str ...Ren . block)", _make_docs)
+    yield ("(λ str str str ...inline|block . block)", _make_docs)
 
 
 @fnl.definitions.fn(extensions, "$link-to")
@@ -62,7 +62,7 @@ def source_of():
 def box():
     def _box(*elements: fnl.e.Entity):
         return fnl.e.BlockTag("div", 'class="fnl--box"', elements)
-    yield ("(λ Ren . block)", _box)
+    yield ("(λ inline|block . block)", _box)
 
 
 template_html = (Path(__file__).parent / "template.html").read_text()

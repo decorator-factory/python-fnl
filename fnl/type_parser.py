@@ -13,9 +13,6 @@ class TypeTransformer(Transformer):
             "int": et.TInt,
             "inline": et.TInline,
             "block": et.TBlock,
-            "Inl": et.IInl,
-            "Blk": et.IBlk,
-            "Ren": et.IRen
         }[str(token)]()
 
     @staticmethod

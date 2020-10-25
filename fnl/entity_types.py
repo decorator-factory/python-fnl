@@ -35,7 +35,7 @@ class TAny(EntityType):
         return True
 
     def signature(self) -> str:
-        return "Any"
+        return "any"
 
 
 @dataclass(frozen=True, eq=True)
@@ -55,6 +55,11 @@ class TStr(EntityType):
 @dataclass(frozen=True, eq=True)
 class TInline(EntityType):
     """The `inline` type -- an inline HTML element"""
+    def match(self, value: "e.Entity") -> bool:
+        if super().match(value):
+            return True
+        return hasattr(value, "render_inline")
+
     def signature(self) -> str:
         return "inline"
 
@@ -62,58 +67,13 @@ class TInline(EntityType):
 @dataclass(frozen=True, eq=True)
 class TBlock(EntityType):
     """The `block` type -- a block HTML element"""
-    def signature(self) -> str:
-        return "block"
-
-
-@dataclass(frozen=True, eq=True)
-class IInl(EntityType):
-    """
-    The `Inl` pseudotype
-
-    - can be `str`, `int`, or `inline`
-    - can be casted to `inline`
-    """
-    def match(self, value: "e.Entity") -> bool:
-        if super().match(value):
-            return True
-        return hasattr(value, "render_inline")
-
-    def signature(self) -> str:
-        return "Inl"
-
-
-@dataclass(frozen=True, eq=True)
-class IBlk(EntityType):
-    """
-    The `Blk` pseudotype
-
-    - can be casted to `block`
-    """
     def match(self, value: "e.Entity") -> bool:
         if super().match(value):
             return True
         return hasattr(value, "render_block")
 
     def signature(self) -> str:
-        return "Blk"
-
-
-@dataclass(frozen=True, eq=True)
-class IRen(EntityType):
-    """
-    The `Ren` pseudotype
-
-    - something you can render as HTML
-    - can be `Inl` or `Blk`
-    """
-    def match(self, value: "e.Entity") -> bool:
-        if super().match(value):
-            return True
-        return IInl().match(value) or IBlk().match(value)
-
-    def signature(self) -> str:
-        return "Ren"
+        return "block"
 
 
 @dataclass(frozen=True, eq=True)
@@ -142,7 +102,7 @@ class TFunction(EntityType):
         return f"(λ {args_repr} . {return_repr})"
 
 
-@dataclass(frozen=True, eq=True)
+@dataclass(frozen=True)
 class TUnion(EntityType):
     """
     Union type.
@@ -150,6 +110,14 @@ class TUnion(EntityType):
     Used when one out of multiple types is expected or can be produced.
     """
     variants: Tuple[EntityType, ...]
+
+    def __eq__(self, other):
+        if not isinstance(other, TUnion):
+            return NotImplemented
+        return set(self.variants) == set(other.variants)
+
+    def __hash__(self):
+        return hash(("union", frozenset(self.variants)))
 
     def match(self, value: "e.Entity") -> bool:
         if super().match(value):

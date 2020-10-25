@@ -44,6 +44,11 @@ x("""
 
 """)
 
+$0:Quoted(Name($name))
+$1:Quoted(Sexpr(Name($name), String($value)))
+$2:Quoted($other)
+$3:$unquoted
+
 '''
 
 # λ
@@ -54,10 +59,14 @@ from . import entities as e
 from . import entity_types as et
 from .definitions import fn
 
-from typing import Dict
+from typing import Dict, NamedTuple, Iterable
 
 
 exports: Dict[str, e.Entity] = {}
+
+
+def parse_html_options(options: Iterable[e.Entity]):
+    ...
 
 
 @fn(exports, "+")

@@ -248,11 +248,11 @@
     def concat():
         def from_inline(*args):
             return e.InlineConcat(args)
-        yield (\"(λ  ...Inl . inline)\", from_inline)
+        yield (\"(λ  ...inline . inline)\", from_inline)
 
         def from_mixed(*args):
             return e.BlockConcat(args)
-        yield (\"(λ  ...Ren . Ren)\", from_mixed)
+        yield (\"(λ  ...inline|block . inline|block)\", from_mixed)
   """)
 
   (p

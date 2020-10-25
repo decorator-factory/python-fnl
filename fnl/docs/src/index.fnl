@@ -65,7 +65,7 @@
           def _box(*elements: fnl.e.Entity):
               # <div class=\"box\">...</div>
               return fnl.e.BlockTag('div', 'class=\"box\"', elements)
-          yield (\"(λ ...Ren . block)\", _box)
+          yield (\"(λ ...inline|block . block)\", _box)
 
       html = fnl.html(
           '(box \"This is how this box was made!\")',
@@ -84,7 +84,7 @@
       (bf (p \"I'm putting a <p> inside a <b>. It's my foot. And my gun.\"))
   """)
   (pre """
-    fnl.FnlTypeError: Cannot call (λ  ...Inl . inline) with (block) (line 1, column 1)
+    fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
   """)
 
 
