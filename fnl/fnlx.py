@@ -126,6 +126,21 @@ def div():
     yield ("(λ ...&[name]|&[(name str)]|inline|block . block)", _div)
 
 
+_BLOCK_TAGS = frozenset((
+    "address", "article", "aside", "blockquote", "canvas", "dd", "div", "dl",
+    "dt", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h6",
+    "header", "hr", "li", "main", "nav", "noscript", "ol", "p", "pre", "section",
+    "table", "tfoot", "ul", "video"
+))
+
+_INLINE_TAGS = frozenset((
+    "a", "abbr", "acronym", "b", "bdo", "big", "br", "button", "cite", "code",
+    "dfn", "em", "i", "img", "input", "kbd", "label", "map", "object", "output",
+    "q", "samp", "script", "select", "small", "span", "strong", "sub", "sup",
+    "textarea", "time", "tt", "var"
+))
+
+
 @fn(exports, "b")
 def block_tag():
     def _block_tag(*args: e.Entity):
@@ -137,6 +152,9 @@ def block_tag():
             name = name_arg.value
         else:
             raise TypeError(f"Expected quoted name or string, got {name_arg}")
+
+        if name in _INLINE_TAGS:
+            raise TypeError(f"<{name}> is an inline tag")
 
         info = parse_html_options(args[1:])
         if info.is_closed:
@@ -158,6 +176,9 @@ def inline_tag():
             name = name_arg.value
         else:
             raise TypeError(f"Expected quoted name or string, got {name_arg}")
+
+        if name in _BLOCK_TAGS:
+            raise TypeError(f"<{name}> is an inline tag")
 
         info = parse_html_options(args[1:])
 
