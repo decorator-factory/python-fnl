@@ -9,6 +9,20 @@ BUILTINS: Dict[str, e.Entity] = {}
 
 
 def fn(target: Dict[str, e.Entity], name: str):
+    """
+    Helper decorator for defining functions with overloads
+
+    >>> @fn(extensions, "identity")
+    ... def identity():
+    ...     def _str(s):
+    ...         return s
+    ...     yield ("(λ str . str)", _str)
+    ...
+    ...     def _int(n):
+    ...         return n
+    ...     yield ("(λ int . int)", _int)
+    ...
+    """
     def _add_fn(f):
         overloads = {}
         for declaration in f():
@@ -30,6 +44,9 @@ def fn(target: Dict[str, e.Entity], name: str):
 
 @fn(BUILTINS, "bf")
 def boldface():
+    """
+    Boldface text. Represents the %%(tt "<b>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.InlineTag("b", "", args)
     yield ("(λ ...inline . inline)", from_inline)
@@ -37,6 +54,9 @@ def boldface():
 
 @fn(BUILTINS, "it")
 def italics():
+    """
+    Italic text. Represents the %%(tt "<i>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.InlineTag("i", "", args)
     yield ("(λ ...inline . inline)", from_inline)
@@ -44,6 +64,9 @@ def italics():
 
 @fn(BUILTINS, "tt")
 def tt():
+    """
+    Monospace text. Represents the %%(tt "<tt>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.InlineTag("tt", "", args)
     yield ("(λ ...inline . inline)", from_inline)
@@ -51,6 +74,9 @@ def tt():
 
 @fn(BUILTINS, "mono")
 def monospace():
+    """
+    Like %%(tt "tt")%%, but prevents text inside from line-wrapping.
+    """
     def from_inline(*args):
         # (mono ...args) = (nobr (tt ...args))
         return e.Sexpr(nobr, (e.Sexpr(tt, args),))
@@ -59,6 +85,9 @@ def monospace():
 
 @fn(BUILTINS, "e")
 def entity():
+    r"""
+    Creates an HTML entity. %%(tt \"(e "mdash")\")%% renders as %%&mdash;%%.
+    """
     def from_str(s):
         return e.InlineRaw(f"&{s.value};")
     yield ("(λ str . inline)", from_str)
@@ -66,6 +95,9 @@ def entity():
 
 @fn(BUILTINS, "$")
 def concat():
+    """
+    Concatenate multiple elements.
+    """
     def from_inline(*args):
         return e.InlineConcat(args)
     yield ("(λ ...inline . inline)", from_inline)
@@ -77,6 +109,9 @@ def concat():
 
 @fn(BUILTINS, "h")
 def heading():
+    """
+    Heading. Represents the %%(tt "<h1>..<h6>")%% HTML tags.
+    """
     FN_TYPE = type_parser.parse_fn("(λ ...inline . block)")
 
     def from_int(n: e.Integer):
@@ -88,6 +123,9 @@ def heading():
 
 @fn(BUILTINS, "style")
 def style_inline():
+    """
+    Applies CSS styling to an inline element. Use sparingly.
+    """
     FN_TYPE = type_parser.parse_fn("(λ ...inline . inline)")
 
     def from_str(s: e.String):
@@ -99,30 +137,39 @@ def style_inline():
 
 @fn(BUILTINS, "list-unordered")
 def list_unordered():
+    """
+    Represents the %%(tt "<ul>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.BlockTag(
             "ul",
             "",
             # NOTE Pyright heisenbug:
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)
         )
     yield ("(λ ...inline . block)", from_inline)
 
 
 @fn(BUILTINS, "list-ordered")
 def list_ordered():
+    """
+    Represents the %%(tt "<ol>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.BlockTag(
             "ol",
             "",
             # NOTE Pyright heisenbug:
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)
         )
     yield ("(λ ...inline . block)", from_inline)
 
 
 @fn(BUILTINS, "p")
 def paragraph():
+    """
+    Represents the %%(tt "<p>")%% HTML tag.
+    """
     def from_inline(*args):
         return e.BlockTag("p", "", args)
     yield ("(λ ...inline|block . block)", from_inline)
@@ -130,6 +177,9 @@ def paragraph():
 
 @fn(BUILTINS, "a")
 def link():
+    """
+    Represents the %%(tt "<a>")%% HTML tag.
+    """
     def from_str_inline(adr, text):
         return e.InlineTag("a", f"href={json.dumps(adr.value)}", (text,))
     yield ("(λ str inline . inline)", from_str_inline)
@@ -137,38 +187,47 @@ def link():
 
 @fn(BUILTINS, "horizontal-rule")
 def horizontal_rule():
+    """
+    Represents the %%(tt "<hr/>")%% HTML tag.
+    """
     def from_void():
-        return e.BlockRaw("<hr/>")
+        return e.ClosedBlockTag("br", "", include_slash=True)
     yield ("(λ . block)", from_void)
 
 
 @fn(BUILTINS, "--")
 def emdash():
+    """
+    The "em dash" (&mdash;).
+    """
     def from_void():
         return e.InlineRaw("&mdash;")
     yield ("(λ . inline)", from_void)
 
 
-@fn(BUILTINS, "nl")
-def newline():
-    def from_void():
-        return e.InlineRaw("\n")
-    yield ("(λ . inline)", from_void)
-
-
 @fn(BUILTINS, "pre")
 def pre():
+    """
+    Represents the %%(tt "<pre>")%% HTML tag.
+
+    Make sure to use a multiline (\"\"\"...\"\"\") string here.
+    """
     def from_inline(*args):
         elements = []
         for arg in args:
             elements.append(arg)
             elements.append(e.InlineRaw("\n"))
-        return e.BlockTag("pre", "", tuple(elements))  # type: ignore # NOTE Pyright bug
+        return e.BlockTag("pre", "", tuple(elements))
     yield ("(λ ...str . block)", from_inline)
 
 
 @fn(BUILTINS, "map")
 def map_function():
+    """
+    Map a function onto a list of values.
+
+    The overloads are messy and will soon be refactored.
+    """
     INPUT_FN_INLINE = et.TFunction((et.TInline(),), None, et.TInline())
     # HACK... `(λ ...a . t)` fits everywhere `(λ a . t)` fits,
     # but my type system doesn't know that yet
@@ -181,8 +240,7 @@ def map_function():
 
     def from_fn_inline(fn):
         def from_inl(*args):
-            # NOTE Pyright bug
-            return e.InlineConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))  # type: ignore
+            return e.InlineConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))
         return e.Function({FN_TYPE_INLINE: from_inl})
     yield ((INPUT_FN_INLINE,), None, FN_TYPE_INLINE, from_fn_inline)
     yield ((INPUT_FN_INLINE2,), None, FN_TYPE_INLINE, from_fn_inline)  # HACK
@@ -195,7 +253,6 @@ def map_function():
 
     def from_fn_block(fn):
         def from_ren(*args):
-            # NOTE Pyright bug
             return e.BlockConcat(tuple(e.Sexpr(fn, (arg,)) for arg in args))  # type: ignore
         return e.Function({FN_TYPE_BLOCK: from_ren})
     yield ((INPUT_FN_BLOCK,), None, FN_TYPE_BLOCK, from_fn_block)
@@ -204,6 +261,9 @@ def map_function():
 
 @fn(BUILTINS, "sepmap")
 def sepmap():
+    """
+    Combination of %%(tt "sep")%% and %%(tt "map")%%.
+    """
     # HACK: see `@fn(BUILTINS, map)`
     INPUT_FN_INLINE = et.TFunction((et.TInline(),), None, et.TInline())
     INPUT_FN_INLINE2 = et.TFunction((), et.TInline(), et.TInline())
@@ -218,7 +278,7 @@ def sepmap():
             # == ((sep ", ") (e "sub") (e "sup") (e "sube"))
             return e.Sexpr(
                 e.Sexpr(separated, (sep,)),
-                tuple(e.Sexpr(fn, (arg,)) for arg in args)  # type: ignore # NOTE Pyright heisenbug
+                tuple(e.Sexpr(fn, (arg,)) for arg in args)
             )
         return e.Function({FN_TYPE_INL: from_inl, FN_TYPE_STR: from_inl})
     yield ((et.TInline(), INPUT_FN_INLINE), None, FN_TYPE_INL, from_inl_fn)
@@ -229,6 +289,9 @@ def sepmap():
 
 @fn(BUILTINS, "sep")
 def separated():
+    """
+    Concatenate inline elements, separating them with a given string.
+    """
     FN_TYPE = type_parser.parse_fn("(λ ...inline . inline)")
 
     def from_str(separator):
@@ -239,13 +302,18 @@ def separated():
                 elements.append(separator)
             if elements != []:
                 elements.pop()
-            return e.InlineConcat(tuple(elements))  # type: ignore # NOTE Pyright heisenbug
+            return e.InlineConcat(tuple(elements))
         return e.Function({FN_TYPE: from_inline})
     yield ((et.TInline(),), None, FN_TYPE, from_str)
 
 
 @fn(BUILTINS, "nobr")
 def nobr():
+    """
+    Replaces spaces in text with &nbsp; so that it's not subject to text wrapping.
+
+    Does %%(bf "not")%% represent the %%(tt "nobr")%% HTML TAG.
+    """
     def from_ren(ren: e.Entity):
         return e.AfterRender(ren, lambda s: s.replace(" ", "&nbsp;"))
     yield ("(λ inline . inline)", from_ren)
@@ -254,6 +322,9 @@ def nobr():
 
 @fn(BUILTINS, "type")
 def debug_type():
+    """
+    Renders the type of a value as a string.
+    """
     def from_any(obj: e.Entity):
         return e.String(obj.ty.signature())
     yield("(λ any . inline)", from_any)
