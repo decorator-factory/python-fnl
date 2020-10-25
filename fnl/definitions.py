@@ -103,7 +103,8 @@ def list_unordered():
         return e.BlockTag(
             "ul",
             "",
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
+            # NOTE Pyright heisenbug:
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore
         )
     yield ("(λ ...Inl . block)", from_inline)
 
@@ -114,7 +115,8 @@ def list_ordered():
         return e.BlockTag(
             "ol",
             "",
-            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
+            # NOTE Pyright heisenbug:
+            tuple(e.BlockTag("li", "", (arg,)) for arg in args)  # type: ignore
         )
     yield ("(λ ...Inl . block)", from_inline)
 
@@ -216,7 +218,7 @@ def sepmap():
             # == ((sep ", ") (e "sub") (e "sup") (e "sube"))
             return e.Sexpr(
                 e.Sexpr(separated, (sep,)),
-                tuple(e.Sexpr(fn, (arg,)) for arg in args)  # type: ignore # NOTE Pyright bug
+                tuple(e.Sexpr(fn, (arg,)) for arg in args)  # type: ignore # NOTE Pyright heisenbug
             )
         return e.Function({FN_TYPE_INL: from_inl, FN_TYPE_STR: from_inl})
     yield ((et.IInl(), INPUT_FN_INLINE), None, FN_TYPE_INL, from_inl_fn)
@@ -237,7 +239,7 @@ def separated():
                 elements.append(separator)
             if elements != []:
                 elements.pop()
-            return e.InlineConcat(tuple(elements))  # type: ignore # NOTE Pyright bug
+            return e.InlineConcat(tuple(elements))  # type: ignore # NOTE Pyright heisenbug
         return e.Function({FN_TYPE: from_inline})
     yield ((et.IInl(),), None, FN_TYPE, from_str)
 

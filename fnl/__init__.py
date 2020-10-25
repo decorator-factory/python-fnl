@@ -7,6 +7,8 @@ from . import entities as e
 from . import entity_types as et
 from . import definitions
 from . import type_parser
+from . import fnlx as _fnlx
+x = _fnlx.exports
 
 
 @v_args(inline=True)
@@ -61,7 +63,7 @@ def html(
         extensions: Union[Iterable[Tuple[str, e.Entity]], Mapping[str, e.Entity]] = ()
 ) -> str:
     runtime = {**definitions.BUILTINS}
-    runtime.update(extensions)  # type: ignore -- bug in Pyright # NOTE
+    runtime.update(extensions)  # type: ignore -- Pyright, issue 1119
 
     error = None
     try:
