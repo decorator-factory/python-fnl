@@ -1,7 +1,7 @@
 ?start: type
 
 ?type: prefix_type | union_type
-?prefix_type: function_type | primitive_type
+?prefix_type: function_type | primitive_type | quoted_type
 
 _LAMBDA : "λ" | "^"
 function_type: "(" _LAMBDA type* ["..." type] "." type ")"
@@ -12,6 +12,7 @@ function_type: "(" _LAMBDA type* ["..." type] "." type ")"
                | "inline"
                | "block"
 union_type: (prefix_type "|")+ prefix_type
+quoted_type: "&" "[" type "]"
 
 %import common.WS
 %ignore WS

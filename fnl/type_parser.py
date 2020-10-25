@@ -20,6 +20,10 @@ class TypeTransformer(Transformer):
         return et.TUnion(types)
 
     @staticmethod
+    def quoted_type(parameter):
+        return et.TQuoted(parameter)
+
+    @staticmethod
     def function_type(*types):
         *required_types, rest_type, return_type = types
         # rest_type can be None

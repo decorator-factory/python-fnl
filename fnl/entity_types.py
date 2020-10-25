@@ -39,6 +39,20 @@ class TAny(EntityType):
 
 
 @dataclass(frozen=True, eq=True)
+class TQuoted(EntityType):
+    """The `&[T]` type"""
+    parameter: EntityType
+
+    def match(self, value: "e.Entity") -> bool:
+        if super().match(value):
+            return True
+        return isinstance(value, e.Quoted) and self.parameter.match(value.subexpression)
+
+    def signature(self) -> str:
+        return f"&[{self.parameter.signature()}]"
+
+
+@dataclass(frozen=True, eq=True)
 class TInt(EntityType):
     """The `int` type"""
     def signature(self) -> str:

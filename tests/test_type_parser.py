@@ -9,6 +9,10 @@ def test_primitive_types():
     assert fnl.type_parser.parse("any") == fnl.et.TAny()
 
 
+def test_quoted_type():
+    assert fnl.type_parser.parse("&[int]") == fnl.et.TQuoted(fnl.et.TInt())
+
+
 def test_union_type():
     assert (
         fnl.type_parser.parse("int | str")
