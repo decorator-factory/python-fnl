@@ -53,16 +53,23 @@ from . import entity_types as et
 from .definitions import fn
 
 from typing import Dict, List, NamedTuple, Iterable
+from enum import Enum
 
 
 exports: Dict[str, e.Entity] = {}
+
+
+class TagKind(Enum):
+    Open = 0
+    ClosedWithSlash = 1
+    ClosedWithoutSlash = 2
 
 
 class TagInfo(NamedTuple):
     classes: List[str]
     options: List[str]
     body: List[e.Entity]
-    is_closed: bool
+    kind: TagKind
 
     @property
     def as_option_string(self):
@@ -78,19 +85,22 @@ def parse_html_options(args: Iterable[e.Entity]):
     classes = []
     options = []
     body = []
-    is_closed = False
+    tag_kind = TagKind.Open
     for arg in args:
         if isinstance(arg, e.Quoted):
             if isinstance(arg.subexpression, e.Name):
                 name = arg.subexpression.name
-                if name.startswith("."):  # class, like: &.danger
+                if name.startswith(".") and name != ".":  # class, like: &.danger
                     classes.append(name[1:])
 
                 elif name.startswith("#"):  # id, like: &#app
                     options.append(f'id="{name[1:]}"')
 
                 elif name == "/":
-                    is_closed = True
+                    tag_kind = TagKind.ClosedWithSlash
+
+                elif name == ".":
+                    tag_kind = TagKind.ClosedWithoutSlash
 
                 else:  # no-argument option, like &defer
 
@@ -114,7 +124,7 @@ def parse_html_options(args: Iterable[e.Entity]):
                 raise TypeError(f"Expected name or call, got {arg.subexpression}")
         else:
             body.append(arg)
-    return TagInfo(classes, options, body, is_closed)
+    return TagInfo(classes, options, body, tag_kind)
 
 
 @fn(exports, "+")
@@ -157,8 +167,10 @@ def block_tag():
             raise TypeError(f"<{name}> is an inline tag")
 
         info = parse_html_options(args[1:])
-        if info.is_closed:
+        if info.kind == TagKind.ClosedWithSlash:
             return e.ClosedBlockTag(name, info.as_option_string, include_slash=True)
+        elif info.kind == TagKind.ClosedWithoutSlash:
+            return e.ClosedBlockTag(name, info.as_option_string, include_slash=False)
         else:
             return e.BlockTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
@@ -182,8 +194,10 @@ def inline_tag():
 
         info = parse_html_options(args[1:])
 
-        if info.is_closed:
+        if info.kind == TagKind.ClosedWithSlash:
             return e.ClosedInlineTag(name, info.as_option_string, include_slash=True)
+        elif info.kind == TagKind.ClosedWithoutSlash:
+            return e.ClosedInlineTag(name, info.as_option_string, include_slash=False)
         else:
             return e.InlineTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
