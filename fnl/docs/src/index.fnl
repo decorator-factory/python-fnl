@@ -3,7 +3,8 @@
     (list-unordered
       ($link-to "index.html")
       ($link-to "language_tutorial.html")
-      ($link-to "using_fnl.html")))
+      ($link-to "using_fnl.html")
+      ($link-to "quoted_expressions.html")))
 
 
   (horizontal-rule)

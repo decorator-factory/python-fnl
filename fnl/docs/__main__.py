@@ -81,6 +81,7 @@ for source_path in src_dir.glob("*.fnl"):
     target_path.write_text(
         fnl.html(source, {
             **extensions,
+            **fnl.x,
             "$filename": fnl.e.String(target_filename),
             "$source": fnl.e.String(source),
         })
@@ -93,6 +94,7 @@ target_path = html_dir / "index.html"
 target_path.write_text(
     fnl.html(index_source, {
         **extensions,
+        **fnl.x,
         "$filename": fnl.e.String("index.html"),
         "$source": fnl.e.String(index_source),
     })
