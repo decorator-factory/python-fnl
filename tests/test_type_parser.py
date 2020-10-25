@@ -13,6 +13,13 @@ def test_quoted_type():
     assert fnl.type_parser.parse("&[int]") == fnl.et.TQuoted(fnl.et.TInt())
 
 
+def test_sexpr_type():
+    assert (
+        fnl.type_parser.parse("&[(int str str)]")
+        == fnl.et.TQuoted(fnl.et.TSexpr(fnl.et.TInt(), (fnl.et.TStr(), fnl.et.TStr())))
+    )
+
+
 def test_union_type():
     assert (
         fnl.type_parser.parse("int | str")

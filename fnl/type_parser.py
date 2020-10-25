@@ -24,6 +24,10 @@ class TypeTransformer(Transformer):
         return et.TQuoted(parameter)
 
     @staticmethod
+    def sexpr_type(fn_type, *arg_types):
+        return et.TSexpr(fn_type, arg_types)
+
+    @staticmethod
     def function_type(*types):
         *required_types, rest_type, return_type = types
         # rest_type can be None

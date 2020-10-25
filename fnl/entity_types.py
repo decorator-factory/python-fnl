@@ -39,6 +39,25 @@ class TAny(EntityType):
 
 
 @dataclass(frozen=True, eq=True)
+class TSexpr(EntityType):
+    """The `(fn x y z)` type. Makes sense only inside TQuoted."""
+    function_type: EntityType
+    arg_types: Tuple[EntityType, ...]
+
+    def match(self, value: "e.Entity") -> bool:
+        if super().match(value):
+            return True
+        return (
+            isinstance(value, e.Sexpr)
+            and self.function_type.match(value.fn)
+            and len(self.arg_types) == len(value.args)
+            and all(
+                t.match(arg) for (t, arg) in zip(self.arg_types, value.args)
+            )
+        )
+
+
+@dataclass(frozen=True, eq=True)
 class TQuoted(EntityType):
     """The `&[T]` type"""
     parameter: EntityType
