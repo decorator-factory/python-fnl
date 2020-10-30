@@ -3,6 +3,9 @@ import json  # json is needed to decode a string
 from textwrap import dedent
 from typing import Iterable, Tuple, Mapping, Union
 from lark import Lark, Transformer, v_args
+
+from . import patma_utils  # imported for the side effects
+
 from . import entities as e
 from . import entity_types as et
 from . import definitions

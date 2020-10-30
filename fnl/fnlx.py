@@ -1,56 +1,10 @@
-'''
-Here's the idea:
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$title</title>
-    <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-    <main>
-        <div class="title">
-            <h1>$title</h1>
-            <a href="index.html">Go to the index</a>
-        </div>
-        <div class="mount">
-            $mount
-        </div>
-    </main>
-</body>
-</html>
-
-x("""
-($
-    (b"!DOCTYPE" &html)
-    (b&html &(lang "en"))
-    (b&head
-        (b&meta &(charset "UTF-8") &/)
-        (b&meta &(name "viewport") &(content "width=device-width, initial-scale=1.0") &/)
-        (b&title ($var &title))
-        (b&link &(rel "stylesheet") &(href "style.css) &/))
-    (b&body
-        (b&main
-            (+ &.title
-                ((h 1) ($var &title))
-                (a "index.html" "Go to the index"))
-            (+ &.mount
-                ($var &mount))))
-
-)
-
-
-""")
-
-'''
-
 import json
 import fnl
 from . import entities as e
 from . import entity_types as et
 from .definitions import fn
+
+from context_manager_patma import match
 
 from typing import Dict, List, NamedTuple, Iterable
 from enum import Enum
@@ -87,43 +41,30 @@ def parse_html_options(args: Iterable[e.Entity]):
     body = []
     tag_kind = TagKind.Open
     for arg in args:
-        if isinstance(arg, e.Quoted):
-            if isinstance(arg.subexpression, e.Name):
-                name = arg.subexpression.name
-                if name.startswith(".") and name != ".":  # class, like: &.danger
-                    classes.append(name[1:])
+        with match(arg) as case:
+            with case('Quoted(Name("/"))') as [m]:
+                tag_kind = TagKind.ClosedWithSlash
 
-                elif name.startswith("#"):  # id, like: &#app
-                    options.append(f'id="{name[1:]}"')
+            with case('Quoted(Name("."))') as [m]:
+                tag_kind = TagKind.ClosedWithoutSlash
 
-                elif name == "/":
-                    tag_kind = TagKind.ClosedWithSlash
+            with case('Quoted(Name(Cons(".", class_name)))') as [m]:
+                classes.append(m.class_name)
 
-                elif name == ".":
-                    tag_kind = TagKind.ClosedWithoutSlash
+            with case('Quoted(Name(Cons("#", id_name)))') as [m]:
+                options.append(f'id="{m.id_name}"')
 
-                else:  # no-argument option, like &defer
+            with case('Quoted(Name(name)|String(name))') as [m]:
+                options.append(m.name)
 
-                    options.append(name)
+            with case('Quoted(Sexpr(Name(name), String(value)))') as [m]:
+                options.append(f"{m.name}={json.dumps(m.value)}")
 
-            elif isinstance(arg.subexpression, e.Sexpr):
-                if not isinstance(arg.subexpression.fn, e.Name):
-                    raise TypeError(f"Expected name, got {arg.subexpression.fn}")
+            with case('Quoted(other)') as [m]:
+                raise TypeError(f"Expected name or call, got {m.other}")
 
-                if len(arg.subexpression.args) != 1:
-                    raise ValueError("Expected 2 values in quoted S-expression")
-
-                if not isinstance(arg.subexpression.args[0], e.String):
-                    raise TypeError(f"Expected string, got {arg.subexpression.args[0]}")
-
-                name = arg.subexpression.fn.name
-                value: str = arg.subexpression.args[0].value  # type: ignore
-                options.append(f"{name}={json.dumps(value)}")
-
-            else:
-                raise TypeError(f"Expected name or call, got {arg.subexpression}")
-        else:
-            body.append(arg)
+            with case('element') as [m]:
+                body.append(m.element)
     return TagInfo(classes, options, body, tag_kind)
 
 
@@ -153,20 +94,15 @@ _INLINE_TAGS = frozenset((
 
 @fn(exports, "b")
 def block_tag():
-    def _block_tag(*args: e.Entity):
-        name_arg = args[0]
-        if isinstance(name_arg, e.Quoted):
-            assert isinstance(name_arg.subexpression, e.Name)
-            name = name_arg.subexpression.name
-        elif isinstance(name_arg, e.String):
-            name = name_arg.value
-        else:
-            raise TypeError(f"Expected quoted name or string, got {name_arg}")
+    def _block_tag(name_arg: e.Entity, *options: e.Entity):
+        with match(name_arg) as case:
+            with case('Quoted(Name(name))|String(name)') as [m]:
+                name: str = m.name
 
         if name in _INLINE_TAGS:
             raise TypeError(f"<{name}> is an inline tag")
 
-        info = parse_html_options(args[1:])
+        info = parse_html_options(options)
         if info.kind == TagKind.ClosedWithSlash:
             return e.ClosedBlockTag(name, info.as_option_string, include_slash=True)
         elif info.kind == TagKind.ClosedWithoutSlash:
@@ -174,25 +110,20 @@ def block_tag():
         else:
             return e.BlockTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
-    yield ("(λ ...&[name]|&[(name str)]|inline|block . block)", _block_tag)
+    yield ("(λ str|&[name] ...&[str]|&[name]|&[(name str)]|inline|block . block)", _block_tag)
 
 
 @fn(exports, "i")
 def inline_tag():
-    def _inline_tag(*args: e.Entity):
-        name_arg = args[0]
-        if isinstance(name_arg, e.Quoted):
-            assert isinstance(name_arg.subexpression, e.Name)
-            name = name_arg.subexpression.name
-        elif isinstance(name_arg, e.String):
-            name = name_arg.value
-        else:
-            raise TypeError(f"Expected quoted name or string, got {name_arg}")
+    def _inline_tag(name_arg: e.Entity, *options: e.Entity):
+        with match(name_arg) as case:
+            with case('Quoted(Name(name))|String(name)') as [m]:
+                name: str = m.name
 
         if name in _BLOCK_TAGS:
             raise TypeError(f"<{name}> is an inline tag")
 
-        info = parse_html_options(args[1:])
+        info = parse_html_options(options)
 
         if info.kind == TagKind.ClosedWithSlash:
             return e.ClosedInlineTag(name, info.as_option_string, include_slash=True)
@@ -201,4 +132,4 @@ def inline_tag():
         else:
             return e.InlineTag(name, info.as_option_string, tuple(info.body))  # type: ignore
 
-    yield ("(λ ...&[name]|&[(name str)]|inline . inline)", _inline_tag)
+    yield ("(λ str|&[name] ...&[name]|&[(name str)]|inline . inline)", _inline_tag)

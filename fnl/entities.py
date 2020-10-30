@@ -1,7 +1,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Dict, Sequence, TypeVar, Optional, Tuple
-from fnl import entity_types as et
+from context_manager_patma import derive, register
+import fnl
+from . import entity_types as et
 import html
 
 
@@ -139,6 +141,7 @@ class Entity:
         return self
 
 
+@derive("Quoted", "subexpression")
 @dataclass(eq=True)
 class Quoted(Entity):
     subexpression: Entity
@@ -151,6 +154,7 @@ class Quoted(Entity):
         return Quoted(self.subexpression.evaluate(runtime))
 
 
+@derive("Name", "name")
 @dataclass(eq=True)
 class Name(Entity):
     """Represents getting a global variable by its name"""
@@ -180,6 +184,7 @@ class CallError(Exception):
         self.args = (msg, propagate)
 
 
+@register("Sexpr")
 @dataclass
 class Sexpr(Entity):
     """Represents a function call"""
@@ -194,6 +199,26 @@ class Sexpr(Entity):
             return NotImplemented
 
         return (self.fn, self.args) == (other.fn, other.args)
+
+    @classmethod
+    def __match__(cls, subpatterns, value, debug):
+        if subpatterns == ():  # Sexpr() == "any Sexpr"
+            return isinstance(value, Sexpr)
+
+        if not isinstance(value, Sexpr):
+            return None
+
+        if len(subpatterns) != len(value.args) + 1:
+            return None
+
+        match = {}
+        for pattern, arg in zip(subpatterns, (value.fn, *value.args)):
+            submatches = pattern.match(arg, debug)
+            if submatches is None:
+                return None
+            match.update(submatches)
+
+        return match
 
     @property
     def ty(self):
@@ -243,6 +268,7 @@ class Integer(Entity):
         return RawHtml(str(self.value))
 
 
+@derive("String", "value")
 @dataclass(frozen=True, eq=True)
 class String(Entity):
     value: str
