@@ -2,7 +2,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Dict, Sequence, TypeVar, Optional, Tuple
 from context_manager_patma import derive, register
-import fnl
 from . import entity_types as et
 import html
 
@@ -295,6 +294,9 @@ class InlineTag(Entity):
             [c.render_inline(runtime) for c in self.children]  # type: ignore
         )
 
+    def evaluate(self, runtime):
+        return InlineTag(self.tag, self.options, tuple(e.evaluate(runtime) for e in self.children))
+
 
 @dataclass(frozen=True, eq=True)
 class BlockTag(Entity):
@@ -311,6 +313,9 @@ class BlockTag(Entity):
             self.options,
             [c.render(runtime) for c in self.children]
         )
+
+    def evaluate(self, runtime):
+        return BlockTag(self.tag, self.options, tuple(e.evaluate(runtime) for e in self.children))
 
 
 @dataclass(frozen=True, eq=True)
@@ -369,7 +374,10 @@ class InlineConcat(Entity):
     ty = et.TInline()
 
     def render_inline(self, runtime):
-        return Concat([e.render_inline(runtime) for e in self.children])
+        return Concat([e.render_inline(runtime) for e in self.children])  # type: ignore
+
+    def evaluate(self, runtime):
+        return InlineConcat(tuple(e.evaluate(runtime) for e in self.children))
 
 
 @dataclass(frozen=True, eq=True)
@@ -381,6 +389,9 @@ class BlockConcat(Entity):
 
     def render_block(self, runtime):
         return Concat([e.render(runtime) for e in self.children])
+
+    def evaluate(self, runtime):
+        return BlockConcat(tuple(e.evaluate(runtime) for e in self.children))
 
 
 @dataclass(frozen=True, eq=True)
@@ -456,8 +467,7 @@ class AfterRender(Entity):
         return self.subexpr.ty
 
     def evaluate(self, runtime):
-        self.subexpr = self.subexpr.evaluate(runtime)
-        return self
+        return AfterRender(self.subexpr.evaluate(runtime), self.fn)
 
     def render(self, runtime):
         return self.subexpr.render(runtime).fmap(self.fn)
