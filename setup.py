@@ -20,7 +20,7 @@ setuptools.setup(
     ],
     install_requires=[
         "lark",
-        "context-manager-patma @ git+ssh://git@github.com/decorator-factory/context_manager_patma#egg=context_manager_patma"
+        "context-manager-patma@git+ssh://git@github.com/decorator-factory/context_manager_patma#egg=context-manager-patma"
     ],
     python_requires='>=3.8',
     package_data={
