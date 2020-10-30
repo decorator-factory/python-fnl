@@ -406,6 +406,8 @@ class Function(Entity):
     """
     overloads: Dict[et.TFunction, Callable]
 
+    _docstring_source: Optional[str] = None
+
     @property
     def ty(self):
         return et.TUnion(tuple(self.overloads.keys()))

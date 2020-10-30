@@ -1,11 +1,30 @@
 import json
 from typing import Dict
+import fnl
+import re
 from . import entity_types as et
 from . import entities as e
 from . import type_parser
 
 
 BUILTINS: Dict[str, e.Entity] = {}
+
+
+# we need to parse the docstrings of built-in functions
+# to equip them with a documentation Entity
+def _parse_docstring(docstring: str) -> e.Entity:
+    docstring = docstring.strip()
+    parts = []
+    last_stop = 0
+    for match in re.finditer(r"%%([^%]+|%(?!%))+%%", docstring):
+        (start, stop) = match.span()
+        if last_stop != start:
+            parts.append(e.String(docstring[last_stop:start]))
+        last_stop = stop
+        parts.append(fnl.parse(match[1]))
+    if last_stop != len(docstring):
+        parts.append(e.String(docstring[last_stop:]))
+    return e.InlineConcat(tuple(parts))
 
 
 def fn(target: Dict[str, e.Entity], name: str):
@@ -37,7 +56,8 @@ def fn(target: Dict[str, e.Entity], name: str):
             else:
                 raise ValueError(declaration)
             overloads[function_type] = fn
-        target[name] = e.Function(overloads)
+
+        target[name] = e.Function(overloads, _docstring_source=f.__doc__)
         return target[name]
     return _add_fn
 
@@ -328,3 +348,18 @@ def debug_type():
     def from_any(obj: e.Entity):
         return e.String(obj.ty.signature())
     yield("(λ any . inline)", from_any)
+
+
+@fn(BUILTINS, "doc")
+def document_function():
+    """
+    Render the documentation for a function.
+    """
+    def from_function(fn: e.Function):
+        if not isinstance(fn, e.Function):
+            raise TypeError(f"Expected function, got {fn}")
+        if fn._docstring_source is None:
+            return e.String("(no documentation available)")
+        else:
+            return _parse_docstring(fn._docstring_source)
+    yield("(λ any . inline)", from_function)
