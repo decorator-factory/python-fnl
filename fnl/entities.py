@@ -191,7 +191,6 @@ class Sexpr(Entity):
     args: Tuple[Entity, ...]
 
     _position: Optional[Tuple[int, int]] = None  # (line, column)
-    _cached: Optional[Entity] = None
 
     def __eq__(self, other):
         if not isinstance(other, Sexpr):
@@ -221,9 +220,7 @@ class Sexpr(Entity):
 
     @property
     def ty(self):
-        if self._cached is None:
-            return et.TSexpr(self.fn.ty, tuple(e.ty for e in self.args))
-        return self._cached.ty
+        return et.TSexpr(self.fn.ty, tuple(e.ty for e in self.args))
 
     def _type_mismatch(self, msg: str):
         # If we know where this s-expression is located, we need to stop
@@ -236,25 +233,28 @@ class Sexpr(Entity):
             raise CallError(msg.format(line=line, column=column), propagate=False)
 
     def evaluate(self, runtime):
-        self.fn = self.fn.evaluate(runtime)
-        if not hasattr(self.fn, "call"):
+        fn = self.fn.evaluate(runtime)
+        if not hasattr(fn, "call"):
             self._type_mismatch(
-                f"Trying to call {self.fn.ty.signature()}"
+                f"Trying to call {fn.ty.signature()}"
                 " (line {line}, column {column})"
             )
-        self.args = tuple(e.evaluate(runtime) for e in self.args)
+        args = tuple(e.evaluate(runtime) for e in self.args)
 
         error = None
         try:
-            self._cached = self.fn.call(*self.args).evaluate(runtime)  # type: ignore
+            result = fn.call(*args).evaluate(runtime)  # type: ignore
         except TypeError as e:
             error = "".join(e.args) + " (line {line}, column {column})"
-        # raise the exception without the long traceback:
-        if error is not None:
-            self._type_mismatch(error)
+        else:
+            return result
+        finally:
+            if error is not None:
+                self._type_mismatch(error)
 
-        assert self._cached is not None
-        return self._cached
+
+
+
 
 
 @dataclass(frozen=True, eq=True)
