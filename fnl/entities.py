@@ -253,10 +253,6 @@ class Sexpr(Entity):
                 self._type_mismatch(error)
 
 
-
-
-
-
 @dataclass(frozen=True, eq=True)
 class Integer(Entity):
     value: int
