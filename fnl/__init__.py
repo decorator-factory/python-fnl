@@ -4,11 +4,12 @@ from textwrap import dedent
 from typing import Iterable, Tuple, Mapping, Union
 from lark import Lark, Transformer, v_args
 
-from . import patma_utils  # imported for the side effects
+from . import patma_utils as _patma_utils  # imported for the side effects
 
 from . import entities as e
 from . import entity_types as et
 from . import definitions
+from .bindings import bindings
 from . import type_parser
 from . import fnlx as _fnlx
 x = _fnlx.exports
