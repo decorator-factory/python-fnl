@@ -170,5 +170,7 @@
     "With this tool, you can write pretty much any HTML you want. If you're
     feeling adventurous, you can even write markup for Vue.js like that.")
 
-
+  (horizontal-rule)
+  ((h 2) "Source:")
+  (pre $source)
 )

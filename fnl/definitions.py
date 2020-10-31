@@ -211,7 +211,7 @@ def horizontal_rule():
     Represents the %%(tt "<hr/>")%% HTML tag.
     """
     def from_void():
-        return e.ClosedBlockTag("br", "", include_slash=True)
+        return e.ClosedBlockTag("hr", "", include_slash=True)
     yield ("(λ . block)", from_void)
 
 

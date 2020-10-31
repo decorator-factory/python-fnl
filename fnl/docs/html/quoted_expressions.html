@@ -96,7 +96,183 @@ print(fnl.html(source, your | extensions | fnl.x))
     &lt;/main&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>&amp;#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p>
+</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>&amp;#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Quoted expressions&quot;
+  ((h 2)
+    &quot;Strict evaluation&quot;)
+  (p
+    &quot;Suppose that you want to render some content conditionally. For example,
+    you might want to add notes that are only visible to the editors; or
+    you might want to temporarily disable some part of the tree. It&#x27;s not very
+    hard to implement, right?&quot;)
+
+  (pre &quot;&quot;&quot;
+  extensions = {}
+
+  is_debug = True
+
+  @fn(extensions, &#x27;if-debug&#x27;)
+  def if_debug():
+      def _if_debug(subtree):
+          if is_debug:
+              return subtree
+          else:
+              return e.BlockConcat(())
+      yield (&#x27;(λ inline|block . block)&#x27;, _if_debug)
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;Let&#x27;s see if it works.&quot;)
+
+  (pre &quot;&quot;&quot;
+  &gt;&gt;&gt; is_debug = True
+  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf \&quot;hi\&quot;))&#x27;, extensions)
+  &#x27;&lt;b&gt;hi&lt;/b&gt;&#x27;
+  &gt;&gt;&gt; is_debug = False
+  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf \&quot;hi\&quot;))&#x27;, extensions)
+  &#x27;&#x27;
+  &quot;&quot;&quot;)
+
+  (p
+    &quot;It works, but there are some issues. The subtree is evaluated
+    even if it doesn&#x27;t get rendered. It might waste some resources if it&#x27;s
+    a really large tree (or if it requies reading from a file, which is probably
+    not a good idea, but you might want to read a config, for instance). More
+    importantly, under certain conditions, it might throw an error because
+    something about this tree requires &quot; (tt &quot;is_debug&quot;) &quot; to be true.&quot;)
+
+  (p
+    &quot;FNL is a &quot; (it &quot;strict&quot;) &quot; language. It means that function arguments are
+    fully evaluated first, and only then are passed to the function. So, alas,
+    we&#x27;re out of luck.&quot;)
+
+  ((h 2)
+    &quot;Quoted expression to the rescue&quot;)
+
+  (p
+    &quot;...unless we use quoted expressions! A quoted expression represents an expression
+    that doesn&#x27;t get immediately evaluated. You can create a quoted expression
+    by prefixing it with &quot; (tt &quot;&amp;&quot;) &quot;, for example, &quot; (mono &quot;&amp;1024&quot;) &quot; is a
+    deferred integer, and &quot; (mono &quot;&amp;(hello \&quot;world\&quot;)&quot;) &quot; is a deferred call.&quot;)
+
+  (pre &quot;&quot;&quot;
+  extensions = {}
+
+  is_debug = True
+
+  @fn(extensions, &#x27;if-debug&#x27;)
+  def if_debug():
+      def _if_debug(quoted):
+          if is_debug:
+              return quoted.subexpression
+          else:
+              return e.BlockConcat(())
+      yield (&#x27;(λ &amp;[any] . block)&#x27;, _if_debug)
+  &quot;&quot;&quot;)
+
+  (p
+    (mono &quot;&amp;[any]&quot;) &quot; is a type of a quoted expession. The type of an expesssion
+    isn&#x27;t known until it&#x27;s fully evaluated, so we will use &quot; (tt &quot;any&quot;) &quot;as the
+    type parameter. Other examples of quoted types: &quot;
+    (list-unordered
+      ($ (tt &quot;&amp;[str] &quot;) (--) &quot; quoted string (like &quot; (tt &quot;&amp;\&quot;hi\&quot;&quot;) &quot;)&quot; )
+      ($ (tt &quot;&amp;[int] &quot;) (--) &quot; quoted integer (like &quot; (tt &quot;&amp;10&quot;) &quot;)&quot; )
+      ($ (tt &quot;&amp;[name] &quot;) (--) &quot; quoted name (like &quot; (tt &quot;&amp;a-name&quot;) &quot;)&quot; )
+      ($ (tt &quot;&amp;[name[a|b]] &quot;) (--) &quot; bounded quoted name (only &quot; (tt &quot;&amp;a&quot;) &quot; or &quot; (tt &quot;&amp;b&quot;) &quot; )&quot; )
+      ($ (tt &quot;&amp;[(name int)] &quot;) (--) &quot; s-expression (like &quot; (tt &quot;&amp;(version 7)&quot;) &quot;)&quot; )))
+
+  ((h 2)
+    &quot;Examples of using quoted expressions in &quot; (tt &quot;fnl.x&quot;))
+
+  (p
+    (tt &quot;fnl.x&quot;) &quot; is a standard extension that helps you construct arbitrary HTML.&quot;)
+
+  (pre &quot;&quot;&quot;
+    import fnl
+
+    source = ...
+
+    print(fnl.html(source, fnl.x))
+    # or:
+    print(fnl.html(source, {**your, **extensions, **fnl.x}))
+    # or, in 3.9+:
+    print(fnl.html(source, your | extensions | fnl.x))
+  &quot;&quot;&quot;)
+
+  (p
+    (tt &quot;fnl.x&quot;)  &quot; exports three function: &quot; ((sepmap &quot;, &quot; tt) &quot;b&quot; &quot;i&quot; &quot;+&quot;) &quot;. &quot;
+    (tt &quot;b&quot;) &quot; creates a block element, &quot; (tt &quot;i&quot;) &quot; creates an inline element,
+    and &quot; (tt &quot;+&quot;) &quot; is a shortcut for the &quot; (tt &quot;div&quot;) &quot; element.&quot;)
+
+  (pre &quot;&quot;&quot;
+  ($
+    (b\&quot;!DOCTYPE\&quot; &amp;html &amp;.)
+    (b&amp;html &amp;(lang \&quot;en\&quot;)
+      (b&amp;head
+        (b&amp;meta &amp;(charset \&quot;UTF-8\&quot;) &amp;.)
+        (b&amp;meta &amp;(name \&quot;viewport\&quot;) &amp;(content \&quot;width=device-width, initial-scale=1.0\&quot;) &amp;.)
+        (b&amp;title \&quot;My blog\&quot;)
+        (b&amp;link &amp;(rel \&quot;stylesheet\&quot;) &amp;(href \&quot;style.css\&quot;) &amp;/))
+      (b&amp;body
+        (b&amp;main &amp;#app
+          (+ &amp;.greeting
+            ((h 1) \&quot;Hello, world!\&quot;)
+          (+ &amp;.content
+            (i&amp;a &amp;(href \&quot;pay.html\&quot;) \&quot;Give me your money\&quot;)))))))
+  &quot;&quot;&quot;)
+
+  (p &quot;This is going to render the following HTML code:&quot;)
+
+  (pre &quot;&quot;&quot;
+  &lt;!DOCTYPE html&gt;
+  &lt;html lang=\&quot;en\&quot;&gt;
+    &lt;head&gt;
+      &lt;meta charset=\&quot;UTF-8\&quot;&gt;
+      &lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1.0\&quot;&gt;
+      &lt;title&gt;My blog&lt;/title&gt;
+      &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;style.css\&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+      &lt;main id=\&quot;app\&quot;&gt;
+        &lt;div class=\&quot;greeting\&quot;&gt;
+          &lt;h1&gt;Hello, world!&lt;/h1&gt;
+          &lt;div class=\&quot;content\&quot;&gt;
+            &lt;a href=\&quot;pay.html\&quot;&gt;Give me your money&lt;/a&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/body&gt;
+  &lt;/html&gt;&quot;&quot;&quot;)
+
+  (p
+    &quot;As you can see, there aren&#x27;t that many rules:&quot;
+    (list-unordered
+      ($ &quot;You can use plain old FNL functions (like &quot; (tt &quot;h&quot;) &quot;)&quot;)
+      ($ (tt &quot;(b&amp;tag ...)&quot;) &quot; creates a block element&quot;)
+      ($ (tt &quot;(b\&quot;tag!?!&amp;\&quot; ...)&quot;) &quot; creates a block element with a name which is
+        not a valid identifier&quot;)
+      ($ (tt &quot;(i&amp;tag ...)&quot;) &quot; creates an inline element&quot;)
+      ($ (tt &quot;&amp;.class&quot;) &quot; adds a class&quot;)
+      ($ (tt &quot;&amp;#id&quot;) &quot; adds an ID&quot;)
+      ($ (tt &quot;&amp;html&quot;) &quot; adds an attribute without an argument&quot;)
+      ($ (tt &quot;&amp;(attr \&quot;value\&quot;)&quot;) &quot; adds an attribute&quot;)
+      ($ (tt &quot;&amp;.&quot;) &quot; makes the tag closed without making a &quot; (tt &quot;&lt;tag&gt;&lt;/tag&gt;&quot;)
+        &quot; pair&quot;)
+      ($ (tt &quot;&amp;/&quot;) &quot; makes the tag closed without making a &quot; (tt &quot;&lt;tag&gt;&lt;/tag&gt;&quot;)
+        &quot; pair and adds a slash ( / ) at the end.&quot;)))
+
+  (p
+    (tt &quot;fnlx&quot;) &quot; takes advantage of quoted expressions: an expression like &quot;
+    (mono &quot;(lang \&quot;en\&quot;)&quot;) &quot; or &quot; (tt &quot;&amp;#id&quot;) &quot; would fail at runtime.&quot;)
+
+  (p
+    &quot;With this tool, you can write pretty much any HTML you want. If you&#x27;re
+    feeling adventurous, you can even write markup for Vue.js like that.&quot;)
+
+  (horizontal-rule)
+  ((h 2) &quot;Source:&quot;)
+  (pre $source)
+)
+</pre>
         </div>
     </main>
 </body>
