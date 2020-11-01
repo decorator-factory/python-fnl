@@ -13,7 +13,7 @@
             <a href="index.html">Go to the index</a>
         </div>
         <div class="-mount">
-            <div class="fnl--box"><ul><li><a href="index.html">Index</a></li><li><a href="language_tutorial.html">Language tutorial</a></li><li><a href="using_fnl.html">Using FNL</a></li><li><a href="quoted_expressions.html">Quoted expressions</a></li></ul></div><hr/><h1>FNL</h1><h2>FNL is Not Lisp</h2><hr/><p>FNL is a markup language for your blog. It&#x27;s...</p><h3>...terse</h3><pre>
+            <div class="fnl--box"><ul><li><a href="index.html">Index</a></li><li><a href="language_tutorial.html">Language tutorial</a></li><li><a href="using_fnl.html">Using FNL</a></li><li><a href="quoted_expressions.html">Quoted expressions</a></li></ul></div><hr /><h1>FNL</h1><h2>FNL is Not Lisp</h2><hr /><p>FNL is a markup language for your blog. It&#x27;s...</p><h3>...terse</h3><pre>
 ($
   ((h 1)
     &quot;Hello, world!&quot;)
@@ -24,7 +24,7 @@
     ((style &quot;color: red; font-size: 100%&quot;) &quot;amazing&quot;)
     ((sepmap &quot;, &quot; tt) &quot;modern&quot; &quot;striking&quot; &quot;inspiring&quot;)))
 
-</pre><div class="fnl--box"><h1>Hello, world!</h1>Welcome to <b>my</b> blog! It is:<ul><li><i>cool</i></li><li><b>super</b> awesome</li><li><span style="color: red; font-size: 100%">amazing</span></li><li><tt>modern</tt>, <tt>striking</tt>, <tt>inspiring</tt></li></ul></div><hr/><h3>...easy to use</h3><pre>
+</pre><div class="fnl--box"><h1>Hello, world!</h1>Welcome to <b>my</b> blog! It is:<ul><li><i>cool</i></li><li><b>super</b> awesome</li><li><span style="color: red; font-size: 100%">amazing</span></li><li><tt>modern</tt>, <tt>striking</tt>, <tt>inspiring</tt></li></ul></div><hr /><h3>...easy to use</h3><pre>
 import fnl
 
 print(fnl.html(&#x27;($ (bf &quot;Hello, &quot;) (it &quot;world!&quot;))&#x27;))
@@ -32,7 +32,7 @@ print(fnl.html(&#x27;($ (bf &quot;Hello, &quot;) (it &quot;world!&quot;))&#x27;)
 </pre><pre>
 &lt;b&gt;Hello, &lt;/b&gt;&lt;i&gt;world!&lt;/i&gt;
 
-</pre><hr/><h3>...easy to extend</h3><pre>
+</pre><hr /><h3>...easy to extend</h3><pre>
 import fnl
 extensions = {}
 
@@ -48,16 +48,16 @@ html = fnl.html(
     extensions
 )
 
-</pre><div class="fnl--box">This is how this box was made!</div><hr/><h3>...strongly typed</h3><pre>
+</pre><div class="fnl--box">This is how this box was made!</div><hr /><h3>...strongly typed</h3><pre>
 (bf (p &quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;))
 
 </pre><pre>
 fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
 
-</pre><hr/><h3>Convinced?</h3><pre>
+</pre><hr /><h3>Convinced?</h3><pre>
 $ pip install git+https://github.com/decorator-factory/python-fnl
 
-</pre><hr/><h2>Source:</h2><pre>($docs $filename $source &quot;Index&quot;
+</pre><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Index&quot;
   ($box
     (list-unordered
       ($link-to &quot;index.html&quot;)

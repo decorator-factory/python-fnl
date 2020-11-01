@@ -169,6 +169,15 @@
       ((sepmap ", " tt) "int" "str" "list")))
 
   (horizontal-rule)
+  ((h 2)
+    "Documentation for all built-in functions")
+  (foreach &name (documented-names)
+    &($
+      ((h 3) (tt (bf (extract-name (var &name))) " : " (type (unquote (var &name)))))
+      (doc (unquote (var &name)))
+    ))
+
+  (horizontal-rule)
   ((h 2) "Source:")
   (pre $source)
 )

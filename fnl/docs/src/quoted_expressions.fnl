@@ -164,7 +164,7 @@
 
   (p
     (tt "fnlx") " takes advantage of quoted expressions: an expression like "
-    (mono "(lang \"en\")") " or " (tt "&#id") " would fail at runtime.")
+    (mono "(lang \"en\")") " or " (tt "#id") " would fail at runtime.")
 
   (p
     "With this tool, you can write pretty much any HTML you want. If you're

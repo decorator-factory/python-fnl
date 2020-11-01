@@ -96,7 +96,7 @@ print(fnl.html(source, your | extensions | fnl.x))
     &lt;/main&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>&amp;#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Quoted expressions&quot;
+</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Quoted expressions&quot;
   ((h 2)
     &quot;Strict evaluation&quot;)
   (p
@@ -262,7 +262,7 @@ print(fnl.html(source, your | extensions | fnl.x))
 
   (p
     (tt &quot;fnlx&quot;) &quot; takes advantage of quoted expressions: an expression like &quot;
-    (mono &quot;(lang \&quot;en\&quot;)&quot;) &quot; or &quot; (tt &quot;&amp;#id&quot;) &quot; would fail at runtime.&quot;)
+    (mono &quot;(lang \&quot;en\&quot;)&quot;) &quot; or &quot; (tt &quot;#id&quot;) &quot; would fail at runtime.&quot;)
 
   (p
     &quot;With this tool, you can write pretty much any HTML you want. If you&#x27;re
