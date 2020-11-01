@@ -19,6 +19,14 @@ class EvaluateInContext(e.Entity):
         return result
 
 
+@dataclass
+class RuntimeDependent(e.Entity):
+    getter: Callable[[Dict[str, e.Entity]], e.Entity]
+
+    def evaluate(self, runtime) -> e.Entity:
+        return self.getter(runtime).evaluate(runtime)
+
+
 def bindings() -> Dict[str, e.Entity]:
     extensions = {}
 
@@ -108,5 +116,37 @@ def bindings() -> Dict[str, e.Entity]:
             return e.Sexpr(e.Name("$"), tuple(results))
 
         yield ("(λ &[name] &[any] &[any] . any)", _foreach)
+
+    @fn(extensions, "unquote")
+    def unquote():
+        """
+        Extract and evaluate the expression from under the %%(tt "&")%%
+        """
+        def _unquote(quoted):
+            return quoted.subexpression
+        yield ("(λ &[any] . any)", _unquote)
+
+    @fn(extensions, "extract-name")
+    def extract_name():
+        """
+        Convert a quoted name to a string
+        """
+        def _extract_name(quoted_name):
+            return e.String(quoted_name.subexpression.name)
+        yield ("(λ &[name] . str)", _extract_name)
+
+    @fn(extensions, "all-names")
+    def all_names():
+        """
+        Get a list of all the names as a quoted s-expression:
+        %%(tt "&(&bf &it &tt ...)")%%
+        """
+        def _get_names(runtime: Dict[str, e.Entity]):
+            fn, *args = (e.Name(key) for key in runtime.keys())
+            return e.Quoted(e.Sexpr(fn, tuple(args)))
+
+        def _all_names():
+            return RuntimeDependent(_get_names)
+        yield ("(λ . &[any])", _all_names)
 
     return extensions
