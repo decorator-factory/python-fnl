@@ -172,7 +172,7 @@ class Name(Entity):
         self._cached = runtime[self.name]
         if self._cached is None:
             raise KeyError(f"Name {self.name} not found")
-        return self._cached
+        return self._cached.evaluate(runtime)
 
 
 class CallError(Exception):
