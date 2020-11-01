@@ -35,6 +35,20 @@ def bindings() -> Dict[str, e.Entity]:
 
         return None
 
+    def push_subscope_with(new_scope):
+        def push_subscope(runtime):
+            nonlocal bindings
+            parent_loops.append(bindings)
+            bindings = {
+                name: expr.evaluate(runtime)
+                for name, expr in new_scope.items()
+            }
+        return push_subscope
+
+    def pop_subscope(_runtime):
+        nonlocal bindings
+        bindings = parent_loops.pop()
+
     @fn(extensions, "var")
     def var():
         def _var(quoted_name):
@@ -47,20 +61,6 @@ def bindings() -> Dict[str, e.Entity]:
 
     @fn(extensions, "let")
     def let():
-        def push_subscope_with(new_scope):
-            def push_subscope(runtime):
-                nonlocal bindings
-                parent_loops.append(bindings)
-                bindings = {
-                    name: expr.evaluate(runtime)
-                    for name, expr in new_scope.items()
-                }
-            return push_subscope
-
-        def pop_subscope(_runtime):
-            nonlocal bindings
-            bindings = parent_loops.pop()
-
         def from_many(*kv_pairs):
             new_bindings = {}
             for entry in kv_pairs:
@@ -85,5 +85,28 @@ def bindings() -> Dict[str, e.Entity]:
                 quoted_body.subexpression
             )
         yield ("(λ &[name] any &[any] . any)", from_one)
+
+    @fn(extensions, "foreach")
+    def foreach():
+        def _foreach(name, seq, body):
+            with match([name, seq, body]) as case:
+                with case('Seq(Quoted(Name(name)), Quoted(Name("nil")), Quoted(body))') as [m]:
+                    name, seq, body = m.name, (), m.body
+
+                with case('Seq(Quoted(Name(name)), Quoted(seq), Quoted(body))') as [m]:
+                    name, seq, body = m.name, (m.seq.fn, *m.seq.args), m.body
+
+            results = []
+            for element in seq:
+                results.append(
+                    EvaluateInContext(
+                        push_subscope_with({name: element}),
+                        pop_subscope,
+                        body
+                    )
+                )
+            return e.Sexpr(e.Name("$"), tuple(results))
+
+        yield ("(λ &[name] &[any] &[any] . any)", _foreach)
 
     return extensions
