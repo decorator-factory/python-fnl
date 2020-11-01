@@ -106,7 +106,7 @@ def monospace():
 @fn(BUILTINS, "e")
 def entity():
     r"""
-    Creates an HTML entity. %%(tt \"(e "mdash")\")%% renders as %%&mdash;%%.
+    Creates an HTML entity. %%(tt "(e \"mdash\")")%% renders as %%(tt "&mdash;")%%.
     """
     def from_str(s):
         return e.InlineRaw(f"&{s.value};")
