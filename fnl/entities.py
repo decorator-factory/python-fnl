@@ -201,7 +201,10 @@ class Sexpr(Entity):
     @classmethod
     def __match__(cls, subpatterns, value, debug):
         if subpatterns == ():  # Sexpr() == "any Sexpr"
-            return isinstance(value, Sexpr)
+            if isinstance(value, Sexpr):
+                return {}
+            else:
+                return None
 
         if not isinstance(value, Sexpr):
             return None
