@@ -57,7 +57,7 @@ class TSexpr(EntityType):
         if self.arg_types == ():
             arg_string = ""
         else:
-            arg_string = " ".join(t.signature() for t in self.arg_types)
+            arg_string = " " + " ".join(t.signature() for t in self.arg_types)
         return f"({self.function_type.signature()}{arg_string})"
 
 

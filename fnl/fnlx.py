@@ -70,6 +70,11 @@ def parse_html_options(args: Iterable[e.Entity]):
 
 @fn(exports, "+")
 def div():
+    """
+    Part of the 'fnl.x' module.
+
+    Shortcut for %%(tt "b &div")%%
+    """
     def _div(*args: e.Entity):
         info = parse_html_options(args)
         return e.BlockTag("div", info.as_option_string, tuple(info.body))  # type: ignore
@@ -94,6 +99,11 @@ _INLINE_TAGS = frozenset((
 
 @fn(exports, "b")
 def block_tag():
+    """
+    Part of the 'fnl.x' module.
+
+    Creates a block element. See the 'Quoted expressions' tutorial for more info.
+    """
     def _block_tag(name_arg: e.Entity, *options: e.Entity):
         with match(name_arg) as case:
             with case('Quoted(Name(name))|String(name)') as [m]:
@@ -115,6 +125,11 @@ def block_tag():
 
 @fn(exports, "i")
 def inline_tag():
+    """
+    Part of the 'fnl.x' module.
+
+    Creates an inline element. See the 'Quoted expressions' tutorial for more info.
+    """
     def _inline_tag(name_arg: e.Entity, *options: e.Entity):
         with match(name_arg) as case:
             with case('Quoted(Name(name))|String(name)') as [m]:

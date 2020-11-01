@@ -59,6 +59,12 @@ def bindings() -> Dict[str, e.Entity]:
 
     @fn(extensions, "var")
     def var():
+        """
+        Part of the 'bindings' module.
+
+        %%(tt "(var &x)")%% is used to look up the binding %%(tt "x")%%
+        defined in a 'let' or 'for' clause.
+        """
         def _var(quoted_name):
             name = quoted_name.subexpression.name
             if (value := get_name(name)) is not None:
@@ -69,6 +75,14 @@ def bindings() -> Dict[str, e.Entity]:
 
     @fn(extensions, "let")
     def let():
+        r"""
+        Part of the 'bindings' module.
+
+        Defines a scope in which certain bindings refer to certain expressions.
+        Examples:
+            %%(tt "(let &answer 42 &(bf (var &answer)))")%%,
+            %%(tt "((let &(answer 42) &(pi 3)) &(bf (var &answer) \"...\" (var &pi)))")%%
+        """
         def from_many(*kv_pairs):
             new_bindings = {}
             for entry in kv_pairs:
@@ -96,6 +110,14 @@ def bindings() -> Dict[str, e.Entity]:
 
     @fn(extensions, "foreach")
     def foreach():
+        r"""
+        Part of the 'bindings' module.
+
+        For each element of a 'list', render some expression while binding
+        the element to a specific name.
+        %%(tt "(foreach &i &(1 2 3 4) &($ (bf (var &i)) \" \")")%% will render
+        boldface numbers 1, 2, 3 and 4 separated by spaces.
+        """
         def _foreach(name, seq, body):
             with match([name, seq, body]) as case:
                 with case('Seq(Quoted(Name(name)), Quoted(Name("nil")), Quoted(body))') as [m]:
@@ -120,6 +142,8 @@ def bindings() -> Dict[str, e.Entity]:
     @fn(extensions, "unquote")
     def unquote():
         """
+        Part of the 'bindings' module.
+
         Extract and evaluate the expression from under the %%(tt "&")%%
         """
         def _unquote(quoted):
@@ -129,24 +153,31 @@ def bindings() -> Dict[str, e.Entity]:
     @fn(extensions, "extract-name")
     def extract_name():
         """
+        Part of the 'bindings' module.
+
         Convert a quoted name to a string
         """
         def _extract_name(quoted_name):
             return e.String(quoted_name.subexpression.name)
         yield ("(λ &[name] . str)", _extract_name)
 
-    @fn(extensions, "all-names")
-    def all_names():
+    @fn(extensions, "documented-names")
+    def documented_names():
         """
-        Get a list of all the names as a quoted s-expression:
+        Part of the 'bindings' module.
+
+        Get a list of all the documented names as a quoted s-expression:
         %%(tt "&(&bf &it &tt ...)")%%
         """
         def _get_names(runtime: Dict[str, e.Entity]):
-            fn, *args = (e.Name(key) for key in runtime.keys())
+            fn, *args = (
+                e.Quoted(e.Name(key)) for key, value in runtime.items()
+                if isinstance(value, e.Function) and value._docstring_source is not None
+            )
             return e.Quoted(e.Sexpr(fn, tuple(args)))
 
-        def _all_names():
+        def _documented_names():
             return RuntimeDependent(_get_names)
-        yield ("(λ . &[any])", _all_names)
+        yield ("(λ . &[any])", _documented_names)
 
     return extensions

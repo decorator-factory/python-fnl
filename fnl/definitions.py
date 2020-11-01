@@ -357,7 +357,7 @@ def document_function():
     """
     def from_function(fn: e.Function):
         if not isinstance(fn, e.Function):
-            raise TypeError(f"Expected function, got {fn}")
+            return e.String("(no documentation available)")
         if fn._docstring_source is None:
             return e.String("(no documentation available)")
         else:
