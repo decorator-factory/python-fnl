@@ -28,3 +28,39 @@ class Cons:
             return None
 
         return {**first, **rest}
+
+
+@register("Seq")
+class Seq:
+    @staticmethod
+    def __match__(subpatterns, value, debug):
+        if not isinstance(value, Sequence):
+            return None
+
+        if len(subpatterns) != len(value):
+            return None
+
+        matched = {}
+        for (pattern, element) in zip(subpatterns, value):
+            if (submatch := pattern.match(element, debug)) is None:
+                return None
+            matched.update(submatch)
+        return matched
+
+
+@register("Pi")
+class Pi:
+    """
+    Intersection pattern
+
+    Can  be used to create aliases, for example:
+        Pi(elements, Sexpr())  <-- Sexpr() matches any s-expression
+    """
+    @staticmethod
+    def __match__(subpatterns, value, debug):
+        matched = {}
+        for pattern in subpatterns:
+            if (submatch := pattern.match(value, debug)) is None:
+                return None
+            matched.update(submatch)
+        return matched
