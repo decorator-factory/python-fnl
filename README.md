@@ -14,3 +14,9 @@ To build the docs, first install `fnl`, then run the `docs` module:
 ```sh
 $ python -m fnl.docs
 ```
+
+# VSCode syntax highlighting
+
+Copy the `fnl-syntax-highlighting` to your `.vscode` (e.g. `~/.vscode`) folder
+and reload VSCode. You may need to connect the suffix (`.fnl`) to the language
+(_FNL is Not Lisp_).
