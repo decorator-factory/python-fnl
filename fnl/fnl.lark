@@ -2,7 +2,7 @@
 ?expr: string | raw_string | integer | sexpr | name | quoted
 integer: /[-+]?[0-9]+/
 string: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
-raw_string: /\"\"\"(\\.|[^"]|\n)*?\"\"\"/
+raw_string: /\"\"\"(\\\"\"\"|.|\n)*?\"\"\"/
 name: /(?![-+]?[0-9])[-_$@:+*\/a-zA-Z0-9.#]+/
 
 quoted: "&" expr

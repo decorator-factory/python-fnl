@@ -29,8 +29,8 @@ class LanguageTransformer(Transformer):
 
     @staticmethod
     def raw_string(token):
-        s = str(token)[2:-2].replace("\n", "\\n")
-        return e.String(dedent(json.loads(s)))
+        s = str(token)[3:-3].replace(R'\"""', '"""')
+        return e.String(dedent(s))
 
     @staticmethod
     def name(token):
