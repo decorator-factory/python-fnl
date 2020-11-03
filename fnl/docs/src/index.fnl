@@ -19,7 +19,7 @@
     "FNL is a markup language for your blog. It's...")
 
   ((h 3) "...terse")
-  (pre """
+  (pre ($fnl """
     ($
       ((h 1)
         "Hello, world!")
@@ -29,7 +29,7 @@
         ($ (bf "super") " awesome")
         ((style "color: red; font-size: 100%") "amazing")
         ((sepmap ", " tt) "modern" "striking" "inspiring")))
-  """)
+  """))
   ($box
     ($
     ((h 1)
@@ -81,9 +81,9 @@
   (horizontal-rule)
   ((h 3) "...strongly typed")
 
-  (pre """
+  (pre ($fnl """
       (bf (p "I'm putting a <p> inside a <b>. It's my foot. And my gun."))
-  """)
+  """))
   (pre """
     fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
   """)
@@ -98,6 +98,6 @@
 
   (horizontal-rule)
   ((h 2) "Source:")
-  (pre $source)
+  (pre ($fnl $source))
 
 )

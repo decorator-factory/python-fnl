@@ -1,7 +1,6 @@
 ($docs $filename $source "Language tutorial"
   (p
-    "Inspired by X-expressions, I decided to take a stab at
-    markup language design. It's not meant to be a replacement for HTML,
+    "The language is not meant to be a replacement for HTML,
     it's just a tool for rendering HTML to style a blog post. There's still a
     lot of work to do, but it's already pretty useful, at least in my view.")
 
@@ -38,7 +37,7 @@
   (horizontal-rule)
   ((h 3)
     "Some functions represent HTML tags:")
-  (pre """
+  (pre ($fnl """
     (p              ; paragraph
       (bf "Hello")  ; boldface
       (it "World")  ; italics
@@ -50,7 +49,7 @@
         "Buy milk"
         "Submit a pull request"
         "Solve fizzbuzz"))
-  """)
+  """))
   ($box
     (p
         (bf "Hello")
@@ -70,9 +69,9 @@
     "Some languages are powerful not because of something you can do with them,
     but rather because of something you " (it "can't") ". Strict languages like
     Haskell or Rust are a good example of that.")
-  (p (pre """
+  (p (pre ($fnl """
     (b (p "text"))
-  """))
+  """)))
   (p
     "This results in an error: "
     (bf (mono "Cannot call (λ  ...inline . inline) with (block) (line 71, column 3)")))
@@ -89,7 +88,7 @@
   (p
     "You can inspect the type of an object by using the " (tt "type")
     " function:")
-  (pre
+  (pre ($fnl
   """
   (list-unordered
     (tt "\"hello\": " (type "hello"))
@@ -101,7 +100,7 @@
     (tt "horizontal-rule: " (type nobr))
   )
   """
-  )
+  ))
   ($box
     (list-unordered
       (tt "\"hello\": " (type "hello"))
@@ -141,18 +140,18 @@
     (tt "map") " is another example of a higher-order function. its type
     is " (mono (type map)) ". That's a very long type, but basically, "
     (tt "map") " allows you to apply a function to a list of values.")
-  (pre """
+  (pre ($fnl """
     ((map p) "First paragraph" "Second paragraph" "Third paragraph")
-  """)
+  """))
   ((map p) "First paragraph" "Second paragraph" "Third paragraph")
 
   (p
     (tt "sep") " allows you to separate a list of values with a separator
     you give it.")
-  (pre """
+  (pre ($fnl """
     (p
       ((sep ", ") "int" "str" "list"))
-  """)
+  """))
   ($box
     (p
       ((sep ", ") "int" "str" "list")))
@@ -160,10 +159,10 @@
   (p
     "Ah, but what if you need to " (mono "sep") (it " and ") (mono "map") "?
     In that case you can use " (mono "sepmap") "!")
-  (pre """
+  (pre ($fnl """
     (p
       ((sepmap ", " tt) "int" "str" "list"))
-  """)
+  """))
   ($box
     (p
       ((sepmap ", " tt) "int" "str" "list")))
@@ -179,5 +178,5 @@
 
   (horizontal-rule)
   ((h 2) "Source:")
-  (pre $source)
+  (pre ($fnl $source))
 )

@@ -105,7 +105,7 @@
     (tt "b") " creates a block element, " (tt "i") " creates an inline element,
     and " (tt "+") " is a shortcut for the " (tt "div") " element.")
 
-  (pre """
+  (pre ($fnl """
   ($
     (b"!DOCTYPE" &html &.)
     (b&html &(lang "en")
@@ -120,7 +120,7 @@
             ((h 1) "Hello, world!")
           (+ &.content
             (i&a &(href "pay.html") "Give me your money")))))))
-  """)
+  """))
 
   (p "This is going to render the following HTML code:")
 
@@ -172,5 +172,5 @@
 
   (horizontal-rule)
   ((h 2) "Source:")
-  (pre $source)
+  (pre ($fnl $source))
 )

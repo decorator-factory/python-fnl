@@ -15,6 +15,10 @@ tt, pre, kbd {
     font-family: "Source Code Pro", monospace;
 }
 
+pre>span {
+    font-family: "Source Code Pro", monospace;
+}
+
 pre {
     padding: 4px;
     margin: 4px;
@@ -73,3 +77,18 @@ main>.-mount {
     margin: 4px;
     padding: 4px;
 }
+
+
+/* FNL Syntax Highlighting! */
+
+.code--fnl--ws { color: #3bec76; font-style: italic }  /* whitespace, including comments */
+.code--fnl--string { color: #dbf5cd; }
+.code--fnl--raw-string { color: #dbf5cd; }
+.code--fnl--integer { color: #6598d3; }
+
+.code--fnl--ampersand { color: #f06728; }
+.code--fnl--name { color: #08ceff; font-weight: 600 }
+.code--fnl--ampersand+.code--fnl--name { color: #dd4ea2; }
+
+.code--fnl--left-paren { color: #ff8f8f; }
+.code--fnl--rpar { color: #ff8f8f; }

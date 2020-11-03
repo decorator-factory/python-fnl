@@ -8,12 +8,13 @@
   (pre """
   import fnl
 
-  source_code = '''
-    ($
+  source_code = '''"""($fnl
+"""    ($
       ((h 1)
         "Hello, world!")
       (p "Lorem ipsum dolor sit amet"))
-  '''
+  """)"""  '''
+
 
   html: str = fnl.html()
   """)
@@ -71,10 +72,10 @@
   import fnl
   import fnl.entities as e
 
-  source = '''
-    (p
-      "From basic mathematics we know that " (e "pi") " = " PI " and e = " E ".")
-  '''
+  source = '''"""($fnl
+"""  (p
+    "From basic mathematics we know that " (e "pi") " = " PI " and e = " E ".")
+""")"""  '''
 
   print(fnl.html(source, {'PI': e.Integer(3), 'E': e.Integer(3)}))
   """)
@@ -282,5 +283,5 @@
 
   (horizontal-rule)
   ((h 2) "Source:")
-  (pre $source)
+  (pre ($fnl $source))
 )

@@ -65,6 +65,34 @@ def box():
     yield ("(λ inline|block . block)", _box)
 
 
+@fnl.definitions.fn(extensions, "$fnl")
+def fnl_highlight():
+    # Wrap FNL source code tokens in <span>s with appropriate CSS classes
+    # so that a CSS stylesheet can style the tokens.
+    def _fnl_highlight(s: fnl.e.String):
+        code = s.value
+        last_line = 1
+        last_col = 1
+        last_pos = 0
+        highlighted_tokens = []
+        for token in fnl.parser.lex(code):
+            print(repr(token), (token.line, token.column), (token.end_line, token.end_column), "|", (last_line, last_col))
+            # the lexer ignores comments and whitespace, so we need to collect them:
+            whitespace = code[last_pos:token.pos_in_stream]
+            if whitespace != "":
+                highlighted_tokens.append(("code--fnl--ws", whitespace))
+            last_line, last_col = token.end_line, token.end_column
+            last_pos = token.pos_in_stream + len(token)
+            kind = token.type.lower().replace("_", "-")
+            highlighted_tokens.append((f"code--fnl--{kind}", token.value))
+        return fnl.e.InlineConcat(tuple(
+            fnl.e.InlineTag(
+                "span", f'class="{css_class}"', (fnl.e.String(content),)
+            ) for (css_class, content) in highlighted_tokens
+        ))
+    yield ("(λ str . inline)", _fnl_highlight)
+
+
 template_html = (Path(__file__).parent / "template.html").read_text()
 
 src_dir = Path(__file__).parent / "src"
