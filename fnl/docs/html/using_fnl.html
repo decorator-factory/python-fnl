@@ -17,10 +17,10 @@
 import fnl
 
 source_code = &#x27;&#x27;&#x27;
-<span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Hello, world!&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Lorem ipsum dolor sit amet&quot;</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span>
+<span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Hello, world!&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Lorem ipsum dolor sit amet&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
 &#x27;&#x27;&#x27;
 
 
@@ -31,8 +31,8 @@ import fnl
 import fnl.entities as e
 
 source = &#x27;&#x27;&#x27;
-<span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--string">&quot;From basic mathematics we know that &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">e</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;pi&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; = &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">PI</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and e = &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">E</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span>
+<span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--string">&quot;From basic mathematics we know that &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">e</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;pi&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; = &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">PI</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and e = &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">E</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span>
 &#x27;&#x27;&#x27;
 
 print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
@@ -149,119 +149,119 @@ def hyphenate():
 fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 #=&gt; &#x27;1-2-3-4-5&#x27;
 
-</pre><hr /><h2>Source:</h2><pre><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$docs</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$filename</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Using FNL&quot;</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Basic usage&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+</pre><hr /><h2>Source:</h2><pre><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$docs</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$filename</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Using FNL&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Basic usage&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;Using FNL is pretty straight-forward. You give it source code, and it
-    gives you HTML.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    gives you HTML.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   import fnl
 
-  source_code = &#x27;&#x27;&#x27;&quot;&quot;&quot;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws">
+  source_code = &#x27;&#x27;&#x27;&quot;&quot;&quot;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws">
 </span><span class="code--fnl--raw-string">&quot;&quot;&quot;    ($
       ((h 1)
         &quot;Hello, world!&quot;)
       (p &quot;Lorem ipsum dolor sit amet&quot;))
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--raw-string">&quot;&quot;&quot;  &#x27;&#x27;&#x27;
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--raw-string">&quot;&quot;&quot;  &#x27;&#x27;&#x27;
 
 
   html: str = fnl.html()
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Extending FNL&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Extending FNL&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;To extend FNL, you&#x27;ll need to learn a bit about its internals.
-    The two most important modules are &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entities&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and &quot;</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entity_types&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    The two most important modules are &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entities&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entity_types&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entity_types&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; defines the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;EntityType&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; class and all
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entity_types&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; defines the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;EntityType&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; class and all
     of its subclasses; they represent the types that are defined &#x27;in the
     language spec&#x27;, if I may say so. You&#x27;ll need them to define the signatures
-    of your own functions.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    of your own functions.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entities&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; defines the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Entity&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; class and all
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.entities&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; defines the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Entity&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; class and all
     of its subclasses; they represent the expressions and values that appear
-    in the program. Here are some of them:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    in the program. Here are some of them:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Name &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; represents an expression that accesses a global
-      value, like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;bf&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; or &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;$&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Name &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; represents an expression that accesses a global
+      value, like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;bf&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; or &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;$&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Integer &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; represents... well, an integer&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Integer &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; represents... well, an integer&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;String &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; as you might expect, it&#x27;s a string&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;String &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; as you might expect, it&#x27;s a string&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;InlineTag &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; inline HTML tag, such as &lt;b&gt;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;InlineTag &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; inline HTML tag, such as &lt;b&gt;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;BlockTag &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; block HTML tag, such as &lt;p&gt;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;BlockTag &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; block HTML tag, such as &lt;p&gt;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;InlineConcat &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; concatenation of inline elements&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;InlineConcat &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; concatenation of inline elements&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;BlockConcat &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; concatenation of mixed elements; the
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;BlockConcat &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; concatenation of mixed elements; the
       result is a block element. The name might be confusing, but
       the relevant part here is that this value cannot be used as an inline
-      element, but can be used as a block element.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      element, but can be used as a block element.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Providing custom symbols&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;If you take a look at the signature of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.html&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, you can see
-    that it accepts an optional &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;extensions&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; argument. It&#x27;s a mapping
-    from strings (names) to &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Entity&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; objects. For example, you can
-    define some constants like that:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Providing custom symbols&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;If you take a look at the signature of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.html&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, you can see
+    that it accepts an optional &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;extensions&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; argument. It&#x27;s a mapping
+    from strings (names) to &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Entity&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; objects. For example, you can
+    define some constants like that:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   import fnl
   import fnl.entities as e
 
-  source = &#x27;&#x27;&#x27;&quot;&quot;&quot;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws">
+  source = &#x27;&#x27;&#x27;&quot;&quot;&quot;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws">
 </span><span class="code--fnl--raw-string">&quot;&quot;&quot;  (p
     &quot;From basic mathematics we know that &quot; (e &quot;pi&quot;) &quot; = &quot; PI &quot; and e = &quot; E &quot;.&quot;)
-&quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--raw-string">&quot;&quot;&quot;  &#x27;&#x27;&#x27;
+&quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--raw-string">&quot;&quot;&quot;  &#x27;&#x27;&#x27;
 
   print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;You should get: &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&lt;p&gt;From basic mathematics we know that &amp;pi; = 3 and e = 3.&lt;/p&gt;&quot;</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;You should get: &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&lt;p&gt;From basic mathematics we know that &amp;pi; = 3 and e = 3.&lt;/p&gt;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;In that mapping, you can provide any expression you want.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;In that mapping, you can provide any expression you want.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Name(&#x27;PI&#x27;)}))
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Creating functions&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Creating functions&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;Let&#x27;s create a very simple function: it should take a string as an argument
-    and return it unchanged. First, let&#x27;s import all the necessary modules.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    and return it unchanged. First, let&#x27;s import all the necessary modules.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; import fnl
     &gt;&gt;&gt; import fnl.entities as e
     &gt;&gt;&gt; import fnl.entity_types as et
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Then we&#x27;ll need to create a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;signature&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; for our function so that
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Then we&#x27;ll need to create a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;signature&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; for our function so that
     the type system knows what the function accepts and returns. As you may
     remember, a function can take a few required arguments and (possibly)
-    varargs of one type, like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(λ a b ...c . d)&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    varargs of one type, like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(λ a b ...c . d)&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; function_type = et.TFunction(
     ...    arg_types = ( et.TStr(), )
     ...    rest = None,
@@ -270,87 +270,87 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     ...
     &gt;&gt;&gt; function_type.signature()
     &#x27;(λ str . str)&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;Now we have to create a callable (basically, a Python function) that takes
-    a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.String()&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and returns a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.String()&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.String()&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and returns a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.String()&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; def identity(s: e.String) -&gt; e.String:
     ...     return s
     ...
     &gt;&gt;&gt;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;The type annotations are completely optional, they only serve as documentation.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;The type annotations are completely optional, they only serve as documentation.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Now we can combine the two to create a FNL function:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Now we can combine the two to create a FNL function:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; function = e.Function({function_type: identity})
     &gt;&gt;&gt;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.Function&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a subclass of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.Entity &quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">--</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;it&#x27;s the type that all the built-in functions in FNL have. Let&#x27;s test our function.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.Function&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a subclass of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;e.Entity &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;it&#x27;s the type that all the built-in functions in FNL have. Let&#x27;s test our function.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; fnl.html(&#x27;(id &quot;hello&quot;)&#x27;, {&#x27;id&#x27;: function})
     &#x27;hello&#x27;
     &gt;&gt;&gt; fnl.html(&#x27;(p (id &quot;hello, &quot;) (id &quot;world!&quot;))&#x27;, {&#x27;id&#x27;: function})
     &#x27;&lt;p&gt;hello, world!&lt;/p&gt;&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Congratulations, it works! Now let&#x27;s try to break our function.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Congratulations, it works! Now let&#x27;s try to break our function.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     &gt;&gt;&gt; fnl.html(&#x27;(id 42)&#x27;, {&#x27;id&#x27;: function})
     FnlTypeError: Cannot call (λ str . str) with (int) (line 1, column 1)
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Using string-based function annotations&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Using string-based function annotations&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;Creating a function type is so verbose, why can&#x27;t I just write (λ str . str)?
-    Actually, you can! &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.type_parser.parse_fn&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; converts a function
-    type as a string into a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;TFunction&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    Actually, you can! &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.type_parser.parse_fn&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; converts a function
+    type as a string into a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;TFunction&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     from fnl.type_parser import parse_fn
 
     def identity(s):
         return s
 
     function = e.Function({parse_fn(&#x27;(λ str . str)&#x27;): identity})
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Examples and more advanced features&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Examples and more advanced features&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Let&#x27;s create a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;dup&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; function that repeats a string twice using
-    the same steps.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Let&#x27;s create a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;dup&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; function that repeats a string twice using
+    the same steps.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     def _dup(s: e.String) -&gt; e.String:
         return e.String(s.value + s.value)
 
     fnl.html(&#x27;(dup &quot;py&quot;)&#x27;, {parse_fn(&#x27;(λ str . str)&#x27;): dup})
     #=&gt; &#x27;pypy&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Let&#x27;s create a function &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;-&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; that accepts any number of strings
-    and puts hyphens between them.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Let&#x27;s create a function &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;-&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; that accepts any number of strings
+    and puts hyphens between them.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     def _hyphenate(*strings: e.String) -&gt; e.String:
         return e.String(&quot;-&quot;.join(s.value for s in strings))
     hyphenate = e.Function({parse_fn(&#x27;(λ ...str . str)&#x27;): _hyphenate})
@@ -360,13 +360,13 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 
     fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
     #=&gt; &#x27;(λ  ...str . str)&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
     </span><span class="code--fnl--string">&quot;Remember that a function can have multiple overloads. Let&#x27;s modify our
-    function so that it accepts integers as well.&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    function so that it accepts integers as well.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     def _hyphenate_str(*strings: e.String) -&gt; e.String:
         return e.String(&quot;-&quot;.join(s.value for s in strings))
 
@@ -386,16 +386,16 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 
     fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
     #=&gt; &#x27;(λ  ...str . str)|(λ  ...int . str)&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;Using the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.definitions.fn&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; shortcut&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;If you look at the source code of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl/definitions.py&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;, you&#x27;ll see declarations like this:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Using the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.definitions.fn&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; shortcut&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;If you look at the source code of &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl/definitions.py&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;, you&#x27;ll see declarations like this:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     @fn(BUILTINS, &quot;$&quot;)
     def concat():
         def from_inline(*args):
@@ -405,17 +405,17 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
         def from_mixed(*args):
             return e.BlockConcat(args)
         yield (&quot;(λ  ...inline|block . inline|block)&quot;, from_mixed)
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fn&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;is a helper decorator for creating FNL function. It accepts
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fn&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;is a helper decorator for creating FNL function. It accepts
     a dictionary and the function name as argument, and it can be applied to a
-    generator function that yields &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(signature, function)&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; tuples:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    generator function that yields &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(signature, function)&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; tuples:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">p</span><span class="code--fnl--ws">
-    </span><span class="code--fnl--string">&quot;For example, our &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;-&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; function could&#x27;ve been written as this:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;For example, our &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;-&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; function could&#x27;ve been written as this:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     extensions = {}
 
     @fn(extensions, &quot;-&quot;)
@@ -430,12 +430,12 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 
     fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     #=&gt; &#x27;1-2-3-4-5&#x27;
-  &quot;&quot;&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
 
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">horizontal-rule</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Source:&quot;</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
-</span></span><span class="code--fnl--rpar">)</span>
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Source:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+</span><span class="code--fnl--rpar">)</span></span>
 </pre>
         </div>
     </main>

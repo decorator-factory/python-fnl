@@ -88,8 +88,8 @@ def fnl_highlight():
                 "span", f'class="{css_class}"', (fnl.e.String(content),)
             ) if content not in {"(", ")"}
             else {
-                "(": fnl.e.InlineRaw(f'<span class="{css_class}">(</span><span class="code--fnl--sexpr">'),
-                ")": fnl.e.InlineRaw(f'</span><span class="{css_class}">)</span>'),
+                "(": fnl.e.InlineRaw(f'<span class="code--fnl--sexpr"><span class="{css_class}">(</span>'),
+                ")": fnl.e.InlineRaw(f'<span class="{css_class}">)</span></span>'),
             }[content]
             for (css_class, content) in highlighted_tokens
         ))
