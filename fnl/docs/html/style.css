@@ -22,7 +22,7 @@ pre span {
 pre {
     padding: 4px;
     margin: 4px;
-    background: black;
+    background: #252525;
     color: white;
 }
 
@@ -94,10 +94,10 @@ main>.-mount {
 .code--fnl--rpar { color: #ff8f8f; }
 
 .code--fnl--sexpr {
-    transition: outline 0.25s linear, background 0.25s linear;
+    transition: outline 0.1s linear, background 0.1s linear;
     outline: 1px solid  rgba(255, 255, 255, 0);
 }
 .code--fnl--sexpr:hover {
-    background: rgba(88, 88, 100, 0.25);
-    outline: 1px solid  rgba(255, 255, 255, 0.5);
+    outline: 2px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.1);
 }
