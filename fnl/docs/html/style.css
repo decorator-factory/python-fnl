@@ -94,7 +94,8 @@ main>.-mount {
 .code--fnl--rpar { color: #ff8f8f; }
 
 .code--fnl--sexpr {
-    transition: 0.25s;
+    transition: outline 0.25s linear, background 0.25s linear;
+    outline: 1px solid  rgba(255, 255, 255, 0);
 }
 .code--fnl--sexpr:hover {
     background: rgba(88, 88, 100, 0.25);
