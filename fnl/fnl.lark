@@ -1,9 +1,13 @@
 ?start: expr
 ?expr: string | raw_string | integer | sexpr | name | quoted
-integer: /[-+]?[0-9]+/
-string: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
-raw_string: /\"\"\"(\\\"\"\"|.|\n)*?\"\"\"/
-name: /(?![-+]?[0-9])[-_$@:+*\/a-zA-Z0-9.#]+/
+INTEGER: /[-+]?[0-9]+/
+integer: INTEGER
+STRING: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
+string: STRING
+RAW_STRING: /\"\"\"(\\\"\"\"|.|\n)*?\"\"\"/
+raw_string: RAW_STRING
+NAME: /(?![-+]?[0-9])[-_$@:+*\/a-zA-Z0-9.#]+/
+name: NAME
 
 quoted: "&" expr
 
