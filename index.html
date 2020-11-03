@@ -13,17 +13,16 @@
             <a href="index.html">Go to the index</a>
         </div>
         <div class="-mount">
-            <div class="fnl--box"><ul><li><a href="index.html">Index</a></li><li><a href="language_tutorial.html">Language tutorial</a></li><li><a href="using_fnl.html">Using FNL</a></li><li><a href="quoted_expressions.html">Quoted expressions</a></li></ul></div><hr /><h1>FNL</h1><h2>FNL is Not Lisp</h2><hr /><p>FNL is a markup language for your blog. It&#x27;s...</p><h3>...terse</h3><pre>
-($
-  ((h 1)
-    &quot;Hello, world!&quot;)
-  &quot;Welcome to &quot; (bf &quot;my&quot;) &quot; blog! It is:&quot;
-  (list-unordered
-    (it &quot;cool&quot;)
-    ($ (bf &quot;super&quot;) &quot; awesome&quot;)
-    ((style &quot;color: red; font-size: 100%&quot;) &quot;amazing&quot;)
-    ((sepmap &quot;, &quot; tt) &quot;modern&quot; &quot;striking&quot; &quot;inspiring&quot;)))
-
+            <div class="fnl--box"><ul><li><a href="index.html">Index</a></li><li><a href="language_tutorial.html">Language tutorial</a></li><li><a href="using_fnl.html">Using FNL</a></li><li><a href="quoted_expressions.html">Quoted expressions</a></li></ul></div><hr /><h1>FNL</h1><h2>FNL is Not Lisp</h2><hr /><p>FNL is a markup language for your blog. It&#x27;s...</p><h3>...terse</h3><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Hello, world!&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--string">&quot;Welcome to &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;my&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; blog! It is:&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;cool&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;super&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; awesome&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">style</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;color: red; font-size: 100%&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;amazing&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">sepmap</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">tt</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;modern&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;striking&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;inspiring&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span>
 </pre><div class="fnl--box"><h1>Hello, world!</h1>Welcome to <b>my</b> blog! It is:<ul><li><i>cool</i></li><li><b>super</b> awesome</li><li><span style="color: red; font-size: 100%">amazing</span></li><li><tt>modern</tt>, <tt>striking</tt>, <tt>inspiring</tt></li></ul></div><hr /><h3>...easy to use</h3><pre>
 import fnl
 
@@ -48,37 +47,36 @@ html = fnl.html(
     extensions
 )
 
-</pre><div class="fnl--box">This is how this box was made!</div><hr /><h3>...strongly typed</h3><pre>
-(bf (p &quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;))
-
+</pre><div class="fnl--box">This is how this box was made!</div><hr /><h3>...strongly typed</h3><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span>
 </pre><pre>
 fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
 
 </pre><hr /><h3>Convinced?</h3><pre>
 $ pip install git+https://github.com/decorator-factory/python-fnl
 
-</pre><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Index&quot;
-  ($box
-    (list-unordered
-      ($link-to &quot;index.html&quot;)
-      ($link-to &quot;language_tutorial.html&quot;)
-      ($link-to &quot;using_fnl.html&quot;)
-      ($link-to &quot;quoted_expressions.html&quot;)))
+</pre><hr /><h2>Source:</h2><pre><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$docs</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$filename</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Index&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$link-to</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;index.html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$link-to</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;language_tutorial.html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$link-to</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;using_fnl.html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$link-to</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;quoted_expressions.html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  ((h 1)
-    &quot;FNL&quot;)
-  ((h 2)
-    &quot;FNL is Not Lisp&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;FNL&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;FNL is Not Lisp&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  (p
-    &quot;FNL is a markup language for your blog. It&#x27;s...&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;FNL is a markup language for your blog. It&#x27;s...&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  ((h 3) &quot;...terse&quot;)
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">3</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;...terse&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     ($
       ((h 1)
         &quot;Hello, world!&quot;)
@@ -88,35 +86,35 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
         ($ (bf &quot;super&quot;) &quot; awesome&quot;)
         ((style &quot;color: red; font-size: 100%&quot;) &quot;amazing&quot;)
         ((sepmap &quot;, &quot; tt) &quot;modern&quot; &quot;striking&quot; &quot;inspiring&quot;)))
-  &quot;&quot;&quot;)
-  ($box
-    ($
-    ((h 1)
-      &quot;Hello, world!&quot;)
-    &quot;Welcome to &quot; (bf &quot;my&quot;) &quot; blog! It is:&quot;
-    (list-unordered
-      (it &quot;cool&quot;)
-      ($ (bf &quot;super&quot;) &quot; awesome&quot;)
-      ((style &quot;color: red; font-size: 100%&quot;) &quot;amazing&quot;)
-      ((sepmap &quot;, &quot; tt) &quot;modern&quot; &quot;striking&quot; &quot;inspiring&quot;))))
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--string">&quot;Hello, world!&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Welcome to &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;my&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; blog! It is:&quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;cool&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;super&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; awesome&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">style</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;color: red; font-size: 100%&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;amazing&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">sepmap</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">tt</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;modern&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;striking&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;inspiring&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  ((h 3) &quot;...easy to use&quot;)
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">3</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;...easy to use&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
       import fnl
 
       print(fnl.html(&#x27;($ (bf &quot;Hello, &quot;) (it &quot;world!&quot;))&#x27;))
-  &quot;&quot;&quot;)
-  (pre &quot;&quot;&quot;
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
       &lt;b&gt;Hello, &lt;/b&gt;&lt;i&gt;world!&lt;/i&gt;
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  ((h 3) &quot;...easy to extend&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">3</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;...easy to extend&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
       import fnl
       extensions = {}
 
@@ -131,35 +129,35 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
           &#x27;(box &quot;This is how this box was made!&quot;)&#x27;,
           extensions
       )
-  &quot;&quot;&quot;)
-  ($box
-    &quot;This is how this box was made!&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;This is how this box was made!&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
   ; ...except for the $, of course
 
 
-  (horizontal-rule)
-  ((h 3) &quot;...strongly typed&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">3</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;...strongly typed&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
       (bf (p &quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;))
-  &quot;&quot;&quot;)
-  (pre &quot;&quot;&quot;
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  ((h 3) &quot;Convinced?&quot;)
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">3</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Convinced?&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     $ pip install git+https://github.com/decorator-factory/python-fnl
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
 
-  (horizontal-rule)
-  ((h 2) &quot;Source:&quot;)
-  (pre $source)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Source:&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-)
+</span><span class="code--fnl--rpar">)</span>
 </pre>
         </div>
     </main>

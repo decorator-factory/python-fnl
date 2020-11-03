@@ -60,22 +60,21 @@ print(fnl.html(source, {**your, **extensions, **fnl.x}))
 # or, in 3.9+:
 print(fnl.html(source, your | extensions | fnl.x))
 
-</pre><p><tt>fnl.x</tt> exports three function: <tt>b</tt>, <tt>i</tt>, <tt>+</tt>. <tt>b</tt> creates a block element, <tt>i</tt> creates an inline element, and <tt>+</tt> is a shortcut for the <tt>div</tt> element.</p><pre>
-($
-  (b&quot;!DOCTYPE&quot; &amp;html &amp;.)
-  (b&amp;html &amp;(lang &quot;en&quot;)
-    (b&amp;head
-      (b&amp;meta &amp;(charset &quot;UTF-8&quot;) &amp;.)
-      (b&amp;meta &amp;(name &quot;viewport&quot;) &amp;(content &quot;width=device-width, initial-scale=1.0&quot;) &amp;.)
-      (b&amp;title &quot;My blog&quot;)
-      (b&amp;link &amp;(rel &quot;stylesheet&quot;) &amp;(href &quot;style.css&quot;) &amp;/))
-    (b&amp;body
-      (b&amp;main &amp;#app
-        (+ &amp;.greeting
-          ((h 1) &quot;Hello, world!&quot;)
-        (+ &amp;.content
-          (i&amp;a &amp;(href &quot;pay.html&quot;) &quot;Give me your money&quot;)))))))
-
+</pre><p><tt>fnl.x</tt> exports three function: <tt>b</tt>, <tt>i</tt>, <tt>+</tt>. <tt>b</tt> creates a block element, <tt>i</tt> creates an inline element, and <tt>+</tt> is a shortcut for the <tt>div</tt> element.</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--string">&quot;!DOCTYPE&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">html</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">.</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">html</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">lang</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;en&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">head</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">meta</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">charset</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;UTF-8&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">.</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">meta</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">name</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;viewport&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">content</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">.</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">title</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;My blog&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">link</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">rel</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;stylesheet&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">href</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;style.css&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">/</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">body</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">b</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">main</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">#app</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">+</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">.greeting</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">1</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Hello, world!&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">+</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">.content</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">i</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">href</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;pay.html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Give me your money&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span>
 </pre><p>This is going to render the following HTML code:</p><pre>
 &lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
@@ -96,16 +95,16 @@ print(fnl.html(source, your | extensions | fnl.x))
     &lt;/main&gt;
   &lt;/body&gt;
 &lt;/html&gt;
-</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p><hr /><h2>Source:</h2><pre>($docs $filename $source &quot;Quoted expressions&quot;
-  ((h 2)
-    &quot;Strict evaluation&quot;)
-  (p
-    &quot;Suppose that you want to render some content conditionally. For example,
+</pre><p>As you can see, there aren&#x27;t that many rules:<ul><li>You can use plain old FNL functions (like <tt>h</tt>)</li><li><tt>(b&amp;tag ...)</tt> creates a block element</li><li><tt>(b&quot;tag!?!&amp;&quot; ...)</tt> creates a block element with a name which is not a valid identifier</li><li><tt>(i&amp;tag ...)</tt> creates an inline element</li><li><tt>&amp;.class</tt> adds a class</li><li><tt>&amp;#id</tt> adds an ID</li><li><tt>&amp;html</tt> adds an attribute without an argument</li><li><tt>&amp;(attr &quot;value&quot;)</tt> adds an attribute</li><li><tt>&amp;.</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair</li><li><tt>&amp;/</tt> makes the tag closed without making a <tt>&lt;tag&gt;&lt;/tag&gt;</tt> pair and adds a slash ( / ) at the end.</li></ul></p><p><tt>fnlx</tt> takes advantage of quoted expressions: an expression like <tt>(lang&nbsp;&quot;en&quot;)</tt> or <tt>#id</tt> would fail at runtime.</p><p>With this tool, you can write pretty much any HTML you want. If you&#x27;re feeling adventurous, you can even write markup for Vue.js like that.</p><hr /><h2>Source:</h2><pre><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$docs</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$filename</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Quoted expressions&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Strict evaluation&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Suppose that you want to render some content conditionally. For example,
     you might want to add notes that are only visible to the editors; or
     you might want to temporarily disable some part of the tree. It&#x27;s not very
-    hard to implement, right?&quot;)
+    hard to implement, right?&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   extensions = {}
 
   is_debug = True
@@ -118,43 +117,43 @@ print(fnl.html(source, your | extensions | fnl.x))
           else:
               return e.BlockConcat(())
       yield (&#x27;(λ inline|block . block)&#x27;, _if_debug)
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;Let&#x27;s see if it works.&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Let&#x27;s see if it works.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   &gt;&gt;&gt; is_debug = True
   &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
   &#x27;&lt;b&gt;hi&lt;/b&gt;&#x27;
   &gt;&gt;&gt; is_debug = False
   &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
   &#x27;&#x27;
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;It works, but there are some issues. The subtree is evaluated
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;It works, but there are some issues. The subtree is evaluated
     even if it doesn&#x27;t get rendered. It might waste some resources if it&#x27;s
     a really large tree (or if it requies reading from a file, which is probably
     not a good idea, but you might want to read a config, for instance). More
     importantly, under certain conditions, it might throw an error because
-    something about this tree requires &quot; (tt &quot;is_debug&quot;) &quot; to be true.&quot;)
+    something about this tree requires &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;is_debug&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; to be true.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;FNL is a &quot; (it &quot;strict&quot;) &quot; language. It means that function arguments are
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;FNL is a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;strict&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; language. It means that function arguments are
     fully evaluated first, and only then are passed to the function. So, alas,
-    we&#x27;re out of luck.&quot;)
+    we&#x27;re out of luck.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  ((h 2)
-    &quot;Quoted expression to the rescue&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Quoted expression to the rescue&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;...unless we use quoted expressions! A quoted expression represents an expression
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;...unless we use quoted expressions! A quoted expression represents an expression
     that doesn&#x27;t get immediately evaluated. You can create a quoted expression
-    by prefixing it with &quot; (tt &quot;&amp;&quot;) &quot;, for example, &quot; (mono &quot;&amp;1024&quot;) &quot; is a
-    deferred integer, and &quot; (mono &quot;&amp;(hello \&quot;world\&quot;)&quot;) &quot; is a deferred call.&quot;)
+    by prefixing it with &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, for example, &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;1024&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a
+    deferred integer, and &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;(hello \&quot;world\&quot;)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a deferred call.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   extensions = {}
 
   is_debug = True
@@ -167,26 +166,26 @@ print(fnl.html(source, your | extensions | fnl.x))
           else:
               return e.BlockConcat(())
       yield (&#x27;(λ &amp;[any] . block)&#x27;, _if_debug)
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    (mono &quot;&amp;[any]&quot;) &quot; is a type of a quoted expession. The type of an expesssion
-    isn&#x27;t known until it&#x27;s fully evaluated, so we will use &quot; (tt &quot;any&quot;) &quot;as the
-    type parameter. Other examples of quoted types: &quot;
-    (list-unordered
-      ($ (tt &quot;&amp;[str] &quot;) (--) &quot; quoted string (like &quot; (tt &quot;&amp;\&quot;hi\&quot;&quot;) &quot;)&quot; )
-      ($ (tt &quot;&amp;[int] &quot;) (--) &quot; quoted integer (like &quot; (tt &quot;&amp;10&quot;) &quot;)&quot; )
-      ($ (tt &quot;&amp;[name] &quot;) (--) &quot; quoted name (like &quot; (tt &quot;&amp;a-name&quot;) &quot;)&quot; )
-      ($ (tt &quot;&amp;[name[a|b]] &quot;) (--) &quot; bounded quoted name (only &quot; (tt &quot;&amp;a&quot;) &quot; or &quot; (tt &quot;&amp;b&quot;) &quot; )&quot; )
-      ($ (tt &quot;&amp;[(name int)] &quot;) (--) &quot; s-expression (like &quot; (tt &quot;&amp;(version 7)&quot;) &quot;)&quot; )))
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[any]&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a type of a quoted expession. The type of an expesssion
+    isn&#x27;t known until it&#x27;s fully evaluated, so we will use &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;any&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;as the
+    type parameter. Other examples of quoted types: &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[str] &quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; quoted string (like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;\&quot;hi\&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;)&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[int] &quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; quoted integer (like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;10&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;)&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[name] &quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; quoted name (like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;a-name&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;)&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[name[a|b]] &quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; bounded quoted name (only &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;a&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; or &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;b&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; )&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;[(name int)] &quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">--</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; s-expression (like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;(version 7)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;)&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  ((h 2)
-    &quot;Examples of using quoted expressions in &quot; (tt &quot;fnl.x&quot;))
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Examples of using quoted expressions in &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.x&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    (tt &quot;fnl.x&quot;) &quot; is a standard extension that helps you construct arbitrary HTML.&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.x&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a standard extension that helps you construct arbitrary HTML.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
     import fnl
 
     source = ...
@@ -196,14 +195,14 @@ print(fnl.html(source, your | extensions | fnl.x))
     print(fnl.html(source, {**your, **extensions, **fnl.x}))
     # or, in 3.9+:
     print(fnl.html(source, your | extensions | fnl.x))
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    (tt &quot;fnl.x&quot;)  &quot; exports three function: &quot; ((sepmap &quot;, &quot; tt) &quot;b&quot; &quot;i&quot; &quot;+&quot;) &quot;. &quot;
-    (tt &quot;b&quot;) &quot; creates a block element, &quot; (tt &quot;i&quot;) &quot; creates an inline element,
-    and &quot; (tt &quot;+&quot;) &quot; is a shortcut for the &quot; (tt &quot;div&quot;) &quot; element.&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.x&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">  </span><span class="code--fnl--string">&quot; exports three function: &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">sepmap</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;, &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">tt</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;b&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;i&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;+&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;. &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;b&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; creates a block element, &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;i&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; creates an inline element,
+    and &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;+&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is a shortcut for the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;div&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; element.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   ($
     (b&quot;!DOCTYPE&quot; &amp;html &amp;.)
     (b&amp;html &amp;(lang &quot;en&quot;)
@@ -218,11 +217,11 @@ print(fnl.html(source, your | extensions | fnl.x))
             ((h 1) &quot;Hello, world!&quot;)
           (+ &amp;.content
             (i&amp;a &amp;(href &quot;pay.html&quot;) &quot;Give me your money&quot;)))))))
-  &quot;&quot;&quot;)
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p &quot;This is going to render the following HTML code:&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;This is going to render the following HTML code:&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (pre &quot;&quot;&quot;
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
   &lt;!DOCTYPE html&gt;
   &lt;html lang=&quot;en&quot;&gt;
     &lt;head&gt;
@@ -241,37 +240,37 @@ print(fnl.html(source, your | extensions | fnl.x))
         &lt;/div&gt;
       &lt;/main&gt;
     &lt;/body&gt;
-  &lt;/html&gt;&quot;&quot;&quot;)
+  &lt;/html&gt;&quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;As you can see, there aren&#x27;t that many rules:&quot;
-    (list-unordered
-      ($ &quot;You can use plain old FNL functions (like &quot; (tt &quot;h&quot;) &quot;)&quot;)
-      ($ (tt &quot;(b&amp;tag ...)&quot;) &quot; creates a block element&quot;)
-      ($ (tt &quot;(b\&quot;tag!?!&amp;\&quot; ...)&quot;) &quot; creates a block element with a name which is
-        not a valid identifier&quot;)
-      ($ (tt &quot;(i&amp;tag ...)&quot;) &quot; creates an inline element&quot;)
-      ($ (tt &quot;&amp;.class&quot;) &quot; adds a class&quot;)
-      ($ (tt &quot;&amp;#id&quot;) &quot; adds an ID&quot;)
-      ($ (tt &quot;&amp;html&quot;) &quot; adds an attribute without an argument&quot;)
-      ($ (tt &quot;&amp;(attr \&quot;value\&quot;)&quot;) &quot; adds an attribute&quot;)
-      ($ (tt &quot;&amp;.&quot;) &quot; makes the tag closed without making a &quot; (tt &quot;&lt;tag&gt;&lt;/tag&gt;&quot;)
-        &quot; pair&quot;)
-      ($ (tt &quot;&amp;/&quot;) &quot; makes the tag closed without making a &quot; (tt &quot;&lt;tag&gt;&lt;/tag&gt;&quot;)
-        &quot; pair and adds a slash ( / ) at the end.&quot;)))
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;As you can see, there aren&#x27;t that many rules:&quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;You can use plain old FNL functions (like &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;h&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(b&amp;tag ...)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; creates a block element&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(b\&quot;tag!?!&amp;\&quot; ...)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; creates a block element with a name which is
+        not a valid identifier&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(i&amp;tag ...)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; creates an inline element&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;.class&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; adds a class&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;#id&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; adds an ID&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;html&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; adds an attribute without an argument&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;(attr \&quot;value\&quot;)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; adds an attribute&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; makes the tag closed without making a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&lt;tag&gt;&lt;/tag&gt;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot; pair&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&amp;/&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; makes the tag closed without making a &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&lt;tag&gt;&lt;/tag&gt;&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot; pair and adds a slash ( / ) at the end.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    (tt &quot;fnlx&quot;) &quot; takes advantage of quoted expressions: an expression like &quot;
-    (mono &quot;(lang \&quot;en\&quot;)&quot;) &quot; or &quot; (tt &quot;#id&quot;) &quot; would fail at runtime.&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnlx&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; takes advantage of quoted expressions: an expression like &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;(lang \&quot;en\&quot;)&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; or &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;#id&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; would fail at runtime.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (p
-    &quot;With this tool, you can write pretty much any HTML you want. If you&#x27;re
-    feeling adventurous, you can even write markup for Vue.js like that.&quot;)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;With this tool, you can write pretty much any HTML you want. If you&#x27;re
+    feeling adventurous, you can even write markup for Vue.js like that.&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
 
-  (horizontal-rule)
-  ((h 2) &quot;Source:&quot;)
-  (pre $source)
-)
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Source:&quot;</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--rpar">)</span><span class="code--fnl--rpar">)</span><span class="code--fnl--ws">
+</span><span class="code--fnl--rpar">)</span>
 </pre>
         </div>
     </main>
