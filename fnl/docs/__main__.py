@@ -71,8 +71,6 @@ def fnl_highlight():
     # so that a CSS stylesheet can style the tokens.
     def _fnl_highlight(s: fnl.e.String):
         code = s.value
-        last_line = 1
-        last_col = 1
         last_pos = 0
         highlighted_tokens = []
         for token in fnl.parser.lex(code):
@@ -80,14 +78,20 @@ def fnl_highlight():
             whitespace = code[last_pos:token.pos_in_stream]
             if whitespace != "":
                 highlighted_tokens.append(("code--fnl--ws", whitespace))
-            last_line, last_col = token.end_line, token.end_column
             last_pos = token.pos_in_stream + len(token)
             kind = token.type.lower().replace("_", "-")
             highlighted_tokens.append((f"code--fnl--{kind}", token.value))
+
+        # TODO: TODO: TODO: TODO: refactor this in the next commit!
         return fnl.e.InlineConcat(tuple(
             fnl.e.InlineTag(
                 "span", f'class="{css_class}"', (fnl.e.String(content),)
-            ) for (css_class, content) in highlighted_tokens
+            ) if content not in {"(", ")"}
+            else {
+                "(": fnl.e.InlineRaw(f'<span class="{css_class}">(</span><span class="code--fnl--sexpr">'),
+                ")": fnl.e.InlineRaw(f'</span><span class="{css_class}">)</span>'),
+            }[content]
+            for (css_class, content) in highlighted_tokens
         ))
     yield ("(λ str . inline)", _fnl_highlight)
 

@@ -15,7 +15,7 @@ tt, pre, kbd {
     font-family: "Source Code Pro", monospace;
 }
 
-pre>span {
+pre span {
     font-family: "Source Code Pro", monospace;
 }
 
@@ -92,3 +92,11 @@ main>.-mount {
 
 .code--fnl--left-paren { color: #ff8f8f; }
 .code--fnl--rpar { color: #ff8f8f; }
+
+.code--fnl--sexpr {
+    transition: background 0.25s;
+}
+.code--fnl--sexpr:hover {
+    background: rgba(88, 88, 100, 0.15);
+    outline: 1px solid  rgba(88, 88, 100, 0.4);
+}
