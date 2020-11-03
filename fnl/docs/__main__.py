@@ -76,7 +76,6 @@ def fnl_highlight():
         last_pos = 0
         highlighted_tokens = []
         for token in fnl.parser.lex(code):
-            print(repr(token), (token.line, token.column), (token.end_line, token.end_column), "|", (last_line, last_col))
             # the lexer ignores comments and whitespace, so we need to collect them:
             whitespace = code[last_pos:token.pos_in_stream]
             if whitespace != "":
