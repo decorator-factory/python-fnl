@@ -125,16 +125,16 @@
     &quot;Some functions represent HTML tags:&quot;)
   (pre &quot;&quot;&quot;
     (p              ; paragraph
-      (bf \&quot;Hello\&quot;)  ; boldface
-      (it \&quot;World\&quot;)  ; italics
-      (tt \&quot;Aaaaa\&quot;)  ; monospaces text
+      (bf &quot;Hello&quot;)  ; boldface
+      (it &quot;World&quot;)  ; italics
+      (tt &quot;Aaaaa&quot;)  ; monospaces text
 
       ; heading:
-      ((h 3) \&quot;To do:\&quot;)
+      ((h 3) &quot;To do:&quot;)
       (list-unordered
-        \&quot;Buy milk\&quot;
-        \&quot;Submit a pull request\&quot;
-        \&quot;Solve fizzbuzz\&quot;))
+        &quot;Buy milk&quot;
+        &quot;Submit a pull request&quot;
+        &quot;Solve fizzbuzz&quot;))
   &quot;&quot;&quot;)
   ($box
     (p
@@ -156,7 +156,7 @@
     but rather because of something you &quot; (it &quot;can&#x27;t&quot;) &quot;. Strict languages like
     Haskell or Rust are a good example of that.&quot;)
   (p (pre &quot;&quot;&quot;
-    (b (p \&quot;text\&quot;))
+    (b (p &quot;text&quot;))
   &quot;&quot;&quot;))
   (p
     &quot;This results in an error: &quot;
@@ -177,13 +177,13 @@
   (pre
   &quot;&quot;&quot;
   (list-unordered
-    (tt \&quot;\\\&quot;hello\\\&quot;: \&quot; (type \&quot;hello\&quot;))
-    (tt \&quot;5: \&quot; (type 5))
-    (tt \&quot;p: \&quot; (type p))
-    (tt \&quot;$: \&quot; (type $))
-    (tt \&quot;h: \&quot; (type h))
-    (tt \&quot;nobr: \&quot; (type nobr))
-    (tt \&quot;horizontal-rule: \&quot; (type nobr))
+    (tt &quot;\&quot;hello\&quot;: &quot; (type &quot;hello&quot;))
+    (tt &quot;5: &quot; (type 5))
+    (tt &quot;p: &quot; (type p))
+    (tt &quot;$: &quot; (type $))
+    (tt &quot;h: &quot; (type h))
+    (tt &quot;nobr: &quot; (type nobr))
+    (tt &quot;horizontal-rule: &quot; (type nobr))
   )
   &quot;&quot;&quot;
   )
@@ -227,7 +227,7 @@
     is &quot; (mono (type map)) &quot;. That&#x27;s a very long type, but basically, &quot;
     (tt &quot;map&quot;) &quot; allows you to apply a function to a list of values.&quot;)
   (pre &quot;&quot;&quot;
-    ((map p) \&quot;First paragraph\&quot; \&quot;Second paragraph\&quot; \&quot;Third paragraph\&quot;)
+    ((map p) &quot;First paragraph&quot; &quot;Second paragraph&quot; &quot;Third paragraph&quot;)
   &quot;&quot;&quot;)
   ((map p) &quot;First paragraph&quot; &quot;Second paragraph&quot; &quot;Third paragraph&quot;)
 
@@ -236,7 +236,7 @@
     you give it.&quot;)
   (pre &quot;&quot;&quot;
     (p
-      ((sep \&quot;, \&quot;) \&quot;int\&quot; \&quot;str\&quot; \&quot;list\&quot;))
+      ((sep &quot;, &quot;) &quot;int&quot; &quot;str&quot; &quot;list&quot;))
   &quot;&quot;&quot;)
   ($box
     (p
@@ -247,7 +247,7 @@
     In that case you can use &quot; (mono &quot;sepmap&quot;) &quot;!&quot;)
   (pre &quot;&quot;&quot;
     (p
-      ((sepmap \&quot;, \&quot; tt) \&quot;int\&quot; \&quot;str\&quot; \&quot;list\&quot;))
+      ((sepmap &quot;, &quot; tt) &quot;int&quot; &quot;str&quot; &quot;list&quot;))
   &quot;&quot;&quot;)
   ($box
     (p
