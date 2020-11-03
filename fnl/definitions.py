@@ -238,7 +238,7 @@ def pre():
             elements.append(arg)
             elements.append(e.InlineRaw("\n"))
         return e.BlockTag("pre", "", tuple(elements))
-    yield ("(λ ...str . block)", from_inline)
+    yield ("(λ ...inline . block)", from_inline)
 
 
 @fn(BUILTINS, "map")
