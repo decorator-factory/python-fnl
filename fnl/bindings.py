@@ -172,7 +172,7 @@ def bindings() -> Dict[str, e.Entity]:
         def _get_names(runtime: Dict[str, e.Entity]):
             fn, *args = (
                 e.Quoted(e.Name(key)) for key, value in runtime.items()
-                if isinstance(value, e.Function) and value._docstring_source is not None
+                if getattr(value, "_docstring_source", None) is not None
             )
             return e.Quoted(e.Sexpr(fn, tuple(args)))
 

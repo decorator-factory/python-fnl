@@ -356,10 +356,8 @@ def document_function():
     Render the documentation for a function.
     """
     def from_function(fn: e.Function):
-        if not isinstance(fn, e.Function):
-            return e.String("(no documentation available)")
-        if fn._docstring_source is None:
+        if getattr(fn, "_docstring_source", None) is None:
             return e.String("(no documentation available)")
         else:
-            return _parse_docstring(fn._docstring_source)
+            return _parse_docstring(fn._docstring_source)  # type: ignore
     yield("(λ any . inline)", from_function)
