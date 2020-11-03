@@ -8,12 +8,12 @@
   (pre """
   import fnl
 
-  source_code = \"\"\"
+  source_code = '''
     ($
       ((h 1)
-        \"Hello, world!\")
-      (p \"Lorem ipsum dolor sit amet\"))
-  \"\"\"
+        "Hello, world!")
+      (p "Lorem ipsum dolor sit amet"))
+  '''
 
   html: str = fnl.html()
   """)
@@ -71,10 +71,10 @@
   import fnl
   import fnl.entities as e
 
-  source = \"\"\"
+  source = '''
     (p
-      \"From basic mathematics we know that \" (e \"pi\") \" = \" PI \" and e = \" E \".\")
-  \"\"\"
+      "From basic mathematics we know that " (e "pi") " = " PI " and e = " E ".")
+  '''
 
   print(fnl.html(source, {'PI': e.Integer(3), 'E': e.Integer(3)}))
   """)
@@ -147,9 +147,9 @@
     "it's the type that all the built-in functions in FNL have. Let's test our function.")
 
   (pre """
-    >>> fnl.html('(id \"hello\")', {'id': function})
+    >>> fnl.html('(id "hello")', {'id': function})
     'hello'
-    >>> fnl.html('(p (id \"hello, \") (id \"world!\"))', {'id': function})
+    >>> fnl.html('(p (id "hello, ") (id "world!"))', {'id': function})
     '<p>hello, world!</p>'
   """)
 
@@ -190,7 +190,7 @@
     def _dup(s: e.String) -> e.String:
         return e.String(s.value + s.value)
 
-    fnl.html('(dup \"py\")', {parse_fn('(λ str . str)'): dup})
+    fnl.html('(dup "py")', {parse_fn('(λ str . str)'): dup})
     #=> 'pypy'
   """)
 
@@ -200,10 +200,10 @@
 
   (pre """
     def _hyphenate(*strings: e.String) -> e.String:
-        return e.String(\"-\".join(s.value for s in strings))
+        return e.String("-".join(s.value for s in strings))
     hyphenate = e.Function({parse_fn('(λ ...str . str)'): _hyphenate})
 
-    fnl.html('(- \"lorem\" \"ipsum\" \"dolor\" \"sit\" \"amet\")', {'-': hyphenate})
+    fnl.html('(- "lorem" "ipsum" "dolor" "sit" "amet")', {'-': hyphenate})
     #=> 'lorem-ipsum-dolor-sit-amet'
 
     fnl.html('(type -)', {'-': hyphenate})
@@ -216,17 +216,17 @@
 
   (pre """
     def _hyphenate_str(*strings: e.String) -> e.String:
-        return e.String(\"-\".join(s.value for s in strings))
+        return e.String("-".join(s.value for s in strings))
 
     def _hyphenate_int(*ints: e.Integer) -> e.String:
-        return e.String(\"-\".join(str(n.value) for n in ints))
+        return e.String("-".join(str(n.value) for n in ints))
 
     hyphenate = e.Function({
         parse_fn('(λ ...str . str)'): _hyphenate_str,
         parse_fn('(λ ...int . str)'): _hyphenate_int,
     })
 
-    fnl.html('(- \"lorem\" \"ipsum\" \"dolor\" \"sit\" \"amet\")', {'-': hyphenate})
+    fnl.html('(- "lorem" "ipsum" "dolor" "sit" "amet")', {'-': hyphenate})
     #=> 'lorem-ipsum-dolor-sit-amet'
 
     fnl.html('(- 1 2 3 4 5)', {'-': hyphenate})
@@ -244,15 +244,15 @@
     ", you'll see declarations like this:")
 
   (pre """
-    @fn(BUILTINS, \"$\")
+    @fn(BUILTINS, "$")
     def concat():
         def from_inline(*args):
             return e.InlineConcat(args)
-        yield (\"(λ  ...inline . inline)\", from_inline)
+        yield ("(λ  ...inline . inline)", from_inline)
 
         def from_mixed(*args):
             return e.BlockConcat(args)
-        yield (\"(λ  ...inline|block . inline|block)\", from_mixed)
+        yield ("(λ  ...inline|block . inline|block)", from_mixed)
   """)
 
   (p
@@ -266,15 +266,15 @@
   (pre """
     extensions = {}
 
-    @fn(extensions, \"-\")
+    @fn(extensions, "-")
     def hyphenate():
         def from_strings(*strings):
-            return e.String(\"-\".join(s.value for s in strings))
-        yield (\"(λ ...str . str)\", from_strings)
+            return e.String("-".join(s.value for s in strings))
+        yield ("(λ ...str . str)", from_strings)
 
         def from_ints(*ints):
-            return e.String(\"-\".join(str(n.value) for n in ints))
-        yield (\"(λ ...int . str)\", from_ints)
+            return e.String("-".join(str(n.value) for n in ints))
+        yield ("(λ ...int . str)", from_ints)
 
     fnl.html('(- 1 2 3 4 5)', extensions  )
     #=> '1-2-3-4-5'

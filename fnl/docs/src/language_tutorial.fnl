@@ -40,16 +40,16 @@
     "Some functions represent HTML tags:")
   (pre """
     (p              ; paragraph
-      (bf \"Hello\")  ; boldface
-      (it \"World\")  ; italics
-      (tt \"Aaaaa\")  ; monospaces text
+      (bf "Hello")  ; boldface
+      (it "World")  ; italics
+      (tt "Aaaaa")  ; monospaces text
 
       ; heading:
-      ((h 3) \"To do:\")
+      ((h 3) "To do:")
       (list-unordered
-        \"Buy milk\"
-        \"Submit a pull request\"
-        \"Solve fizzbuzz\"))
+        "Buy milk"
+        "Submit a pull request"
+        "Solve fizzbuzz"))
   """)
   ($box
     (p
@@ -71,7 +71,7 @@
     but rather because of something you " (it "can't") ". Strict languages like
     Haskell or Rust are a good example of that.")
   (p (pre """
-    (b (p \"text\"))
+    (b (p "text"))
   """))
   (p
     "This results in an error: "
@@ -92,13 +92,13 @@
   (pre
   """
   (list-unordered
-    (tt \"\\\"hello\\\": \" (type \"hello\"))
-    (tt \"5: \" (type 5))
-    (tt \"p: \" (type p))
-    (tt \"$: \" (type $))
-    (tt \"h: \" (type h))
-    (tt \"nobr: \" (type nobr))
-    (tt \"horizontal-rule: \" (type nobr))
+    (tt "\"hello\": " (type "hello"))
+    (tt "5: " (type 5))
+    (tt "p: " (type p))
+    (tt "$: " (type $))
+    (tt "h: " (type h))
+    (tt "nobr: " (type nobr))
+    (tt "horizontal-rule: " (type nobr))
   )
   """
   )
@@ -142,7 +142,7 @@
     is " (mono (type map)) ". That's a very long type, but basically, "
     (tt "map") " allows you to apply a function to a list of values.")
   (pre """
-    ((map p) \"First paragraph\" \"Second paragraph\" \"Third paragraph\")
+    ((map p) "First paragraph" "Second paragraph" "Third paragraph")
   """)
   ((map p) "First paragraph" "Second paragraph" "Third paragraph")
 
@@ -151,7 +151,7 @@
     you give it.")
   (pre """
     (p
-      ((sep \", \") \"int\" \"str\" \"list\"))
+      ((sep ", ") "int" "str" "list"))
   """)
   ($box
     (p
@@ -162,7 +162,7 @@
     In that case you can use " (mono "sepmap") "!")
   (pre """
     (p
-      ((sepmap \", \" tt) \"int\" \"str\" \"list\"))
+      ((sepmap ", " tt) "int" "str" "list"))
   """)
   ($box
     (p

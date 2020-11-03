@@ -22,13 +22,13 @@
   (pre """
     ($
       ((h 1)
-        \"Hello, world!\")
-      \"Welcome to \" (bf \"my\") \" blog! It is:\"
+        "Hello, world!")
+      "Welcome to " (bf "my") " blog! It is:"
       (list-unordered
-        (it \"cool\")
-        ($ (bf \"super\") \" awesome\")
-        ((style \"color: red; font-size: 100%\") \"amazing\")
-        ((sepmap \", \" tt) \"modern\" \"striking\" \"inspiring\")))
+        (it "cool")
+        ($ (bf "super") " awesome")
+        ((style "color: red; font-size: 100%") "amazing")
+        ((sepmap ", " tt) "modern" "striking" "inspiring")))
   """)
   ($box
     ($
@@ -47,7 +47,7 @@
   (pre """
       import fnl
 
-      print(fnl.html('($ (bf \"Hello, \") (it \"world!\"))'))
+      print(fnl.html('($ (bf "Hello, ") (it "world!"))'))
   """)
   (pre """
       <b>Hello, </b><i>world!</i>
@@ -64,12 +64,12 @@
       @fnl.definitions.fn(extensions, 'box')
       def box():
           def _box(*elements: fnl.e.Entity):
-              # <div class=\"box\">...</div>
-              return fnl.e.BlockTag('div', 'class=\"box\"', elements)
-          yield (\"(λ ...inline|block . block)\", _box)
+              # <div class="box">...</div>
+              return fnl.e.BlockTag('div', 'class="box"', elements)
+          yield ("(λ ...inline|block . block)", _box)
 
       html = fnl.html(
-          '(box \"This is how this box was made!\")',
+          '(box "This is how this box was made!")',
           extensions
       )
   """)
@@ -82,7 +82,7 @@
   ((h 3) "...strongly typed")
 
   (pre """
-      (bf (p \"I'm putting a <p> inside a <b>. It's my foot. And my gun.\"))
+      (bf (p "I'm putting a <p> inside a <b>. It's my foot. And my gun."))
   """)
   (pre """
     fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)

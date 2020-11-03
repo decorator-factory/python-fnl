@@ -16,12 +16,12 @@
             <h2>Basic usage</h2><p>Using FNL is pretty straight-forward. You give it source code, and it gives you HTML.</p><pre>
 import fnl
 
-source_code = &quot;&quot;&quot;
+source_code = &#x27;&#x27;&#x27;
   ($
     ((h 1)
       &quot;Hello, world!&quot;)
     (p &quot;Lorem ipsum dolor sit amet&quot;))
-&quot;&quot;&quot;
+&#x27;&#x27;&#x27;
 
 html: str = fnl.html()
 
@@ -29,10 +29,10 @@ html: str = fnl.html()
 import fnl
 import fnl.entities as e
 
-source = &quot;&quot;&quot;
+source = &#x27;&#x27;&#x27;
   (p
     &quot;From basic mathematics we know that &quot; (e &quot;pi&quot;) &quot; = &quot; PI &quot; and e = &quot; E &quot;.&quot;)
-&quot;&quot;&quot;
+&#x27;&#x27;&#x27;
 
 print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
 
@@ -158,12 +158,12 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
   (pre &quot;&quot;&quot;
   import fnl
 
-  source_code = \&quot;\&quot;\&quot;
+  source_code = &#x27;&#x27;&#x27;
     ($
       ((h 1)
-        \&quot;Hello, world!\&quot;)
-      (p \&quot;Lorem ipsum dolor sit amet\&quot;))
-  \&quot;\&quot;\&quot;
+        &quot;Hello, world!&quot;)
+      (p &quot;Lorem ipsum dolor sit amet&quot;))
+  &#x27;&#x27;&#x27;
 
   html: str = fnl.html()
   &quot;&quot;&quot;)
@@ -221,10 +221,10 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
   import fnl
   import fnl.entities as e
 
-  source = \&quot;\&quot;\&quot;
+  source = &#x27;&#x27;&#x27;
     (p
-      \&quot;From basic mathematics we know that \&quot; (e \&quot;pi\&quot;) \&quot; = \&quot; PI \&quot; and e = \&quot; E \&quot;.\&quot;)
-  \&quot;\&quot;\&quot;
+      &quot;From basic mathematics we know that &quot; (e &quot;pi&quot;) &quot; = &quot; PI &quot; and e = &quot; E &quot;.&quot;)
+  &#x27;&#x27;&#x27;
 
   print(fnl.html(source, {&#x27;PI&#x27;: e.Integer(3), &#x27;E&#x27;: e.Integer(3)}))
   &quot;&quot;&quot;)
@@ -297,9 +297,9 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     &quot;it&#x27;s the type that all the built-in functions in FNL have. Let&#x27;s test our function.&quot;)
 
   (pre &quot;&quot;&quot;
-    &gt;&gt;&gt; fnl.html(&#x27;(id \&quot;hello\&quot;)&#x27;, {&#x27;id&#x27;: function})
+    &gt;&gt;&gt; fnl.html(&#x27;(id &quot;hello&quot;)&#x27;, {&#x27;id&#x27;: function})
     &#x27;hello&#x27;
-    &gt;&gt;&gt; fnl.html(&#x27;(p (id \&quot;hello, \&quot;) (id \&quot;world!\&quot;))&#x27;, {&#x27;id&#x27;: function})
+    &gt;&gt;&gt; fnl.html(&#x27;(p (id &quot;hello, &quot;) (id &quot;world!&quot;))&#x27;, {&#x27;id&#x27;: function})
     &#x27;&lt;p&gt;hello, world!&lt;/p&gt;&#x27;
   &quot;&quot;&quot;)
 
@@ -340,7 +340,7 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     def _dup(s: e.String) -&gt; e.String:
         return e.String(s.value + s.value)
 
-    fnl.html(&#x27;(dup \&quot;py\&quot;)&#x27;, {parse_fn(&#x27;(λ str . str)&#x27;): dup})
+    fnl.html(&#x27;(dup &quot;py&quot;)&#x27;, {parse_fn(&#x27;(λ str . str)&#x27;): dup})
     #=&gt; &#x27;pypy&#x27;
   &quot;&quot;&quot;)
 
@@ -350,10 +350,10 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 
   (pre &quot;&quot;&quot;
     def _hyphenate(*strings: e.String) -&gt; e.String:
-        return e.String(\&quot;-\&quot;.join(s.value for s in strings))
+        return e.String(&quot;-&quot;.join(s.value for s in strings))
     hyphenate = e.Function({parse_fn(&#x27;(λ ...str . str)&#x27;): _hyphenate})
 
-    fnl.html(&#x27;(- \&quot;lorem\&quot; \&quot;ipsum\&quot; \&quot;dolor\&quot; \&quot;sit\&quot; \&quot;amet\&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+    fnl.html(&#x27;(- &quot;lorem&quot; &quot;ipsum&quot; &quot;dolor&quot; &quot;sit&quot; &quot;amet&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
     #=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
 
     fnl.html(&#x27;(type -)&#x27;, {&#x27;-&#x27;: hyphenate})
@@ -366,17 +366,17 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
 
   (pre &quot;&quot;&quot;
     def _hyphenate_str(*strings: e.String) -&gt; e.String:
-        return e.String(\&quot;-\&quot;.join(s.value for s in strings))
+        return e.String(&quot;-&quot;.join(s.value for s in strings))
 
     def _hyphenate_int(*ints: e.Integer) -&gt; e.String:
-        return e.String(\&quot;-\&quot;.join(str(n.value) for n in ints))
+        return e.String(&quot;-&quot;.join(str(n.value) for n in ints))
 
     hyphenate = e.Function({
         parse_fn(&#x27;(λ ...str . str)&#x27;): _hyphenate_str,
         parse_fn(&#x27;(λ ...int . str)&#x27;): _hyphenate_int,
     })
 
-    fnl.html(&#x27;(- \&quot;lorem\&quot; \&quot;ipsum\&quot; \&quot;dolor\&quot; \&quot;sit\&quot; \&quot;amet\&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
+    fnl.html(&#x27;(- &quot;lorem&quot; &quot;ipsum&quot; &quot;dolor&quot; &quot;sit&quot; &quot;amet&quot;)&#x27;, {&#x27;-&#x27;: hyphenate})
     #=&gt; &#x27;lorem-ipsum-dolor-sit-amet&#x27;
 
     fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, {&#x27;-&#x27;: hyphenate})
@@ -394,15 +394,15 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     &quot;, you&#x27;ll see declarations like this:&quot;)
 
   (pre &quot;&quot;&quot;
-    @fn(BUILTINS, \&quot;$\&quot;)
+    @fn(BUILTINS, &quot;$&quot;)
     def concat():
         def from_inline(*args):
             return e.InlineConcat(args)
-        yield (\&quot;(λ  ...inline . inline)\&quot;, from_inline)
+        yield (&quot;(λ  ...inline . inline)&quot;, from_inline)
 
         def from_mixed(*args):
             return e.BlockConcat(args)
-        yield (\&quot;(λ  ...inline|block . inline|block)\&quot;, from_mixed)
+        yield (&quot;(λ  ...inline|block . inline|block)&quot;, from_mixed)
   &quot;&quot;&quot;)
 
   (p
@@ -416,15 +416,15 @@ fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
   (pre &quot;&quot;&quot;
     extensions = {}
 
-    @fn(extensions, \&quot;-\&quot;)
+    @fn(extensions, &quot;-&quot;)
     def hyphenate():
         def from_strings(*strings):
-            return e.String(\&quot;-\&quot;.join(s.value for s in strings))
-        yield (\&quot;(λ ...str . str)\&quot;, from_strings)
+            return e.String(&quot;-&quot;.join(s.value for s in strings))
+        yield (&quot;(λ ...str . str)&quot;, from_strings)
 
         def from_ints(*ints):
-            return e.String(\&quot;-\&quot;.join(str(n.value) for n in ints))
-        yield (\&quot;(λ ...int . str)\&quot;, from_ints)
+            return e.String(&quot;-&quot;.join(str(n.value) for n in ints))
+        yield (&quot;(λ ...int . str)&quot;, from_ints)
 
     fnl.html(&#x27;(- 1 2 3 4 5)&#x27;, extensions  )
     #=&gt; &#x27;1-2-3-4-5&#x27;

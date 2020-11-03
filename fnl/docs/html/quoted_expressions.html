@@ -125,10 +125,10 @@ print(fnl.html(source, your | extensions | fnl.x))
 
   (pre &quot;&quot;&quot;
   &gt;&gt;&gt; is_debug = True
-  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf \&quot;hi\&quot;))&#x27;, extensions)
+  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
   &#x27;&lt;b&gt;hi&lt;/b&gt;&#x27;
   &gt;&gt;&gt; is_debug = False
-  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf \&quot;hi\&quot;))&#x27;, extensions)
+  &gt;&gt;&gt; fnl.html(&#x27;(if-debug (bf &quot;hi&quot;))&#x27;, extensions)
   &#x27;&#x27;
   &quot;&quot;&quot;)
 
@@ -205,38 +205,38 @@ print(fnl.html(source, your | extensions | fnl.x))
 
   (pre &quot;&quot;&quot;
   ($
-    (b\&quot;!DOCTYPE\&quot; &amp;html &amp;.)
-    (b&amp;html &amp;(lang \&quot;en\&quot;)
+    (b&quot;!DOCTYPE&quot; &amp;html &amp;.)
+    (b&amp;html &amp;(lang &quot;en&quot;)
       (b&amp;head
-        (b&amp;meta &amp;(charset \&quot;UTF-8\&quot;) &amp;.)
-        (b&amp;meta &amp;(name \&quot;viewport\&quot;) &amp;(content \&quot;width=device-width, initial-scale=1.0\&quot;) &amp;.)
-        (b&amp;title \&quot;My blog\&quot;)
-        (b&amp;link &amp;(rel \&quot;stylesheet\&quot;) &amp;(href \&quot;style.css\&quot;) &amp;/))
+        (b&amp;meta &amp;(charset &quot;UTF-8&quot;) &amp;.)
+        (b&amp;meta &amp;(name &quot;viewport&quot;) &amp;(content &quot;width=device-width, initial-scale=1.0&quot;) &amp;.)
+        (b&amp;title &quot;My blog&quot;)
+        (b&amp;link &amp;(rel &quot;stylesheet&quot;) &amp;(href &quot;style.css&quot;) &amp;/))
       (b&amp;body
         (b&amp;main &amp;#app
           (+ &amp;.greeting
-            ((h 1) \&quot;Hello, world!\&quot;)
+            ((h 1) &quot;Hello, world!&quot;)
           (+ &amp;.content
-            (i&amp;a &amp;(href \&quot;pay.html\&quot;) \&quot;Give me your money\&quot;)))))))
+            (i&amp;a &amp;(href &quot;pay.html&quot;) &quot;Give me your money&quot;)))))))
   &quot;&quot;&quot;)
 
   (p &quot;This is going to render the following HTML code:&quot;)
 
   (pre &quot;&quot;&quot;
   &lt;!DOCTYPE html&gt;
-  &lt;html lang=\&quot;en\&quot;&gt;
+  &lt;html lang=&quot;en&quot;&gt;
     &lt;head&gt;
-      &lt;meta charset=\&quot;UTF-8\&quot;&gt;
-      &lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width, initial-scale=1.0\&quot;&gt;
+      &lt;meta charset=&quot;UTF-8&quot;&gt;
+      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
       &lt;title&gt;My blog&lt;/title&gt;
-      &lt;link rel=\&quot;stylesheet\&quot; href=\&quot;style.css\&quot; /&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot; /&gt;
     &lt;/head&gt;
     &lt;body&gt;
-      &lt;main id=\&quot;app\&quot;&gt;
-        &lt;div class=\&quot;greeting\&quot;&gt;
+      &lt;main id=&quot;app&quot;&gt;
+        &lt;div class=&quot;greeting&quot;&gt;
           &lt;h1&gt;Hello, world!&lt;/h1&gt;
-          &lt;div class=\&quot;content\&quot;&gt;
-            &lt;a href=\&quot;pay.html\&quot;&gt;Give me your money&lt;/a&gt;
+          &lt;div class=&quot;content&quot;&gt;
+            &lt;a href=&quot;pay.html&quot;&gt;Give me your money&lt;/a&gt;
           &lt;/div&gt;
         &lt;/div&gt;
       &lt;/main&gt;

@@ -81,13 +81,13 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
   (pre &quot;&quot;&quot;
     ($
       ((h 1)
-        \&quot;Hello, world!\&quot;)
-      \&quot;Welcome to \&quot; (bf \&quot;my\&quot;) \&quot; blog! It is:\&quot;
+        &quot;Hello, world!&quot;)
+      &quot;Welcome to &quot; (bf &quot;my&quot;) &quot; blog! It is:&quot;
       (list-unordered
-        (it \&quot;cool\&quot;)
-        ($ (bf \&quot;super\&quot;) \&quot; awesome\&quot;)
-        ((style \&quot;color: red; font-size: 100%\&quot;) \&quot;amazing\&quot;)
-        ((sepmap \&quot;, \&quot; tt) \&quot;modern\&quot; \&quot;striking\&quot; \&quot;inspiring\&quot;)))
+        (it &quot;cool&quot;)
+        ($ (bf &quot;super&quot;) &quot; awesome&quot;)
+        ((style &quot;color: red; font-size: 100%&quot;) &quot;amazing&quot;)
+        ((sepmap &quot;, &quot; tt) &quot;modern&quot; &quot;striking&quot; &quot;inspiring&quot;)))
   &quot;&quot;&quot;)
   ($box
     ($
@@ -106,7 +106,7 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
   (pre &quot;&quot;&quot;
       import fnl
 
-      print(fnl.html(&#x27;($ (bf \&quot;Hello, \&quot;) (it \&quot;world!\&quot;))&#x27;))
+      print(fnl.html(&#x27;($ (bf &quot;Hello, &quot;) (it &quot;world!&quot;))&#x27;))
   &quot;&quot;&quot;)
   (pre &quot;&quot;&quot;
       &lt;b&gt;Hello, &lt;/b&gt;&lt;i&gt;world!&lt;/i&gt;
@@ -123,12 +123,12 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
       @fnl.definitions.fn(extensions, &#x27;box&#x27;)
       def box():
           def _box(*elements: fnl.e.Entity):
-              # &lt;div class=\&quot;box\&quot;&gt;...&lt;/div&gt;
-              return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=\&quot;box\&quot;&#x27;, elements)
-          yield (\&quot;(λ ...inline|block . block)\&quot;, _box)
+              # &lt;div class=&quot;box&quot;&gt;...&lt;/div&gt;
+              return fnl.e.BlockTag(&#x27;div&#x27;, &#x27;class=&quot;box&quot;&#x27;, elements)
+          yield (&quot;(λ ...inline|block . block)&quot;, _box)
 
       html = fnl.html(
-          &#x27;(box \&quot;This is how this box was made!\&quot;)&#x27;,
+          &#x27;(box &quot;This is how this box was made!&quot;)&#x27;,
           extensions
       )
   &quot;&quot;&quot;)
@@ -141,7 +141,7 @@ $ pip install git+https://github.com/decorator-factory/python-fnl
   ((h 3) &quot;...strongly typed&quot;)
 
   (pre &quot;&quot;&quot;
-      (bf (p \&quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.\&quot;))
+      (bf (p &quot;I&#x27;m putting a &lt;p&gt; inside a &lt;b&gt;. It&#x27;s my foot. And my gun.&quot;))
   &quot;&quot;&quot;)
   (pre &quot;&quot;&quot;
     fnl.FnlTypeError: Cannot call (λ  ...inline . inline) with (block) (line 1, column 1)

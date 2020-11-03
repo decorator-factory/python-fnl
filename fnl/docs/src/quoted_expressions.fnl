@@ -27,10 +27,10 @@
 
   (pre """
   >>> is_debug = True
-  >>> fnl.html('(if-debug (bf \"hi\"))', extensions)
+  >>> fnl.html('(if-debug (bf "hi"))', extensions)
   '<b>hi</b>'
   >>> is_debug = False
-  >>> fnl.html('(if-debug (bf \"hi\"))', extensions)
+  >>> fnl.html('(if-debug (bf "hi"))', extensions)
   ''
   """)
 
@@ -107,38 +107,38 @@
 
   (pre """
   ($
-    (b\"!DOCTYPE\" &html &.)
-    (b&html &(lang \"en\")
+    (b"!DOCTYPE" &html &.)
+    (b&html &(lang "en")
       (b&head
-        (b&meta &(charset \"UTF-8\") &.)
-        (b&meta &(name \"viewport\") &(content \"width=device-width, initial-scale=1.0\") &.)
-        (b&title \"My blog\")
-        (b&link &(rel \"stylesheet\") &(href \"style.css\") &/))
+        (b&meta &(charset "UTF-8") &.)
+        (b&meta &(name "viewport") &(content "width=device-width, initial-scale=1.0") &.)
+        (b&title "My blog")
+        (b&link &(rel "stylesheet") &(href "style.css") &/))
       (b&body
         (b&main &#app
           (+ &.greeting
-            ((h 1) \"Hello, world!\")
+            ((h 1) "Hello, world!")
           (+ &.content
-            (i&a &(href \"pay.html\") \"Give me your money\")))))))
+            (i&a &(href "pay.html") "Give me your money")))))))
   """)
 
   (p "This is going to render the following HTML code:")
 
   (pre """
   <!DOCTYPE html>
-  <html lang=\"en\">
+  <html lang="en">
     <head>
-      <meta charset=\"UTF-8\">
-      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>My blog</title>
-      <link rel=\"stylesheet\" href=\"style.css\" />
+      <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-      <main id=\"app\">
-        <div class=\"greeting\">
+      <main id="app">
+        <div class="greeting">
           <h1>Hello, world!</h1>
-          <div class=\"content\">
-            <a href=\"pay.html\">Give me your money</a>
+          <div class="content">
+            <a href="pay.html">Give me your money</a>
           </div>
         </div>
       </main>
