@@ -1,0 +1,25 @@
+{
+    "name": "fnl-syntax-highlighting",
+    "displayName": "FNL Syntax Highlighting",
+    "description": "Syntax highlighting for FNL (FNL is Not Lisp)",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.50.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "fnl",
+            "aliases": ["FNL is Not Lisp", "fnl"],
+            "extensions": [".fnl",".fnl-markup"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "fnl",
+            "scopeName": "source.fnlmarkup",
+            "path": "./syntaxes/fnl.tmLanguage.json"
+        }]
+    }
+}

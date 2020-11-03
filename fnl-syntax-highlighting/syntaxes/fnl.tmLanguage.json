@@ -1,0 +1,56 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "source.fnlmarkup",
+	"patterns": [{ "include": "#expression" }],
+	"repository": {
+	  "expression": {
+		"patterns": [{ "include": "#name" }, { "include": "#sexpr" }, { "include": "#strexpr" }, { "include": "#multistrexpr" }, {"include": "#quoted-name"}, {"include": "#quotation"}]
+	  },
+	  "name": {
+		"match": "(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+",
+		"name": "entity.name"
+	  },
+	  "quoted-name": {
+		"match": "&(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+",
+		"name": "constant.other"
+	  },
+	  "quotation": {
+		"match": "&(?!(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+)",
+		"name": "keyword.operator"
+	  },
+	  "strexpr": {
+		"begin": "((?!\"\"\")\")",
+		"beginCaptures": {
+			"1": { "name": "string.quoted.double" }
+		},
+		"end": "((?<!\\\\)\")",
+		"endCaptures": {
+			"1": { "name": "string.quoted.double" }
+		},
+		"contentName": "string.quoted.name"
+	  }  ,
+	  "multistrexpr": {
+		"begin": "(\"\"\")",
+		"beginCaptures": {
+			"1": { "name": "string.quoted.double" }
+		},
+		"end": "((?<!\\\\)\"\"\")",
+		"endCaptures": {
+			"1": { "name": "string.quoted.double" }
+		},
+		"contentName": "string.quoted.name"
+	  },
+	  "sexpr": {
+		"begin": "\\(",
+		"end": "\\)",
+		"beginCaptures": {
+		  "0": { "name": "punctuation.paren.open" }
+		},
+		"endCaptures": {
+		  "0": { "name": "punctuation.paren.close" }
+		},
+		"name": "expression.group",
+		"patterns": [{ "include": "#expression" }]
+	  }
+	}
+}
