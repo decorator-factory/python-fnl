@@ -4,6 +4,7 @@ from typing import Callable, Dict, Sequence, TypeVar, Optional, Tuple
 from context_manager_patma import derive, register
 from . import entity_types as et
 import html
+import json
 
 
 R = TypeVar("R", bound="HtmlRender")
@@ -139,6 +140,10 @@ class Entity:
         """Evaluate an expression until it settles on a final value"""
         return self
 
+    def as_source(self) -> str:
+        """Represent the expressions as source, if possible"""
+        return f"< {self!r} >"
+
 
 @derive("Quoted", "subexpression")
 @dataclass(eq=True)
@@ -151,6 +156,9 @@ class Quoted(Entity):
 
     def force(self, runtime) -> Quoted:
         return Quoted(self.subexpression.evaluate(runtime))
+
+    def as_source(self) -> str:
+        return f"&{self.subexpression.as_source()}"
 
 
 @derive("Name", "name")
@@ -173,6 +181,9 @@ class Name(Entity):
         if self._cached is None:
             raise KeyError(f"Name {self.name} not found")
         return self._cached.evaluate(runtime)
+
+    def as_source(self) -> str:
+        return self.name
 
 
 class CallError(Exception):
@@ -255,6 +266,9 @@ class Sexpr(Entity):
             if error is not None:
                 self._type_mismatch(error)
 
+    def as_source(self) -> str:
+        return "(" + " ".join(e.as_source() for e in (self.fn, *self.args)) + ")"
+
 
 @dataclass(frozen=True, eq=True)
 class Integer(Entity):
@@ -264,6 +278,9 @@ class Integer(Entity):
 
     def render_inline(self, runtime) -> HtmlRender:
         return RawHtml(str(self.value))
+
+    def as_source(self) -> str:
+        return str(self.value)
 
 
 @derive("String", "value")
@@ -275,6 +292,9 @@ class String(Entity):
 
     def render_inline(self, runtime):
         return SafeHtml(self.value)
+
+    def as_source(self) -> str:
+        return json.dumps(self.value)
 
 
 @dataclass(frozen=True, eq=True)
@@ -295,6 +315,9 @@ class InlineTag(Entity):
 
     def evaluate(self, runtime):
         return InlineTag(self.tag, self.options, tuple(e.evaluate(runtime) for e in self.children))
+
+    # def as_source(self) -> str:
+    #     return f"{{(inline)<{self.tag} {self.options}> {' '.join(e.as_source() for e in self.children)}}}"
 
 
 @dataclass(frozen=True, eq=True)
@@ -452,6 +475,9 @@ class Function(Entity):
             if o.arg_types == args and o.rest_type == rest:
                 return o.return_type
         return None
+
+    def as_source(self):
+        return f"<λ:{len(self.overloads)} overloads>"
 
 
 @dataclass(eq=True)
