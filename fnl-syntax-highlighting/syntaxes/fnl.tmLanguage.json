@@ -7,15 +7,15 @@
 		"patterns": [{ "include": "#name" }, { "include": "#sexpr" }, { "include": "#strexpr" }, { "include": "#multistrexpr" }, {"include": "#quoted-name"}, {"include": "#quotation"}]
 	  },
 	  "name": {
-		"match": "(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+",
+		"match": "(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#<>]+",
 		"name": "entity.name"
 	  },
 	  "quoted-name": {
-		"match": "&(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+",
+		"match": "&(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#<>]+",
 		"name": "constant.other"
 	  },
 	  "quotation": {
-		"match": "&(?!(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#]+)",
+		"match": "&(?!(?![-+]?[0-9])[-_$@:+*/a-zA-Z0-9.#<>]+)",
 		"name": "keyword.operator"
 	  },
 	  "strexpr": {
