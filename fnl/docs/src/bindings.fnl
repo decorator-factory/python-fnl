@@ -177,6 +177,146 @@
           &(a "What do you mean? An African or European swallow?"))
           (var &qa-entry)))))
 
+
+  ((h 2)
+    "Using the " (tt "foreach") " function to express a repeating pattern")
+
+  (bf "foreach : ") (tt (type foreach))
+  (pre ($fnl
+    """
+      ($
+        (bf "Questions: ")
+        (b&ul
+          (foreach
+            &question
+            &("What... is your name?"
+              "What... is your quest?"
+              "What... is the air-speed velocity of an unladen swallow?")
+            &(b&li (var &question)))))
+    """
+  ))
+  ($box ($
+    (bf "Questions: ")
+    (b&ul
+      (foreach
+        &question
+        &("What... is your name?"
+          "What... is your quest?"
+          "What... is the air-speed velocity of an unladen swallow?")
+        &(b&li (var &question))))))
+
+
+  ((h 2)
+    "Iterating over pairs of values")
+  (p
+    "There are no built-in tuples or associative arrays in FNL.
+    But those data structures can be emulated with " (tt "let") ".")
+  (p
+    "After all, what is a pair of values, for example, a pair containing
+    a question and an answer to that question? One way to frame it is to say
+    that a pair " (mono "(question, answer)") " is a function that accepts
+    another function " (mono "(λ q a . t)") " and calls it with some
+    arguments " (tt "q") " and " (tt "a") ".")
+
+  (p
+    "This is how it can be implemented in Python:")
+  (pre """
+    entries = [
+        lambda f: f("What... is your name?", "It is 'Arthur', King of the Britons."),
+        lambda f: f("What... is your quest?", "To seek the Holy Grail."),
+        lambda f: f("What... is the air-speed velocity of an unladen swallow?",
+                    "What do you mean? An African or European swallow?"),
+    ]
+    for entry in entries:
+        entry(
+            lambda q, a: (print("Q:", q), print("A:", a))
+        )
+  """)
+
+  (p
+    "And this is how you could implement it in FNL:")
+  (pre ($fnl """
+    (foreach
+      &entry
+      &(&((let
+          &(q "What... is your name?")
+          &(a "It is 'Arthur', King of the Britons.")) (var &fn))
+        &((let
+          &(q "What... is your quest?")
+          &(a "To seek the Holy Grail.")) (var &fn))
+        &((let
+          &(q "What... is the air-speed velocity of an unladen swallow?")
+          &(a "What do you mean? An African or European swallow?")) (var &fn)))
+
+      &(list-unordered
+        (let &fn &($ (bf "Q: ") (var &q)) (var &entry))
+        (let &fn &($ (bf "A: ") (var &a)) (var &entry))))
+  """))
+  ($box
+    (foreach
+      &entry
+      &(&((let
+          &(q "What... is your name?")
+          &(a "It is 'Arthur', King of the Britons.")) (var &fn))
+        &((let
+          &(q "What... is your quest?")
+          &(a "To seek the Holy Grail.")) (var &fn))
+        &((let
+          &(q "What... is the air-speed velocity of an unladen swallow?")
+          &(a "What do you mean? An African or European swallow?")) (var &fn)))
+
+      &(list-unordered
+        (let &fn &($ (bf "Q: ") (var &q)) (var &entry))
+        (let &fn &($ (bf "A: ") (var &a)) (var &entry)))))
+
+  (p
+    "This is a pretty effective emulation of an associative array, but I'm
+    not sure about the effects of ampersand soup on your health. There must
+    be a better way!")
+
+  ((h 2)
+    "Associative arrays: the " (tt "obj") " function")
+  (bf "obj : ") (tt (type obj))
+  (p
+    "The " (tt "obj") " function is just a shorthand for creating an entry like those
+    in the last example. The only difference is that it uses " (tt "@")
+    " instead of " (tt "fn") " (yes, " (tt "@") " is a valid in identifiers).")
+  (pre ($fnl """
+    (foreach
+        &entry
+        &((obj
+            &(q "What... is your name?")
+            &(a "It is 'Arthur', King of the Britons."))
+          (obj
+            &(q "What... is your quest?")
+            &(a "To seek the Holy Grail."))
+          (obj
+            &(q "What... is the air-speed velocity of an unladen swallow?")
+            &(a "What do you mean? An African or European swallow?")))
+
+        &(list-unordered
+          (let &@ &($ (bf "Q: ") (var &q)) (var &entry))
+          (let &@ &($ (bf "A: ") (var &a)) (var &entry))))))
+  """))
+  ($box
+    (foreach
+      &entry
+      &((obj
+          &(q "What... is your name?")
+          &(a "It is 'Arthur', King of the Britons."))
+        (obj
+          &(q "What... is your quest?")
+          &(a "To seek the Holy Grail."))
+        (obj
+          &(q "What... is the air-speed velocity of an unladen swallow?")
+          &(a "What do you mean? An African or European swallow?")))
+
+      &(list-unordered
+        (let &@ &($ (bf "Q: ") (var &q)) (var &entry))
+        (let &@ &($ (bf "A: ") (var &a)) (var &entry)))))
+
+
+
   (horizontal-rule)
   ((h 2) "Source:")
   (pre ($fnl $source)))
