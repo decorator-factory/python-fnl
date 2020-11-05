@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name bindings</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+    <main>
+        <div class="-title">
+            <h1>Name bindings</h1>
+            <a href="index.html">Go to the index</a>
+        </div>
+        <div class="-mount">
+            <p>As you have already seen, quoted expressions are very powerful: they allow you to compute an expression conditionally, or not compute it at all and use it as a data structure instead.</p><p>The <tt>fnl.bindings</tt> module provides even more useful functions that rely on quoted expressions. The module has to maintain some internal state, so you have to call <tt>fnl.bindings</tt> to get a new mapping.</p><pre>
+import fnl
+
+source = ...
+
+html = fnl.html(source, fnl.bindings())
+# or:
+html = fnl.html(source, {**some, **other, **stuff, **fnl.bindings()})
+
+</pre><h2>Using the <tt>let</tt> and <tt>var</tt> functions</h2><p>The <tt>let</tt> and <tt>var</tt> functions allow you to bind an expression to a name and then refer to it by that name:</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">title</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Name bindings&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;The title is: &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">title</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><div class="fnl--box">The title is: Name bindings</div><p>Note that the &#x27;body&#x27; (the last argument to <tt>let</tt>) is quoted because it can&#x27;t be evaluated before calling the function.</p><hr /><p><tt>let</tt> is not an assignment operator from imperative languages like C, Java, or Python. It&#x27;s a subsitution of a name within a scope. So when you leave the <tt>let</tt>&#x27;s &#x27;scope&#x27;, so to speak, all of its bindings disappear:</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;I do&quot;</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot; &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">42</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot; &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><div class="fnl--box">I do 42 I do</div><hr /><p>You can also do it the other way around: you can name a quoted expression!</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">bf+it</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Now you can make text which is bold &quot;</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;and&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">bf+it</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot; italic!&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><div class="fnl--box">Now you can make text which is bold <b><i>and</i></b> italic!</div><p>Explanation:</p><pre><span class="code--fnl--ws">
+; this line:
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;and&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">bf+it</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+; gets expanded as:
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;and&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+; ...because in the outer &#x27;let&#x27;, &#x27;bf+it&#x27; is defined as:
+</span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><p>You can compare this pattern to calling a Python function with named (keyword) arguments; or passing an &#x27;options object&#x27; to a function in JavaScript.</p><hr /><p>The <tt>let</tt> function has the following type signature:</p><pre>(λ  ...&amp;[(name any)] . (λ &amp;[any] . any))|(λ &amp;[name] any &amp;[any] . any)
+</pre><p>So, as you may infer, there&#x27;s an overload that allows you to make multiple bindings at one:</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">question</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your quest?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;To seek the Holy Grail.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Q: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">question</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;A: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><div class="fnl--box"><ul><li><b>Q: </b>What... is your quest?</li><li><b>A: </b>To seek the Holy Grail.</li></ul></div><p>As before, you can reverse this relation:</p><pre><span class="code--fnl--ws">
+</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Q: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">q</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;A: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">a</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your name?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;It is &#x27;Arthur&#x27;, King of the Britons.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your quest?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;To seek the Holy Grail.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is the air-speed velocity of an unladen swallow?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What do you mean? An African or European swallow?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre><div class="fnl--box"><ul><li><b>Q: </b>What... is your name?</li><li><b>A: </b>It is &#x27;Arthur&#x27;, King of the Britons.</li></ul><ul><li><b>Q: </b>What... is your quest?</li><li><b>A: </b>To seek the Holy Grail.</li></ul><ul><li><b>Q: </b>What... is the air-speed velocity of an unladen swallow?</li><li><b>A: </b>What do you mean? An African or European swallow?</li></ul></div><hr /><h2>Source:</h2><pre><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$docs</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$filename</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Name bindings&quot;</span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;As you have already seen, quoted expressions are very powerful: they
+    allow you to compute an expression conditionally, or not compute it at all
+    and use it as a data structure instead.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;The &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.bindings&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; module provides even more useful functions
+    that rely on quoted expressions. The module has to maintain some internal
+    state, so you have to call &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">mono</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;fnl.bindings&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; to get a new mapping.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    import fnl
+
+    source = ...
+
+    html = fnl.html(source, fnl.bindings())
+    # or:
+    html = fnl.html(source, {**some, **other, **stuff, **fnl.bindings()})
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Using the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;var&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; functions&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;The &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; and &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;var&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; functions allow you to bind an
+    expression to a name and then refer to it by that name:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    (let
+      &amp;title &quot;Name bindings&quot;
+      &amp;($ &quot;The title is: &quot; (var &amp;title)))
+    &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">title</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Name bindings&quot;</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;The title is: &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">title</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;Note that the &#x27;body&#x27; (the last argument to &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;) is quoted
+    because it can&#x27;t be evaluated before calling the function.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; is not an assignment operator from imperative languages like C, Java,
+    or Python. It&#x27;s a subsitution of a name within a scope. So when you leave
+    the &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;&#x27;s &#x27;scope&#x27;, so to speak, all of its bindings disappear:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    (let
+      &amp;answer &quot;I do&quot;
+      &amp;($
+        (var &amp;answer)
+        &quot; &quot;
+        (let
+          &amp;answer 42
+          &amp;(var &amp;answer))
+        &quot; &quot;
+        (var &amp;answer)))
+    &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;I do&quot;</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot; &quot;</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">42</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot; &quot;</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;You can also do it the other way around: you can name a quoted expression!&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    (let
+      &amp;bf+it &amp;(bf (it (var &amp;text)))
+      &amp;($
+        &quot;Now you can make text which is bold &quot;
+        (let &amp;text &quot;and&quot; (var &amp;bf+it))
+        &quot; italic!&quot;))
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">bf+it</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">it</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot;Now you can make text which is bold &quot;</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">text</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;and&quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">bf+it</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+        </span><span class="code--fnl--string">&quot; italic!&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Explanation:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    ; this line:
+    (let &amp;text &quot;and&quot; (var &amp;bf+it))
+
+    ; gets expanded as:
+    (let &amp;text &quot;and&quot; &amp;(bf (it (var &amp;text))))
+
+    ; ...because in the outer &#x27;let&#x27;, &#x27;bf+it&#x27; is defined as:
+    &amp;(bf (it (var &amp;text)))
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;You can compare this pattern to calling a Python function with named (keyword)
+    arguments; or passing an &#x27;options object&#x27; to a function in JavaScript.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;The &quot;</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">tt</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;let&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot; function has the following type signature:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">type</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">let</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;So, as you may infer, there&#x27;s an overload that allows you to make multiple
+    bindings at one:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    ((let
+      &amp;(question &quot;What... is your quest?&quot;)
+      &amp;(answer &quot;To seek the Holy Grail.&quot;))
+      &amp;(list-unordered
+        ($ (bf &quot;Q: &quot;) (var &amp;question))
+        ($ (bf &quot;A: &quot;) (var &amp;answer))))
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">question</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your quest?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">answer</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;To seek the Holy Grail.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Q: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">question</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;A: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">answer</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">p</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--string">&quot;As before, you can reverse this relation:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--raw-string">&quot;&quot;&quot;
+    (let
+      &amp;qa-entry &amp;(list-unordered
+            ($ (bf &quot;Q: &quot;) (var &amp;q))
+            ($ (bf &quot;A: &quot;) (var &amp;a)))
+
+      &amp;($
+        ((let
+          &amp;(q &quot;What... is your name?&quot;)
+          &amp;(a &quot;It is &#x27;Arthur&#x27;, King of the Britons.&quot;))
+          (var &amp;qa-entry))
+
+        ((let
+          &amp;(q &quot;What... is your quest?&quot;)
+          &amp;(a &quot;To seek the Holy Grail.&quot;))
+          (var &amp;qa-entry))
+
+        ((let
+          &amp;(q &quot;What... is the air-speed velocity of an unladen swallow?&quot;)
+          &amp;(a &quot;What do you mean? An African or European swallow?&quot;))
+          (var &amp;qa-entry))))
+  &quot;&quot;&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$box</span><span class="code--fnl--ws">
+    </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">list-unordered</span><span class="code--fnl--ws">
+            </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Q: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">q</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+            </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">bf</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;A: &quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">a</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+      </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$</span><span class="code--fnl--ws">
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your name?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;It is &#x27;Arthur&#x27;, King of the Britons.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is your quest?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;To seek the Holy Grail.&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+        </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">let</span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">q</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What... is the air-speed velocity of an unladen swallow?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">a</span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;What do you mean? An African or European swallow?&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+          </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">var</span><span class="code--fnl--ws"> </span><span class="code--fnl--ampersand">&amp;</span><span class="code--fnl--name">qa-entry</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">horizontal-rule</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">h</span><span class="code--fnl--ws"> </span><span class="code--fnl--integer">2</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws"> </span><span class="code--fnl--string">&quot;Source:&quot;</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--ws">
+  </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">pre</span><span class="code--fnl--ws"> </span><span class="code--fnl--sexpr"><span class="code--fnl--left-paren">(</span><span class="code--fnl--name">$fnl</span><span class="code--fnl--ws"> </span><span class="code--fnl--name">$source</span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span><span class="code--fnl--rpar">)</span></span>
+</pre>
+        </div>
+    </main>
+</body>
+</html>

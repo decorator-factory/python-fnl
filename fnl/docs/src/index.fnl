@@ -4,7 +4,8 @@
       ($link-to "index.html")
       ($link-to "language_tutorial.html")
       ($link-to "using_fnl.html")
-      ($link-to "quoted_expressions.html")))
+      ($link-to "quoted_expressions.html")
+      ($link-to "bindings.html")))
 
 
   (horizontal-rule)
