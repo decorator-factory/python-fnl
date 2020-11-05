@@ -1,3 +1,4 @@
+import time
 from dataclasses import dataclass
 from typing import Dict, Tuple
 import fnl
@@ -96,39 +97,38 @@ def fnl_highlight():
     yield ("(λ str . inline)", _fnl_highlight)
 
 
-template_html = (Path(__file__).parent / "template.html").read_text()
-
-src_dir = Path(__file__).parent / "src"
-html_dir = Path(__file__).parent / "html"
-
-for source_path in src_dir.glob("*.fnl"):
-    # if source_path.name == "index.fnl":  # index.fnl is special
-    #     continue
-    source = source_path.read_text()
-
-    target_filename = source_path.with_suffix(".html").name
-    target_path = html_dir / target_filename
-
-    target_path.write_text(
-        fnl.html(source, {
+def compile_fnl(source: str, target_filename: str):
+    t1 = time.time()
+    html = fnl.html(source, {
             **extensions,
             **fnl.x,
             **fnl.bindings(),
             "$filename": fnl.e.String(target_filename),
             "$source": fnl.e.String(source),
         })
-    )
-    print(f"{source_path} -> {target_path}")
+    t2 = time.time()
+    return html, t2 - t1
+
+
+template_html = (Path(__file__).parent / "template.html").read_text()
+
+src_dir = Path(__file__).parent / "src"
+html_dir = Path(__file__).parent / "html"
+
+
+for source_path in src_dir.glob("*.fnl"):
+    source = source_path.read_text()
+
+    target_filename = source_path.with_suffix(".html").name
+    target_path = html_dir / target_filename
+
+    html, delta_time = compile_fnl(source, target_filename)
+    target_path.write_text(html)
+    print(f"Compiled {target_filename:30} in {delta_time:.3f} s")
 
 
 index_source = (src_dir / "index.fnl").read_text()
 target_path = html_dir / "index.html"
-target_path.write_text(
-    fnl.html(index_source, {
-        **extensions,
-        **fnl.x,
-        **fnl.bindings(),
-        "$filename": fnl.e.String("index.html"),
-        "$source": fnl.e.String(index_source),
-    })
-)
+
+html, delta_time = compile_fnl(index_source, "index.html")
+target_path.write_text(html)
