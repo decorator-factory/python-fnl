@@ -108,6 +108,27 @@ def bindings() -> Dict[str, e.Entity]:
             )
         yield ("(λ &[name] any &[any] . any)", from_one)
 
+    @fn(extensions, "bind")
+    def bind():
+        # (bind &a 1 &expr) <=> &(let &a 1 &expr)
+        def _bind(key, value, quoted_body):
+            return e.Quoted(e.Sexpr(
+                let,
+                (key, value, quoted_body)
+            ))
+        yield ("(λ &[name] any &[any] . &[any])", _bind)
+
+    @fn(extensions, "obj")
+    def obj():
+        #     (obj &(x "hello") &(y "world"))
+        # <=> &((let &(x "hello") &(y "world")) (var &@))
+        def _obj(*kv_pairs):
+            return e.Quoted(e.Sexpr(
+                e.Sexpr(let, kv_pairs),
+                (e.Sexpr(var, (e.Quoted(e.Name("@")),)),)
+            ))
+        yield ("(λ ...&[(name any)] . &[any])", _obj)
+
     @fn(extensions, "foreach")
     def foreach():
         r"""
@@ -179,5 +200,16 @@ def bindings() -> Dict[str, e.Entity]:
         def _documented_names():
             return RuntimeDependent(_get_names)
         yield ("(λ . &[any])", _documented_names)
+
+    @fn(extensions, "debug")
+    def debug():
+        """
+        Part of the 'bindings' module.
+
+        Render an expresion for debugging purposes
+        """
+        def _debug(x):
+            return e.String(x.as_source())
+        yield ("(λ any . str)", _debug)
 
     return extensions
