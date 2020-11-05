@@ -296,7 +296,7 @@
 
         &(list-unordered
           (let &@ &($ (bf "Q: ") (var &q)) (var &entry))
-          (let &@ &($ (bf "A: ") (var &a)) (var &entry))))))
+          (let &@ &($ (bf "A: ") (var &a)) (var &entry))))
   """))
   ($box
     (foreach
