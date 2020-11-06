@@ -1,3 +1,4 @@
+import sys
 import time
 from dataclasses import dataclass
 from typing import Dict, Tuple
@@ -5,8 +6,10 @@ import fnl
 from pathlib import Path
 import string
 
-
-# Language extension:
+try:
+    import watchgod
+except ImportError:
+    watchgod = None
 
 
 @dataclass
@@ -110,25 +113,47 @@ def compile_fnl(source: str, target_filename: str):
     return html, t2 - t1
 
 
-template_html = (Path(__file__).parent / "template.html").read_text()
+if __name__ == "__main__":
+    if len(sys.argv) not in (1, 2) or sys.argv[1:] not in ([], ["--watch"]):
+        print("Usage: python -m fnl.docs [--watch]")
+        sys.exit(1)
 
-src_dir = Path(__file__).parent / "src"
-html_dir = Path(__file__).parent / "html"
+    template_html = (Path(__file__).parent / "template.html").read_text()
 
+    src_dir = Path(__file__).parent / "src"
+    html_dir = Path(__file__).parent / "html"
 
-for source_path in src_dir.glob("*.fnl"):
-    source = source_path.read_text()
+    for source_path in src_dir.glob("*.fnl"):
+        source = source_path.read_text()
 
-    target_filename = source_path.with_suffix(".html").name
-    target_path = html_dir / target_filename
+        target_filename = source_path.with_suffix(".html").name
+        target_path = html_dir / target_filename
 
-    html, delta_time = compile_fnl(source, target_filename)
+        html, delta_time = compile_fnl(source, target_filename)
+        target_path.write_text(html)
+        print(f"Compiled {target_filename:30} in {delta_time:.3f} s")
+
+    index_source = (src_dir / "index.fnl").read_text()
+    target_path = html_dir / "index.html"
+
+    html, delta_time = compile_fnl(index_source, "index.html")
     target_path.write_text(html)
-    print(f"Compiled {target_filename:30} in {delta_time:.3f} s")
 
+    # Watching handler
 
-index_source = (src_dir / "index.fnl").read_text()
-target_path = html_dir / "index.html"
+    if sys.argv[1:] == ["--watch"]:
+        if watchgod is None:
+            print("You must install the `watchgod` library to watch for files")
+            sys.exit(1)
 
-html, delta_time = compile_fnl(index_source, "index.html")
-target_path.write_text(html)
+        for changes in watchgod.watch(src_dir):
+            for (kind, path) in changes:
+                if kind in (watchgod.Change.added, watchgod.Change.modified):
+                    source_path = Path(path)
+                    source = source_path.read_text()
+                    target_filename = source_path.with_suffix(".html").name
+                    target_path = html_dir / target_filename
+
+                    html, delta_time = compile_fnl(source, target_filename)
+                    target_path.write_text(html)
+                    print(f"Compiled {target_filename:30} in {delta_time:.3f} s")
