@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Callable, Dict, Sequence, TypeVar, Optional, Tuple
+from typing import Callable, Dict, Iterator, Sequence, TypeVar, Optional, Tuple
 from context_manager_patma import derive, register
 from . import entity_types as et
 import html
@@ -15,6 +15,9 @@ class HtmlRender:
 
     def as_text(self) -> str:
         """Render as HTML"""
+        return "".join(self._text_parts())
+
+    def _text_parts(self) -> Iterator[str]:
         raise NotImplementedError
 
     def fmap(self: R, fn: Callable[[str], str]) -> R:
@@ -27,8 +30,8 @@ class RawHtml(HtmlRender):
     """Renders `content` as is (without escaping)"""
     content: str
 
-    def as_text(self) -> str:
-        return self.content
+    def _text_parts(self) -> Iterator[str]:
+        yield self.content
 
     def fmap(self, fn: Callable[[str], str]):
         # We can't know what parts of raw HTML are text, so do nothing
@@ -41,8 +44,8 @@ class SafeHtml(HtmlRender):
     unsafe_content: str
     _after_escape: Callable[[str], str] = staticmethod(lambda s: s)  # type: ignore
 
-    def as_text(self) -> str:
-        return self._after_escape(html.escape(self.unsafe_content, quote=True))
+    def _text_parts(self) -> Iterator[str]:
+        yield self._after_escape(html.escape(self.unsafe_content, quote=True))
 
     def fmap(self, fn: Callable[[str], str]):
         return SafeHtml(
@@ -64,13 +67,19 @@ class HtmlTag(HtmlRender):
     options: str
     content: Sequence[HtmlRender]
 
-    def as_text(self) -> str:
-        options = "" if self.options == "" else " " + self.options
-        return (
-            f"<{self.tag}{options}>"
-            + "".join(r.as_text() for r in self.content)
-            + f"</{self.tag}>"
-        )
+    def _text_parts(self) -> Iterator[str]:
+        yield "<"
+        yield self.tag
+        if self.options == "":
+            yield ""
+        else:
+            yield " " + self.options
+        yield ">"
+        for r in self.content:
+            yield from r._text_parts()
+        yield "</"
+        yield self.tag
+        yield ">"
 
     def fmap(self, fn: Callable[[str], str]):
         return HtmlTag(
@@ -87,11 +96,16 @@ class ClosedHtmlTag(HtmlRender):
     options: str
     include_slash: bool
 
-    def as_text(self) -> str:
-        options = "" if self.options == "" else " " + self.options
-        return (
-            f"<{self.tag}{options}{' /' if self.include_slash else ''}>"
-        )
+    def _text_parts(self) -> Iterator[str]:
+        yield "<"
+        yield self.tag
+        if self.options == "":
+            yield ""
+        else:
+            yield " " + self.options
+        if self.include_slash:
+            yield " /"
+        yield ">"
 
     def fmap(self, fn: Callable[[str], str]):
         return self
@@ -107,8 +121,9 @@ class Concat(HtmlRender):
     """
     children: Sequence[HtmlRender]
 
-    def as_text(self) -> str:
-        return "".join(r.as_text() for r in self.children)
+    def _text_parts(self) -> Iterator[str]:
+        for r in self.children:
+            yield from r._text_parts()
 
     def fmap(self, fn: Callable[[str], str]):
         return Concat([r.fmap(fn) for r in self.children])
@@ -146,7 +161,7 @@ class Entity:
 
 
 @derive("Quoted", "subexpression")
-@dataclass(eq=True)
+@dataclass(frozen=True, eq=True)
 class Quoted(Entity):
     subexpression: Entity
 
@@ -162,25 +177,19 @@ class Quoted(Entity):
 
 
 @derive("Name", "name")
-@dataclass(eq=True)
+@dataclass(frozen=True, eq=True)
 class Name(Entity):
     """Represents getting a global variable by its name"""
     name: str
 
-    _cached: Optional[Entity] = None
-
     @property
     def ty(self):
-        if self._cached is None:
-            return et.TName()
-        else:
-            return self._cached.ty
+        return et.TName()
 
     def evaluate(self, runtime) -> Entity:
-        self._cached = runtime[self.name]
-        if self._cached is None:
+        if (value := runtime[self.name]) is None:
             raise KeyError(f"Name {self.name} not found")
-        return self._cached.evaluate(runtime)
+        return value.evaluate(runtime)
 
     def as_source(self) -> str:
         return self.name
@@ -195,7 +204,7 @@ class CallError(Exception):
 
 
 @register("Sexpr")
-@dataclass
+@dataclass(frozen=True)
 class Sexpr(Entity):
     """Represents a function call"""
     fn: Entity
@@ -253,18 +262,10 @@ class Sexpr(Entity):
                 f"Trying to call {fn.ty.signature()}"
                 " (line {line}, column {column})"
             )
-        args = tuple(e.evaluate(runtime) for e in self.args)
-
-        error = None
         try:
-            result = fn.call(*args).evaluate(runtime)  # type: ignore
+            return fn.call(*(e.evaluate(runtime) for e in self.args)).evaluate(runtime)  # type: ignore
         except TypeError as e:
-            error = "".join(e.args) + " (line {line}, column {column})"
-        else:
-            return result
-        finally:
-            if error is not None:
-                self._type_mismatch(error)
+            self._type_mismatch("".join(e.args) + " (line {line}, column {column})")
 
     def as_source(self) -> str:
         return "(" + " ".join(e.as_source() for e in (self.fn, *self.args)) + ")"
@@ -480,7 +481,7 @@ class Function(Entity):
         return f"<λ:{len(self.overloads)} overloads>"
 
 
-@dataclass(eq=True)
+@dataclass(frozen=True, eq=True)
 class AfterRender(Entity):
     """
     Apply the function to the rendered content of an element.
