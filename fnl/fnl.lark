@@ -2,9 +2,9 @@
 ?expr: string | raw_string | integer | sexpr | name | quoted
 INTEGER: /[-+]?[0-9]+/
 integer: INTEGER
-STRING: /(?!\"\"\")"(\\\"|[^"]|\n)*?\"/
+STRING: /(?!\"\"\")"(\\\"|[^"])*\"/
 string: STRING
-RAW_STRING: /\"\"\"(\\\"\"\"|.|\n)*?\"\"\"/
+RAW_STRING: /\"\"\"(\\\"\"\"|(?!\"\"\").|\n)+\"\"\"/
 raw_string: RAW_STRING
 NAME: /(?![-+]?[0-9])[-_$@:+*\/a-zA-Z0-9.#<>]+/
 name: NAME
