@@ -24,7 +24,7 @@ class LanguageTransformer(Transformer):
     @staticmethod
     def string(token):
         return e.String(json.loads(
-            re.sub(r"\s+", " ", str(token))
+            re.sub(r"\s+", " ", token)
         ))
 
     @staticmethod
@@ -33,16 +33,11 @@ class LanguageTransformer(Transformer):
         return e.String(dedent(s))
 
     @staticmethod
-    def name(token):
-        return e.Name(str(token))
-
-    @staticmethod
     def sexpr(left_paren, fn, *args):
         return e.Sexpr(fn, args, _position=(left_paren.line, left_paren.column))
 
-    @staticmethod
-    def quoted(expr):
-        return e.Quoted(expr)
+    name = e.Name
+    quoted = e.Quoted
 
 
 parser = Lark.open(
