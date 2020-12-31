@@ -11,7 +11,7 @@ setuptools.setup(
     description="Terse and extensible markup language",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/decorator-factory/fnl",
+    url="https://github.com/decorator-factory/python-fnl",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
