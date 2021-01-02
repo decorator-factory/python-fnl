@@ -164,10 +164,9 @@ def list_unordered():
         return e.BlockTag(
             "ul",
             "",
-            # NOTE Pyright heisenbug:
             tuple(e.BlockTag("li", "", (arg,)) for arg in args)
         )
-    yield ("(λ ...inline . block)", from_inline)
+    yield ("(λ ...inline|block . block)", from_inline)
 
 
 @fn(BUILTINS, "list-ordered")
@@ -179,10 +178,9 @@ def list_ordered():
         return e.BlockTag(
             "ol",
             "",
-            # NOTE Pyright heisenbug:
             tuple(e.BlockTag("li", "", (arg,)) for arg in args)
         )
-    yield ("(λ ...inline . block)", from_inline)
+    yield ("(λ ...inline|block . block)", from_inline)
 
 
 @fn(BUILTINS, "p")
